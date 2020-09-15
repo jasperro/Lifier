@@ -6,7 +6,7 @@ import { updateXP } from "../storage/Experience";
 import Colors from "../constants/Colors";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
-import XPCounter from "./XPCounter";
+import { XPSetter, XPBar } from "./XP";
 
 export default function Footer({ path }: { path: string }) {
   return (
@@ -16,7 +16,8 @@ export default function Footer({ path }: { path: string }) {
           This app was made by jasperro, sweatplant, hugodh and trevorsen
         </MonoText>
       </TouchableOpacity>
-      <XPCounter></XPCounter>
+      <XPSetter></XPSetter>
+      <XPBar></XPBar>
     </ScrollView>
   );
 }
