@@ -1,12 +1,12 @@
 import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import { StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { updateXP } from "../storage/Experience";
 
-import Colors from "../constants/Colors";
-import { MonoText } from "./StyledText";
-import { Text, View } from "./Themed";
-import { XPSetter, XPBar } from "./XP";
+import Colors from "../../constants/Colors";
+import { MonoText } from "../Style/StyledText";
+import { Text, View } from "../Style/Themed";
+import { XPSetter } from "../XP";
+import Timer from "../Timer";
 
 export default function Footer({ path }: { path: string }) {
   return (
@@ -16,15 +16,12 @@ export default function Footer({ path }: { path: string }) {
           This app was made by jasperro, sweatplant, hugodh and trevorsen
         </MonoText>
       </TouchableOpacity>
-      <XPSetter></XPSetter>
-      <XPBar></XPBar>
+      <Timer />
     </ScrollView>
   );
 }
 
-function handleHelpPress() {
-  updateXP(10);
-}
+function handleHelpPress() {}
 
 const styles = StyleSheet.create({
   container: {

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { StyleSheet, Switch } from "react-native";
 
-import Footer from "../components/Footer";
-import { Text, View, TextInput } from "../components/Themed";
+import Footer from "../components/Layout/Footer";
+import { Text, View, TextInput } from "../components/Style/Themed";
 
 export default function Overview() {
   return (
