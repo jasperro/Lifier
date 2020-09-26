@@ -1,4 +1,5 @@
 import React from "react";
+import TestModal from "./TestModal"
 import { StyleSheet, Text, View, Button } from "react-native";
 
 class Timer extends React.Component {
@@ -8,6 +9,7 @@ class Timer extends React.Component {
         <Text>10:10</Text>
         <Button title="Start" onPress={() => alert("Start Timer")}></Button>
         <Button title="Stop" onPress={() => alert("Stop Timer")}></Button>
+		  <TestModal></TestModal>
       </View>
     );
   }

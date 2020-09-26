@@ -6,7 +6,9 @@ import * as React from "react";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import Overview from "../screens/Overview";
+import Settings from "../screens/Settings";
 import Data from "../screens/Data";
+import Skills from "../screens/Skills";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -25,7 +27,16 @@ export default function BottomTabNavigator() {
         component={OverviewNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="view-dashboard" color={color} />
+            <TabBarIcon name="calendar-check" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Skills"
+        component={SkillsNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="file-tree" color={color} />
           ),
         }}
       />
@@ -34,7 +45,16 @@ export default function BottomTabNavigator() {
         component={DataNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="database" color={color} />
+            <TabBarIcon name="finance" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Settings"
+        component={SettingsNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="settings" color={color} />
           ),
         }}
       />
@@ -63,6 +83,34 @@ function OverviewNavigator() {
         options={{ headerTitle: "Overview" }}
       />
     </OverviewStack.Navigator>
+  );
+}
+
+const SkillsStack = createStackNavigator();
+
+function SkillsNavigator() {
+  return (
+    <SkillsStack.Navigator>
+      <SkillsStack.Screen
+        name="Skills"
+        component={Skills}
+        options={{ headerTitle: "Skills" }}
+      />
+    </SkillsStack.Navigator>
+  );
+}
+
+const SettingsStack = createStackNavigator();
+
+function SettingsNavigator() {
+  return (
+    <SettingsStack.Navigator>
+      <SettingsStack.Screen
+        name="Settings"
+        component={Settings}
+        options={{ headerTitle: "Settings" }}
+      />
+    </SettingsStack.Navigator>
   );
 }
 

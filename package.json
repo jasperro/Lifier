@@ -35,7 +35,7 @@
     "react-native-gesture-handler": "~1.7.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
-    "react-native-web": "~0.13.7"
+    "react-native-web": "0.0.0-466063b7e"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

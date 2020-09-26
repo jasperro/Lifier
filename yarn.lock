@@ -6779,10 +6779,10 @@ react-native-screens@~2.10.1:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.10.1.tgz#06d22fae87ef0ce51c616c34a199726db1403b95"
   integrity sha512-Z2kKSk4AwWRQNCBmTjViuBQK0/Lx0jc25TZptn/2gKYUCOuVRvCekoA26u0Tsb3BIQ8tWDsZW14OwDlFUXW1aw==
 
-react-native-web@~0.13.7:
-  version "0.13.13"
-  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.13.13.tgz#4d933af4049961104be933257f28d0570c425f84"
-  integrity sha512-Fp8oam7i9CjGvEd1KvchMk9mAbT+SUlYxEbzGx4spBtY3sItSgd+XJV7aJ60OO9w4/3U8npgaWx2K4+TG35yaA==
+react-native-web@0.0.0-466063b7e:
+  version "0.0.0-466063b7e"
+  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.0.0-466063b7e.tgz#d2ec3746c773041ceeb2b26c2636bdcd362a0a57"
+  integrity sha512-HUuh1YTEKuf9v1j7VeoBgRVkeTJRNqb+JgCHz924i/la2OMLoPkklQTIFXcHrBPjg3Q6omIfROSxUvTBObkJIQ==
   dependencies:
     array-find-index "^1.0.2"
     create-react-class "^15.6.2"
