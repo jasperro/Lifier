@@ -65,9 +65,5 @@ export default appSchema({
         },
       ],
     }),
-    tableSchema({
-      name: "dbtest",
-      columns: [{ name: "current_date", type: "number" }],
-    }),
   ],
 });
