@@ -3,14 +3,16 @@ import { StyleSheet, Switch } from "react-native";
 
 import { Text, View, TextInput } from "../components/Style/Themed";
 import { SettingsItem } from "../components/Settings";
-import { setSettingState, getSettingState } from "../database/settings";
+//import { setSettingState, getSettingState } from "../database/settings";
 
-(async function () {
+/*(async function () {
   let books = await getSettingState("dark_mode");
   console.log(books);
-})();
+})();*/
+import database from "../model/database.web";
 
 export default function Settings() {
+  database.then((database) => console.log(database));
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Settings</Text>

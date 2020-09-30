@@ -12,9 +12,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.11.5",
     "@expo/vector-icons": "^10.0.0",
-    "@nozbe/watermelondb": "^0.19.0",
-    "@nozbe/with-observables": "^1.0.5",
     "@react-native-community/async-storage": "~1.12.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.9.1",
@@ -26,15 +25,20 @@
     "expo-font": "~8.3.0",
     "expo-linking": "^1.0.4",
     "expo-splash-screen": "~0.6.1",
+    "expo-sqlite": "~8.4.0",
     "expo-status-bar": "~1.0.2",
     "expo-web-browser": "~8.5.0",
+    "pouchdb-adapter-indexeddb": "^7.2.2",
+    "pouchdb-adapter-react-native-sqlite": "^2.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.0.tar.gz",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
-    "react-native-web": "~0.13.7"
+    "react-native-web": "0.0.0-466063b7e",
+    "rxdb": "^9.6.0",
+    "rxjs": "^6.6.3"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",

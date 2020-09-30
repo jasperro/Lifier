@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  View
+  View,
 } from "react-native";
 
 const App = () => {
@@ -20,22 +20,22 @@ const App = () => {
           Alert.alert("Modal has been closed.");
         }}
       >
-		  <View style={styles.modalBackdrop}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Hello World!</Text>
 
-            <TouchableHighlight
-              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </TouchableHighlight>
+            </View>
           </View>
         </View>
-		  </View>
       </Modal>
 
       <TouchableHighlight
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -66,32 +66,32 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   modalBackdrop: {
-    backgroundColor: 'rgba(100,100,100, 0.5)',
-	 width: '100%',
-	 height: '100%',
+    backgroundColor: "rgba(100,100,100, 0.5)",
+    width: "100%",
+    height: "100%",
   },
   openButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
 export default App;

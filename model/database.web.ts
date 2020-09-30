@@ -1,5 +1,5 @@
 // Database maken
-import { Database } from "@nozbe/watermelondb";
+/*import { Database } from "@nozbe/watermelondb";
 import adapter from "./adapter"; // Sqlite op android/ios, loki op web
 
 // Importeer modellen, dit is alles in de app die data opgeslagen heeft in de db.
@@ -20,4 +20,25 @@ export default new Database({
     Setting,
   ],
   actionsEnabled: true,
-});
+});*/
+
+import { createRxDatabase, addRxPlugin } from 'rxdb';
+import initializeCollections from "./collections";
+
+addRxPlugin(require('pouchdb-adapter-indexeddb'));
+
+async function getRxDB() {
+  const rxdb = await createRxDatabase({
+    name: 'database',
+    adapter: 'indexeddb' // name of the adapter
+  });
+
+  await initializeCollections(rxdb);
+
+  return rxdb;
+}
+
+// Haal de value uit de functie
+const database = getRxDB();
+// Exporteer return value
+export default database
