@@ -3,6 +3,7 @@ import {
   Text as DefaultText,
   View as DefaultView,
   TextInput as DefaultTextInput,
+  Switch as DefaultSwitch,
 } from "react-native";
 
 import Colors from "../../constants/Colors";
@@ -30,6 +31,7 @@ type ThemeProps = {
 export type TextProps = ThemeProps & DefaultText["props"];
 export type TextInputProps = ThemeProps & DefaultView["props"];
 export type ViewProps = ThemeProps & DefaultView["props"];
+export type SwitchProps = ThemeProps & DefaultSwitch["props"];
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -58,4 +60,10 @@ export function View(props: ViewProps) {
   );
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export function Switch(props: SwitchProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+
+  return <DefaultView style={[style]} {...otherProps} />;
 }

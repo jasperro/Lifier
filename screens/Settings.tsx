@@ -9,7 +9,7 @@ import { SettingsItem } from "../components/Settings";
   let books = await getSettingState("dark_mode");
   console.log(books);
 })();*/
-import database from "../model/database.web";
+import database from "../model/database";
 
 export default function Settings() {
   database.then((database) => console.log(database));

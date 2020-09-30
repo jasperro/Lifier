@@ -24,8 +24,8 @@ export default new Database({
 
 import { addRxPlugin, createRxDatabase } from 'rxdb';
 import initializeCollections from "./collections";
-import SQLite from 'expo-sqlite'
-import SQLiteAdapterFactory from 'pouchdb-adapter-react-native-sqlite'
+import * as SQLite from 'expo-sqlite';
+import SQLiteAdapterFactory from 'pouchdb-adapter-react-native-sqlite';
 
 const SQLiteAdapter = SQLiteAdapterFactory(SQLite)
 
@@ -35,7 +35,9 @@ addRxPlugin(require('pouchdb-adapter-http'));
 async function getRxDB() {
   const rxdb = await createRxDatabase({
     name: 'mydatabase',
-    adapter: 'react-native-sqlite' // the name of your adapter
+    adapter: 'react-native-sqlite', // the name of your adapter
+    ignoreDuplicate: true, // Expo herlaadt database elke keer, en reexport, dit maakt een nieuwe database
+    multiInstance: false
   });
 
   await initializeCollections(rxdb);
