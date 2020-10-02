@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import { View, Text, Switch, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import { Switch } from "../Style/Themed";
 
 export function SettingsItem(props: {
   displayname: string;
   settingid: string;
 }) {
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-
   const [isEnabled, setIsEnabled] = useState(false);
   return (
-    <View>
-      <Text>{props.displayname}</Text>
-      <Text>{props.settingid}</Text>
+    <View style={styles.container}>
+      <View>
+        <Text>{props.displayname}</Text>
+        <Text>{props.settingid}</Text>
+        <Text>{isEnabled.toString()}</Text>
+      </View>
       <Switch
         onValueChange={toggleSwitch}
         value={isEnabled}
@@ -22,6 +25,9 @@ export function SettingsItem(props: {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+  },
   settingswitch: {
     margin: 10,
   },

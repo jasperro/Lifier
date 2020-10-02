@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   Text as DefaultText,
   View as DefaultView,
@@ -63,7 +63,29 @@ export function View(props: ViewProps) {
 }
 
 export function Switch(props: SwitchProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  return <DefaultView style={[style]} {...otherProps} />;
+  const [isEnabled, setIsEnabled] = useState(false);
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const trackColor = {
+    false: "#777777",
+    true: useThemeColor(
+      { light: lightColor, dark: darkColor },
+      "switch_track_color"
+    ),
+  };
+  const thumbColor = isEnabled
+    ? useThemeColor({ light: lightColor, dark: darkColor }, "tint")
+    : useThemeColor({ light: lightColor, dark: darkColor }, "tint");
+  return (
+    <DefaultSwitch
+      trackColor={trackColor}
+      thumbColor={thumbColor}
+      activeThumbColor={thumbColor}
+      onValueChange={toggleSwitch}
+      value={isEnabled}
+      style={[style]}
+      {...otherProps}
+    />
+  );
 }

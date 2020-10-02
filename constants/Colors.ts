@@ -8,6 +8,7 @@ const themeObject = {
     tint: tintColorLight,
     tabIconDefault: "#ccc",
     tabIconSelected: tintColorLight,
+    switch_track_color: "#5577ce"
   },
   dark: {
     text: "#fff",
@@ -15,6 +16,7 @@ const themeObject = {
     tint: tintColorDark,
     tabIconDefault: "#ccc",
     tabIconSelected: tintColorDark,
+    switch_track_color: "#5577ce"
   },
 };
 
