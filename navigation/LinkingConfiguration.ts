@@ -1,35 +1,35 @@
 import * as Linking from "expo-linking";
 
 export default {
-  prefixes: [Linking.makeUrl("/")],
-  config: {
-    screens: {
-      Root: {
+    prefixes: [Linking.makeUrl("/")],
+    config: {
         screens: {
-          Overview: {
-            screens: {
-              Overview: "overview",
+            Root: {
+                screens: {
+                    Overview: {
+                        screens: {
+                            Overview: "overview",
+                        },
+                    },
+                    Skills: {
+                        screens: {
+                            Skills: "skills",
+                        },
+                    },
+                    Data: {
+                        screens: {
+                            Stats: "data/stats",
+                            Points: "data/points",
+                        },
+                    },
+                    Settings: {
+                        screens: {
+                            Settings: "settings",
+                        },
+                    },
+                },
             },
-          },
-          Skills: {
-            screens: {
-              Skills: "skills",
-            },
-          },
-          Data: {
-            screens: {
-              Stats: "data/stats",
-              Points: "data/points",
-            },
-          },
-          Settings: {
-            screens: {
-              Settings: "settings",
-            },
-          },
+            NotFound: "*",
         },
-      },
-      NotFound: "*",
     },
-  },
 };

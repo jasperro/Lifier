@@ -6,19 +6,21 @@ import { View } from "./Style/Themed";
 // Input en knop om XP te veranderen als debug
 export class XPSetter extends React.Component {
   state = {
-    xp: 0,
+      xp: 0,
   };
+
   handleInput = (text: string) => {
-    this.setState({ xp: parseInt(text) });
+      this.setState({ xp: parseInt(text) });
   };
+
   render() {
-    return (
-      <View>
-        <TextInput onChangeText={() => 0} onSubmitEditing={() => 0}></TextInput>
-        <TouchableOpacity onPress={() => 0}>
-          <Text> Submit </Text>
-        </TouchableOpacity>
-      </View>
-    );
+      return (
+          <View>
+              <TextInput onChangeText={() => 0} onSubmitEditing={() => 0} />
+              <TouchableOpacity onPress={() => 0}>
+                  <Text> Submit </Text>
+              </TouchableOpacity>
+          </View>
+      );
   }
 }

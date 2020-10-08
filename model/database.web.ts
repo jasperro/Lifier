@@ -1,44 +1,20 @@
-// Database maken
-/*import { Database } from "@nozbe/watermelondb";
-import adapter from "./adapter"; // Sqlite op android/ios, loki op web
-
-// Importeer modellen, dit is alles in de app die data opgeslagen heeft in de db.
-import SkillCategory from "./SkillCategory";
-import Skill from "./Skill";
-import AchieveHistoryItem from "./AchieveHistory";
-import TimeHistoryItem from "./TimeHistory";
-import Setting from "./Setting";
-
-// Exporteer de database dat de rest van de app het kan lezen
-export default new Database({
-  adapter,
-  modelClasses: [
-    SkillCategory,
-    Skill,
-    AchieveHistoryItem,
-    TimeHistoryItem,
-    Setting,
-  ],
-  actionsEnabled: true,
-});*/
-
-import { createRxDatabase, addRxPlugin } from 'rxdb';
+import { createRxDatabase, addRxPlugin } from "rxdb";
 import initializeCollections from "./collections";
 
-addRxPlugin(require('pouchdb-adapter-indexeddb'));
+addRxPlugin(require("pouchdb-adapter-indexeddb"));
 
 async function getRxDB() {
-  const rxdb = await createRxDatabase({
-    name: 'database',
-    adapter: 'indexeddb' // name of the adapter
-  });
+    const rxdb = await createRxDatabase({
+        name: "database",
+        adapter: "indexeddb", // name of the adapter
+    });
 
-  await initializeCollections(rxdb);
+    await initializeCollections(rxdb);
 
-  return rxdb;
+    return rxdb;
 }
 
 // Haal de value uit de functie
 const database = getRxDB();
 // Exporteer return value
-export default database
+export default database;

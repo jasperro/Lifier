@@ -1,13 +1,18 @@
-import { date, field, readonly } from "@nozbe/watermelondb/decorators";
-import { Model } from "@nozbe/watermelondb";
-
-class Setting extends Model {
-  static table = "settings";
-  @field("setting_id") settingID;
-  @field("boolean_value") boolValue;
-  @field("number_value") numValue;
-  @date("string_value") strValue;
-  //@readonly @field("id") ID;
-}
-
-export default Setting;
+export default
+{
+    title: "setting",
+    version: 0,
+    description: "describes a setting",
+    type: "object",
+    properties: {
+        bool_state: {
+            type: "boolean",
+            default: false,
+        },
+        setting_id: {
+            type: "string",
+            primary: true,
+        },
+    },
+    required: ["setting_id"],
+};

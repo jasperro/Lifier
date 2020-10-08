@@ -1,21 +1,22 @@
-import SkillCategory from "./SkillCategory";
-/*import Skill from "./Skill";
-import AchieveHistoryItem from "./AchieveHistory";
-import TimeHistoryItem from "./TimeHistory";
-import Setting from "./Setting";*/
 import { promiseSeries, RxDatabase } from "rxdb";
+import SkillCategory from "./SkillCategory";
+/* import Skill from "./Skill";
+import AchieveHistoryItem from "./AchieveHistory";
+import TimeHistoryItem from "./TimeHistory"; */
+import Setting from "./Setting";
 
 export default async function initializeCollections(database) {
-  const skillCategoryCollection = await database.collection({
-    name: 'skillcategories',
-    schema: SkillCategory,
-    pouchSettings: {}, // (optional)
-    autoMigrate: true, // (optional)
-  });
+    const skillCategoryCollection = await database.collection({
+        name: "skillcategories",
+        schema: SkillCategory,
+    });
+    const settingCollection = await database.collection({
+        name: "settings",
+        schema: Setting,
+    });
 }
 
-
-/*import { appSchema, tableSchema } from "@nozbe/watermelondb";
+/* import { appSchema, tableSchema } from "@nozbe/watermelondb";
 
 export default appSchema({
   version: 1,

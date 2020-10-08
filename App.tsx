@@ -1,16 +1,5 @@
 import { decode, encode } from "base-64";
 
-if (!global.btoa) {
-  global.btoa = encode;
-}
-
-if (!global.atob) {
-  global.atob = decode;
-}
-
-// Avoid using node dependent modules
-process.browser = true;
-
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -21,20 +10,30 @@ import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import { AppContextProvider } from "./AppContextProvider";
 
-export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+if (!global.btoa) {
+    global.btoa = encode;
+}
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
+if (!global.atob) {
+    global.atob = decode;
+}
+
+// Avoid using node dependent modules
+process.browser = true;
+
+export default function App() {
+    const isLoadingComplete = useCachedResources();
+    const colorScheme = useColorScheme();
+
+    if (!isLoadingComplete) {
+        return null;
+    }
     return (
-      <AppContextProvider>
-        <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
-        </SafeAreaProvider>
-      </AppContextProvider>
+        <AppContextProvider>
+            <SafeAreaProvider>
+                <Navigation colorScheme={colorScheme} />
+                <StatusBar />
+            </SafeAreaProvider>
+        </AppContextProvider>
     );
-  }
 }

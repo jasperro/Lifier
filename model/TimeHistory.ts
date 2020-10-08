@@ -1,12 +1,17 @@
-import { date, field } from '@nozbe/watermelondb/decorators'
-import { Model } from '@nozbe/watermelondb'
-
-class TimeHistoryItem extends Model {
-  static table = 'time_history'
-  @field('time_spent') timeSpent
-  @field('skill_id') skillID 
-  @field('activity_id') activityID 
-  @date('completed_at') completedAt
-}
-
-export default TimeHistoryItem;
+export default
+{
+    title: "setting",
+    version: 0,
+    description: "describes a setting",
+    type: "object",
+    properties: {
+        bool_state: {
+            type: "boolean",
+            primary: true,
+        },
+        setting_id: {
+            type: "string",
+        },
+    },
+    required: ["setting_id"],
+};

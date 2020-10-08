@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { StyleSheet, View as OriginalView, StyleProp, ViewStyle } from 'react-native';
-import { withTheme, useTheme } from 'react-native-paper';
+import {
+    StyleSheet, View as OriginalView, StyleProp, ViewStyle,
+} from "react-native";
+import { withTheme, useTheme } from "react-native-paper";
 
 type ViewProps = React.ComponentPropsWithRef<typeof View> & {
   children: React.ReactNode;
@@ -10,19 +12,19 @@ type ViewProps = React.ComponentPropsWithRef<typeof View> & {
 };
 
 const ThemedView = ({ style, theme, ...rest }: ViewProps) => {
-  const { dark: isDarkTheme, colors } = useTheme();
-  return (
-    <OriginalView
-      {...rest}
-      style={[
-        {
-          backgroundColor:
-            colors.background
-        },
-        style,
-      ]}
-    />
-  );
+    const { dark: isDarkTheme, colors } = useTheme();
+    return (
+        <OriginalView
+            {...rest}
+            style={[
+                {
+                    backgroundColor:
+            colors.background,
+                },
+                style,
+            ]}
+        />
+    );
 };
 
 export const View = withTheme(ThemedView);
