@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Switch } from "../Style/Themed";
+import { StyleSheet } from "react-native";
+import { Text, Switch } from "react-native-paper";
+import { View } from "../Style/Themed";
 
 export function SettingsItem(props: {
   displayname: string;

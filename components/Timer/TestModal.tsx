@@ -4,8 +4,8 @@ import {
   Modal,
   StyleSheet,
   Text,
-  TouchableHighlight,
   View,
+  TouchableHighlight,
 } from "react-native";
 
 const App = () => {
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalBackdrop: {
-    backgroundColor: "rgba(100,100,100, 0.5)",
+    backgroundColor: "rgba(100,100,100, 0.2)",
     width: "100%",
     height: "100%",
   },

@@ -1,10 +1,16 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import { createBottomTabNavigator as createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+//import { createMaterialBottomTabNavigator as createBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+
 import * as React from "react";
 
-import Colors from "../constants/Colors";
-import useColorScheme from "../hooks/useColorScheme";
+import { Text, Button } from 'react-native-paper';
+import { StyleSheet } from "react-native";
+import { View } from "styled/Themed";
+import { fonts } from "root/AppContextProvider";
+
 import Overview from "../screens/Overview";
 import Settings from "../screens/Settings";
 import Data from "../screens/Data";
@@ -13,13 +19,11 @@ import Skills from "../screens/Skills";
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-
   return (
     <BottomTab.Navigator
       initialRouteName="Overview"
       tabBarOptions={{
-        activeTintColor: Colors[colorScheme].tint,
+        animationEnabled: false
       }}
     >
       <BottomTab.Screen
@@ -66,8 +70,32 @@ export default function BottomTabNavigator() {
 // https://icons.expo.fyi/
 function TabBarIcon(props: { name: string; color: string }) {
   return (
-    <MaterialCommunityIcons size={30} style={{ marginBottom: -3 }} {...props} />
+    <MaterialCommunityIcons size={26} {...props} />
   );
+}
+
+
+const DefaultStackOptions = {
+  header: ({ scene, previous, navigation }) => {
+    const { options } = scene.descriptor;
+    const title =
+      options.headerTitle !== undefined
+        ? options.headerTitle
+        : options.title !== undefined
+          ? options.title
+          : scene.route.name;
+
+    const backbutton = previous
+      ? <Button onPress={navigation.goBack}>Back</Button>
+      : undefined
+
+    return (
+      <View style={styles.headercontainer}>
+        <Text style={styles.headertext}>{title}</Text>
+        {backbutton}
+      </View>
+    );
+  },
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
@@ -80,7 +108,7 @@ function OverviewNavigator() {
       <OverviewStack.Screen
         name="Overview"
         component={Overview}
-        options={{ headerTitle: "Overview" }}
+        options={{ headerTitle: "Overview", ...DefaultStackOptions }}
       />
     </OverviewStack.Navigator>
   );
@@ -94,7 +122,7 @@ function SkillsNavigator() {
       <SkillsStack.Screen
         name="Skills"
         component={Skills}
-        options={{ headerTitle: "Skills" }}
+        options={{ headerTitle: "Skills", ...DefaultStackOptions }}
       />
     </SkillsStack.Navigator>
   );
@@ -108,7 +136,7 @@ function SettingsNavigator() {
       <SettingsStack.Screen
         name="Settings"
         component={Settings}
-        options={{ headerTitle: "Settings" }}
+        options={{ headerTitle: "Settings", ...DefaultStackOptions }}
       />
     </SettingsStack.Navigator>
   );
@@ -127,6 +155,7 @@ function DataNavigator() {
           headerStyle: {
             backgroundColor: "#f4511e",
           },
+          ...DefaultStackOptions,
         }}
       />
       <DataStack.Screen
@@ -137,8 +166,21 @@ function DataNavigator() {
           headerStyle: {
             backgroundColor: "#ff4455",
           },
+          ...DefaultStackOptions,
         }}
       />
     </DataStack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  headertext: {
+    "fontSize": 40,
+    ...fonts.light
+  },
+  headercontainer: {
+    "paddingBottom": 40,
+    "paddingTop": 60,
+    "paddingLeft": 40,
+  }
+})

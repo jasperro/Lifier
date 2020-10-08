@@ -1,8 +1,10 @@
 import * as React from "react";
 import { StyleSheet, Switch } from "react-native";
 
-import { Text, View, TextInput } from "../components/Style/Themed";
+import { Text, TextInput, Button } from "react-native-paper";
 import { SettingsItem } from "../components/Settings";
+import { View } from "styled/Themed";
+import { AppConsumer } from '../AppContextProvider'
 //import { setSettingState, getSettingState } from "../database/settings";
 
 /*(async function () {
@@ -21,6 +23,15 @@ export default function Settings() {
         settingid="db_sync"
         displayname="Database Synchronisation"
       />
+      <AppConsumer>
+        {appConsumer => (
+          <View>
+            <Button onPress={() => appConsumer.updateTheme("#ff5400")}>Orange</Button>
+            <Button onPress={() => appConsumer.updateTheme("#ff0000")}>Red</Button>
+            <Button onPress={() => appConsumer.updateTheme("#005522")}>Dark Green</Button>
+          </View>
+        )}
+      </AppConsumer>
     </View>
   );
 }

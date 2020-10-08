@@ -1,31 +1,30 @@
 import * as WebBrowser from "expo-web-browser";
 import React from "react";
-import { StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
-import Colors from "../../constants/Colors";
-import { MonoText } from "../Style/StyledText";
-import { Text, View } from "../Style/Themed";
+import { Text } from "react-native-paper";
 import { XPSetter } from "../XP";
 import Timer from "../Timer";
+import { View } from "../Style/Themed";
 
 export default function Footer({ path }: { path: string }) {
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-        <MonoText lightColor={Colors.light.tint}>
+        <Text>
           This app was made by jasperro, sweatplant, hugodh and trevorsen
-        </MonoText>
+        </Text>
       </TouchableOpacity>
       <Timer />
-    </ScrollView>
+    </View>
   );
 }
 
-function handleHelpPress() {}
+function handleHelpPress() { }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    elevation: 0,
   },
 });

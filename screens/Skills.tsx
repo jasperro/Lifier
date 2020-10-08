@@ -2,7 +2,8 @@ import * as React from "react";
 import { StyleSheet, Switch } from "react-native";
 
 import Footer from "../components/Layout/Footer";
-import { Text, View, TextInput } from "../components/Style/Themed";
+import { Text, TextInput } from "react-native-paper";
+import { View } from "styled/Themed";
 
 export default function Skills() {
   return (
@@ -10,8 +11,6 @@ export default function Skills() {
       <Text style={styles.title}>Skills</Text>
       <View
         style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
       />
       <Switch />
       <Footer path="/screens/Skills.tsx" />

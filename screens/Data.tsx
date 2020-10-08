@@ -1,8 +1,9 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
+import { View } from "styled/Themed";
 
 import Footer from "../components/Layout/Footer";
-import { Text, View } from "../components/Style/Themed";
+import { Text } from "react-native-paper";
 
 export default function Data() {
   return (
@@ -10,8 +11,6 @@ export default function Data() {
       <Text style={styles.title}>Tab Two</Text>
       <View
         style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
       />
       <Footer path="/screens/Data.tsx" />
     </View>

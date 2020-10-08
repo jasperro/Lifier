@@ -19,8 +19,7 @@ import { Platform } from "react-native";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-
-import database from "./model/database";
+import { AppContextProvider } from "./AppContextProvider";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -30,10 +29,12 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
+      <AppContextProvider>
+        <SafeAreaProvider>
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
+        </SafeAreaProvider>
+      </AppContextProvider>
     );
   }
 }
