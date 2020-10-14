@@ -5,6 +5,7 @@ import { Text, TextInput, Button } from "react-native-paper";
 import { View } from "styled/Themed";
 import { SettingsItem } from "../components/Settings";
 import { AppConsumer } from "../AppContextProvider";
+import database from "model/database";
 // import { setSettingState, getSettingState } from "../database/settings";
 
 /* (async function () {

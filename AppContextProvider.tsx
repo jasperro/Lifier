@@ -5,15 +5,6 @@ import {
 
 const Context = React.createContext(undefined);
 
-/* const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: "#0077ce",
-    accent: "#0077ce",
-  },
-}; */
-
 const fontConfig = {
     web: {
         regular: {

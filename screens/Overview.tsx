@@ -20,6 +20,25 @@ export default function Overview() {
     );
 }
 
+// Structuur interface
+/*
+<Subheading>Recent Activity</Subheading>
+<Subheading>Time</Subheading>
+<RecentActivityView>
+    // Populaten met recente activiteiten
+        // DB.history.query(where done recently(3 max))
+</RecentActivityView>
+<TimerView>
+    <CurrentTimers> // Een lijst van alle lopende timers, max 1?
+    </CurrentTimers>
+    <TimerButtons/>
+</TimerView>
+
+<FAB></FAB>
+
+// XP Bar is waarchijnlijk deel van de parent element, anders wordt de root element wel ContainerWithXPBar
+*/
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

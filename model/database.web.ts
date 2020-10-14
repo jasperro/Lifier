@@ -1,4 +1,4 @@
-import { createRxDatabase, addRxPlugin } from "rxdb";
+import { createRxDatabase, removeRxDatabase, addRxPlugin } from "rxdb";
 import initializeCollections from "./collections";
 
 addRxPlugin(require("pouchdb-adapter-indexeddb"));
