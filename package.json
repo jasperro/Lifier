@@ -48,6 +48,7 @@
     "react-native-screens": "~2.10.1",
     "react-native-web": "0.0.0-466063b7e",
     "rxdb": "^9.6.0",
+    "rxdb-hooks": "^2.1.1",
     "rxjs": "^6.6.3"
   },
   "devDependencies": {

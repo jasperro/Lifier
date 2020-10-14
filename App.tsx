@@ -9,6 +9,7 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import { AppContextProvider } from "./AppContextProvider";
+import RxDBProvider from "./RxDBProvider";
 
 if (!global.btoa) {
     global.btoa = encode;
@@ -29,11 +30,13 @@ export default function App() {
         return null;
     }
     return (
-        <AppContextProvider>
-            <SafeAreaProvider>
-                <Navigation colorScheme={colorScheme} />
-                <StatusBar />
-            </SafeAreaProvider>
-        </AppContextProvider>
+        <RxDBProvider>
+            <AppContextProvider>
+                <SafeAreaProvider>
+                    <Navigation colorScheme={colorScheme} />
+                    <StatusBar />
+                </SafeAreaProvider>
+            </AppContextProvider>
+        </RxDBProvider>
     );
 }
