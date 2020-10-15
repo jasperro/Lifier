@@ -3,7 +3,7 @@ import initializeCollections from "./collections";
 
 addRxPlugin(require("pouchdb-adapter-indexeddb"));
 
-const initializeDB = async () => {
+async function getRxDB() {
     const rxdb = await createRxDatabase({
         name: "database",
         adapter: "indexeddb", // name of the adapter
@@ -12,6 +12,9 @@ const initializeDB = async () => {
     await initializeCollections(rxdb);
 
     return rxdb;
-};
+}
 
-export default initializeDB;
+// Haal de value uit de functie
+const database = getRxDB();
+// Exporteer return value
+export default database;

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { Text, Switch } from "react-native-paper";
 import { View } from "styled/Themed";
+import database from "model/database";
 import { isRxCollection, isRxDocument } from "rxdb";
-import { useRxDB } from 'rxdb-hooks';
 
 export function SettingsItem(props: {
     displayname: string;
@@ -12,12 +12,9 @@ export function SettingsItem(props: {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-    const database = useRxDB();
-
-    console.dir(database);
     useEffect(() => {
         async function databaseStuff() {
-            async () => {
+            database.then(async database => {
                 // Pak de lijst met instellingen uit de database
                 const settingsCollection = database.settings;
                 // Als de instelling niet bestaat, maak de instelling aan.
@@ -28,7 +25,7 @@ export function SettingsItem(props: {
 
                 const query = settingsCollection.findOne().where("setting_id").eq(props.settingid);
                 query.exec().then(async document => setIsEnabled(document.get("bool_state")));
-            };
+            });
         }
 
         databaseStuff();

@@ -8,7 +8,7 @@ const SQLiteAdapter = SQLiteAdapterFactory(SQLite);
 addRxPlugin(SQLiteAdapter);
 addRxPlugin(require("pouchdb-adapter-http"));
 
-const initializeDB = async () => {
+async function getRxDB() {
     const rxdb = await createRxDatabase({
         name: "mydatabase",
         adapter: "react-native-sqlite", // the name of your adapter
@@ -18,6 +18,9 @@ const initializeDB = async () => {
 
     await initializeCollections(rxdb);
     return rxdb;
-};
+}
 
-export default initializeDB;
+// Haal de value uit de functie
+const database = getRxDB();
+// Exporteer return value
+export default database;

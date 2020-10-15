@@ -14,6 +14,7 @@ import database from "model/database";
 })(); */
 
 export default function Settings() {
+    database.then((database) => console.log(database));
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Settings</Text>

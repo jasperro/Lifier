@@ -9101,11 +9101,6 @@ rx-lite@*, rx-lite@^4.0.8:
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-4.0.8.tgz#0b1e11af8bc44836f04a6407e92da42467b79444"
   integrity sha1-Cx4Rr4vESDbwSmQH6S2kJGe3lEQ=
 
-rxdb-hooks@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/rxdb-hooks/-/rxdb-hooks-2.1.1.tgz#33bc27496c151f75a694207a4f6840fbf4150cab"
-  integrity sha512-M0y5Jo84dFO0sb57lO/NyPMPU8eRH6EHr38Mjuo78i7gqzD7k6iy2c2yO2v3aTNsfwsPGz4uoNW091lQYu24Aw==
-
 rxdb@^9.6.0:
   version "9.6.0"
   resolved "https://registry.yarnpkg.com/rxdb/-/rxdb-9.6.0.tgz#1db0495ef0d6f3f914ec6cc3cd4f7fdd2aebdb18"

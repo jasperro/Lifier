@@ -8,12 +8,6 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
-    "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "root/*": ["*"],
-      "styled/*": ["components/Style/*"],
-      "model/*": ["model/*"]
-    }
+    "strict": true
   }
 }
