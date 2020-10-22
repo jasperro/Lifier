@@ -75,8 +75,9 @@ export default function App() {
         () => ({
             toggleTheme,
             isThemeDark,
+            setAccentColor,
         }),
-        [toggleTheme, isThemeDark]
+        [toggleTheme, isThemeDark, setAccentColor]
     )
 
     if (!isLoadingComplete) {

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet } from 'react-native'
-import { Text, Switch } from 'react-native-paper'
-import { View } from 'styled/Themed'
 import database from 'model/database'
-import { isRxCollection, isRxDocument } from 'rxdb'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet } from 'react-native'
+import { Switch, Text } from 'react-native-paper'
+import { View } from 'styled/Themed'
 
 export function SettingsItem(props: {
     displayname: string
@@ -11,10 +10,17 @@ export function SettingsItem(props: {
 }) {
     const [isEnabled, setIsEnabled] = useState(false)
     const toggleSwitch = async () => {
-        setIsEnabled((previousState) => !previousState)
-    }
+        database.then(async (database) => {
+            // Pak de lijst met instellingen uit de database
+            const settingsCollection = database.settings
 
-    // TODO: dit stuk hieronder vervangen met rxjs observable subscribe
+            // Als de instelling niet bestaat, maak de instelling aan.
+            const setting = await settingsCollection.atomicUpsert({
+                setting_id: props.settingid,
+                bool_state: !isEnabled,
+            })
+        })
+    }
 
     useEffect(() => {
         async function databaseStuff() {
@@ -28,7 +34,9 @@ export function SettingsItem(props: {
                     .where('setting_id')
                     .eq(props.settingid)
                 query.exec().then(async (document) => {
-                    setIsEnabled(document.get('bool_state'))
+                    document.$.subscribe((changeEvent) =>
+                        setIsEnabled(changeEvent.bool_state)
+                    )
                 })
             })
         }
@@ -36,22 +44,6 @@ export function SettingsItem(props: {
         databaseStuff()
     }, [])
 
-    useEffect(() => {
-        async function databaseStuff() {
-            database.then(async (database) => {
-                // Pak de lijst met instellingen uit de database
-                const settingsCollection = database.settings
-
-                // Als de instelling niet bestaat, maak de instelling aan.
-                const setting = await settingsCollection.atomicUpsert({
-                    setting_id: props.settingid,
-                    bool_state: isEnabled,
-                })
-            })
-        }
-
-        databaseStuff()
-    }, [isEnabled])
     return (
         <View style={styles.container}>
             <View>

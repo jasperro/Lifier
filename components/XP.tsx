@@ -1,7 +1,7 @@
 import React from 'react'
 import { TextInput, Text } from 'react-native-paper'
-import { TouchableOpacity } from 'react-native'
 import { View } from './Style/Themed'
+import { TouchableOpacity } from 'react-native'
 
 // Input en knop om XP te veranderen als debug
 export class XPSetter extends React.Component {

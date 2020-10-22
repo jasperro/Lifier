@@ -14,7 +14,11 @@ import { fonts } from 'root/fontconfig'
 import Overview from '../screens/Overview'
 import Settings from '../screens/Settings'
 import Data from '../screens/Data'
-import Skills from '../screens/Skills'
+import {
+    SkillCategoriesScreen,
+    SkillCategoryScreen,
+    SkillScreen,
+} from '../screens/Skills'
 
 const BottomTab = createBottomTabNavigator()
 
@@ -117,9 +121,28 @@ function SkillsNavigator() {
     return (
         <SkillsStack.Navigator>
             <SkillsStack.Screen
-                name="Skills"
-                component={Skills}
-                options={{ headerTitle: 'Skills', ...DefaultStackOptions }}
+                name="SkillCategories"
+                component={SkillCategoriesScreen}
+                options={{
+                    headerTitle: 'Skill Tree',
+                    ...DefaultStackOptions,
+                }}
+            />
+            <SkillsStack.Screen
+                name="SkillCategory"
+                component={SkillCategoryScreen}
+                options={{
+                    headerTitle: 'Skill Category',
+                    ...DefaultStackOptions,
+                }}
+            />
+            <SkillsStack.Screen
+                name="Skill"
+                component={SkillScreen}
+                options={{
+                    headerTitle: 'Skill',
+                    ...DefaultStackOptions,
+                }}
             />
         </SkillsStack.Navigator>
     )
@@ -169,8 +192,6 @@ function DataNavigator() {
         </DataStack.Navigator>
     )
 }
-
-console.log(fonts)
 
 const styles = StyleSheet.create({
     headertext: {

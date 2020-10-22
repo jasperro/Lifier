@@ -1,8 +1,9 @@
 import React from 'react'
 
 const PreferencesContext = React.createContext({
-    setTheme: () => {},
+    toggleTheme: () => {},
     isThemeDark: false,
+    accentColor: '#ff0000',
 })
 
 export const PreferencesProvider = PreferencesContext.Provider

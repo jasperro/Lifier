@@ -3,92 +3,22 @@ import { StyleSheet, ScrollView } from 'react-native'
 
 import { Text, TextInput, FAB, Button } from 'react-native-paper'
 import { View } from 'styled/Themed'
-import { createStackNavigator } from '@react-navigation/stack'
-import { NavigationContainer } from '@react-navigation/native'
-import Footer from '../components/Layout/Footer'
+import { fonts } from 'root/fontconfig'
 
-const DefaultStackOptions = {
-    header: ({ scene, previous, navigation }) => {
-        const { options } = scene.descriptor
-        const title =
-            options.headerTitle !== undefined
-                ? options.headerTitle
-                : options.title !== undefined
-                ? options.title
-                : scene.route.name
-
-        const backbutton = previous ? (
-            <Button onPress={navigation.goBack}>Back</Button>
-        ) : undefined
-
-        return (
-            <View style={styles.headercontainer}>
-                <Text style={styles.headertext}>{title}</Text>
-                {backbutton}
-            </View>
-        )
-    },
-}
-
-// Maak de base-stack waar alle skill-categorieën in staan (Guitar, Programming)
-const SkillCategoriesStack = createStackNavigator()
-
-// Deze navigator wordt enkel een keer gemaakt.
-export default function SkillCategoriesNavigator() {
-    return (
-        <SkillCategoriesStack.Navigator>
-            <SkillCategoriesStack.Screen
-                name="Skill Categories"
-                component={SkillCategories}
-                options={{
-                    headerTitle: 'Skill Categories',
-                    ...DefaultStackOptions,
-                }}
-            />
-            {/**/}
-            <SkillCategoriesStack.Screen
-                name="Skill Category"
-                component={SkillCategoryNavigator}
-                options={{
-                    headerTitle: 'Skill Category',
-                    ...DefaultStackOptions,
-                }}
-            />
-        </SkillCategoriesStack.Navigator>
-    )
-}
-
-// Maak de stack waar de skill-categorie in staat (Guitar) en laat subcategorieën zien (Chords, Technique)
-const SkillCategoryStack = createStackNavigator()
-
-function SkillCategoryNavigator() {
-    return (
-        <SkillCategoryStack.Navigator>
-            <SkillCategoryStack.Screen
-                name="Skill Categories"
-                component={SkillCategories}
-                options={{
-                    headerTitle: 'Skill Categories',
-                    ...DefaultStackOptions,
-                }}
-            />
-            <SkillCategoryStack.Screen
-                name="Skill Category"
-                component={SkillCategoryStack}
-                options={{
-                    headerTitle: 'Skill Category',
-                    ...DefaultStackOptions,
-                }}
-            />
-        </SkillCategoryStack.Navigator>
-    )
-}
-
-function SkillCategories() {
+export function SkillCategoriesScreen({ navigation }) {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Skills</Text>
-            <View style={styles.separator} />
+            <Button
+                onPress={() => {
+                    /* 1. Navigate to the Details route with params */
+                    navigation.navigate('SkillCategory', {
+                        itemId: 86,
+                        otherParam: 'anything you want here',
+                    })
+                }}
+            >
+                Go to skill category
+            </Button>
             <ScrollView></ScrollView>
             <FAB
                 style={styles.fab}
@@ -99,22 +29,83 @@ function SkillCategories() {
     )
 }
 
-function SkillCategory() {
+const DefaultStackOptions = (path: Array<string> = []) => {
+    return {
+        header: ({ scene, previous, navigation }) => {
+            const { options } = scene.descriptor
+            const title =
+                options.headerTitle !== undefined
+                    ? options.headerTitle
+                    : options.title !== undefined
+                    ? options.title
+                    : scene.route.name
+
+            const backbutton = previous ? (
+                <Button onPress={navigation.goBack}>Back</Button>
+            ) : undefined
+
+            const pathElements = []
+
+            for (const [index, value] of path.entries()) {
+                pathElements.push(
+                    <Text style={styles.headertext}>{value}</Text>
+                )
+            }
+
+            return (
+                <View style={styles.headercontainer}>
+                    {pathElements}
+                    <Text style={styles.headertext}>{title}</Text>
+                    {backbutton}
+                </View>
+            )
+        },
+    }
+}
+
+export function SkillCategoryScreen({ route, navigation }) {
+    const { itemId } = route.params
+    const { otherParam } = route.params
+    navigation.setOptions({
+        headerTitle: JSON.stringify(itemId),
+        ...DefaultStackOptions(['Skill Tree']),
+    })
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Skills</Text>
-            <View style={styles.separator} />
             <ScrollView>
+                <Text>itemId: {JSON.stringify(itemId)}</Text>
+                <Text>otherParam: {JSON.stringify(otherParam)}</Text>
                 <Button
-                    title="Go to Skill"
                     onPress={() => {
                         /* 1. Navigate to the Details route with params */
-                        navigation.navigate('Details', {
-                            itemId: 86,
-                            otherParam: 'anything you want here',
+                        navigation.navigate('Skill', {
+                            skillId: 291390321,
                         })
                     }}
-                />
+                >
+                    Go to skill
+                </Button>
+            </ScrollView>
+            <FAB
+                style={styles.fab}
+                icon="plus"
+                onPress={() => console.log('Pressed')}
+            />
+        </View>
+    )
+}
+
+export function SkillScreen({ route, navigation }) {
+    const { skillId } = route.params
+    const { otherParam } = route.params
+    navigation.setOptions({
+        headerTitle: JSON.stringify(skillId),
+        ...DefaultStackOptions(['Skill Tree', 'Skill Category']),
+    })
+    return (
+        <View style={styles.container}>
+            <ScrollView>
+                <Text>skillId: {JSON.stringify(skillId)}</Text>
             </ScrollView>
             <FAB
                 style={styles.fab}
@@ -156,5 +147,14 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 0,
         bottom: 0,
+    },
+    headertext: {
+        fontSize: 40,
+        ...fonts.light,
+    },
+    headercontainer: {
+        paddingBottom: 40,
+        paddingTop: 60,
+        paddingLeft: 40,
     },
 })
