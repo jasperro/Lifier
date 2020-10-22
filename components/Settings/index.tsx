@@ -10,26 +10,43 @@ export function SettingsItem(props: {
     settingid: string;
 }) {
     const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+    const toggleSwitch = async () => {
+        setIsEnabled((previousState) => !previousState);
+    };
+
+    // TODO: dit stuk hieronder vervangen met rxjs observable subscribe
 
     useEffect(() => {
         async function databaseStuff() {
             database.then(async database => {
                 // Pak de lijst met instellingen uit de database
                 const settingsCollection = database.settings;
-                // Als de instelling niet bestaat, maak de instelling aan.
-                let setting = await settingsCollection.atomicUpsert({
-                    setting_id: props.settingid,
-                    bool_state: isEnabled
-                });
 
+                // Zet switch naar state uit database
                 const query = settingsCollection.findOne().where("setting_id").eq(props.settingid);
-                query.exec().then(async document => setIsEnabled(document.get("bool_state")));
+                query.exec().then(async document => { setIsEnabled(document.get("bool_state")); });
             });
         }
 
         databaseStuff();
     }, []);
+
+    useEffect(() => {
+        async function databaseStuff() {
+            database.then(async database => {
+                // Pak de lijst met instellingen uit de database
+                const settingsCollection = database.settings;
+
+                // Als de instelling niet bestaat, maak de instelling aan.
+                let setting = await settingsCollection.atomicUpsert({
+                    setting_id: props.settingid,
+                    bool_state: isEnabled
+                });
+            });
+        }
+
+        databaseStuff();
+    }, [isEnabled]);
     return (
         <View style={styles.container}>
             <View>
