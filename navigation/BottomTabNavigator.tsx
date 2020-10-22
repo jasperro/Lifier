@@ -9,7 +9,7 @@ import * as React from 'react'
 import { Text, Button } from 'react-native-paper'
 import { StyleSheet } from 'react-native'
 import { View } from 'styled/Themed'
-import { fonts } from 'root/AppContextProvider'
+import { fonts } from 'root/fontconfig'
 
 import Overview from '../screens/Overview'
 import Settings from '../screens/Settings'
@@ -169,6 +169,8 @@ function DataNavigator() {
         </DataStack.Navigator>
     )
 }
+
+console.log(fonts)
 
 const styles = StyleSheet.create({
     headertext: {
