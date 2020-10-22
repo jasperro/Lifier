@@ -1,36 +1,37 @@
-import * as React from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import * as React from 'react'
+import { StyleSheet, ScrollView } from 'react-native'
 
-import { Text, TextInput, FAB, Button } from "react-native-paper";
-import { View } from "styled/Themed";
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from '@react-navigation/native';
-import Footer from "../components/Layout/Footer";
+import { Text, TextInput, FAB, Button } from 'react-native-paper'
+import { View } from 'styled/Themed'
+import { createStackNavigator } from '@react-navigation/stack'
+import { NavigationContainer } from '@react-navigation/native'
+import Footer from '../components/Layout/Footer'
 
 const DefaultStackOptions = {
     header: ({ scene, previous, navigation }) => {
-        const { options } = scene.descriptor;
-        const title = options.headerTitle !== undefined
-            ? options.headerTitle
-            : options.title !== undefined
+        const { options } = scene.descriptor
+        const title =
+            options.headerTitle !== undefined
+                ? options.headerTitle
+                : options.title !== undefined
                 ? options.title
-                : scene.route.name;
+                : scene.route.name
 
-        const backbutton = previous
-            ? <Button onPress={navigation.goBack}>Back</Button>
-            : undefined;
+        const backbutton = previous ? (
+            <Button onPress={navigation.goBack}>Back</Button>
+        ) : undefined
 
         return (
             <View style={styles.headercontainer}>
                 <Text style={styles.headertext}>{title}</Text>
                 {backbutton}
             </View>
-        );
+        )
     },
-};
+}
 
 // Maak de base-stack waar alle skill-categorieën in staan (Guitar, Programming)
-const SkillCategoriesStack = createStackNavigator();
+const SkillCategoriesStack = createStackNavigator()
 
 // Deze navigator wordt enkel een keer gemaakt.
 export default function SkillCategoriesNavigator() {
@@ -40,7 +41,7 @@ export default function SkillCategoriesNavigator() {
                 name="Skill Categories"
                 component={SkillCategories}
                 options={{
-                    headerTitle: "Skill Categories",
+                    headerTitle: 'Skill Categories',
                     ...DefaultStackOptions,
                 }}
             />
@@ -49,16 +50,16 @@ export default function SkillCategoriesNavigator() {
                 name="Skill Category"
                 component={SkillCategoryNavigator}
                 options={{
-                    headerTitle: "Skill Category",
+                    headerTitle: 'Skill Category',
                     ...DefaultStackOptions,
                 }}
             />
         </SkillCategoriesStack.Navigator>
-    );
+    )
 }
 
 // Maak de stack waar de skill-categorie in staat (Guitar) en laat subcategorieën zien (Chords, Technique)
-const SkillCategoryStack = createStackNavigator();
+const SkillCategoryStack = createStackNavigator()
 
 function SkillCategoryNavigator() {
     return (
@@ -67,7 +68,7 @@ function SkillCategoryNavigator() {
                 name="Skill Categories"
                 component={SkillCategories}
                 options={{
-                    headerTitle: "Skill Categories",
+                    headerTitle: 'Skill Categories',
                     ...DefaultStackOptions,
                 }}
             />
@@ -75,42 +76,34 @@ function SkillCategoryNavigator() {
                 name="Skill Category"
                 component={SkillCategoryStack}
                 options={{
-                    headerTitle: "Skill Category",
+                    headerTitle: 'Skill Category',
                     ...DefaultStackOptions,
                 }}
             />
         </SkillCategoryStack.Navigator>
-    );
+    )
 }
-
-
 
 function SkillCategories() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Skills</Text>
-            <View
-                style={styles.separator}
-            />
-            <ScrollView>
-
-            </ScrollView>
+            <View style={styles.separator} />
+            <ScrollView></ScrollView>
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => console.log("Pressed")}
+                onPress={() => console.log('Pressed')}
             />
         </View>
-    );
+    )
 }
 
 function SkillCategory() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Skills</Text>
-            <View
-                style={styles.separator}
-            />
+            <View style={styles.separator} />
             <ScrollView>
                 <Button
                     title="Go to Skill"
@@ -119,17 +112,17 @@ function SkillCategory() {
                         navigation.navigate('Details', {
                             itemId: 86,
                             otherParam: 'anything you want here',
-                        });
+                        })
                     }}
                 />
             </ScrollView>
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => console.log("Pressed")}
+                onPress={() => console.log('Pressed')}
             />
         </View>
-    );
+    )
 }
 
 // Opbouw
@@ -146,22 +139,22 @@ function SkillCategory() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     title: {
         fontSize: 20,
-        fontWeight: "bold",
+        fontWeight: 'bold',
     },
     separator: {
         marginVertical: 30,
         height: 1,
-        width: "80%",
+        width: '80%',
     },
     fab: {
-        position: "absolute",
+        position: 'absolute',
         margin: 16,
         right: 0,
         bottom: 0,
     },
-});
+})

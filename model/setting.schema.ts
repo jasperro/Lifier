@@ -1,18 +1,17 @@
-export default
-{
-    title: "setting",
+export default {
+    title: 'setting',
     version: 0,
-    description: "describes a setting",
-    type: "object",
+    description: 'describes a setting',
+    type: 'object',
     properties: {
         bool_state: {
-            type: "boolean",
+            type: 'boolean',
             default: false,
         },
         setting_id: {
-            type: "string",
+            type: 'string',
             primary: true,
         },
     },
-    required: ["setting_id"],
-};
+    required: ['setting_id'],
+}

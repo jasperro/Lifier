@@ -1,47 +1,46 @@
-export default
-{
-    title: "hero schema",
+export default {
+    title: 'hero schema',
     version: 0,
-    description: "describes a simple hero",
-    type: "object",
+    description: 'describes a simple hero',
+    type: 'object',
     properties: {
         name: {
-            type: "string",
+            type: 'string',
             primary: true,
         },
         color: {
-            type: "string",
+            type: 'string',
         },
         healthpoints: {
-            type: "number",
+            type: 'number',
             minimum: 0,
             maximum: 100,
         },
         secret: {
-            type: "string",
+            type: 'string',
         },
         birthyear: {
-            type: "number",
+            type: 'number',
             final: true,
             minimum: 1900,
             maximum: 2050,
         },
         skills: {
-            type: "array",
+            type: 'array',
             maxItems: 5,
             uniqueItems: true,
             items: {
-                type: "object",
+                type: 'object',
                 properties: {
                     name: {
-                        type: "string",
+                        type: 'string',
                     },
                     damage: {
-                        type: "number",
+                        type: 'number',
                     },
                 },
             },
         },
     },
-    required: ["color"],
-};
+    required: ['color'],
+}

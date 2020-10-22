@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
     Alert,
     Modal,
@@ -6,10 +6,10 @@ import {
     Text,
     View,
     TouchableHighlight,
-} from "react-native";
+} from 'react-native'
 
 const App = () => {
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false)
     return (
         <View style={styles.centeredView}>
             <Modal
@@ -17,7 +17,7 @@ const App = () => {
                 transparent
                 visible={modalVisible}
                 onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
+                    Alert.alert('Modal has been closed.')
                 }}
             >
                 <View style={styles.modalBackdrop}>
@@ -26,9 +26,12 @@ const App = () => {
                             <Text style={styles.modalText}>Hello World!</Text>
 
                             <TouchableHighlight
-                                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                                style={{
+                                    ...styles.openButton,
+                                    backgroundColor: '#2196F3',
+                                }}
                                 onPress={() => {
-                                    setModalVisible(!modalVisible);
+                                    setModalVisible(!modalVisible)
                                 }}
                             >
                                 <Text style={styles.textStyle}>Hide Modal</Text>
@@ -41,29 +44,29 @@ const App = () => {
             <TouchableHighlight
                 style={styles.openButton}
                 onPress={() => {
-                    setModalVisible(true);
+                    setModalVisible(true)
                 }}
             >
                 <Text style={styles.textStyle}>Show Modal</Text>
             </TouchableHighlight>
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         marginTop: 22,
     },
     modalView: {
         margin: 20,
-        backgroundColor: "white",
+        backgroundColor: 'white',
         borderRadius: 10,
         padding: 20,
-        alignItems: "center",
-        shadowColor: "#000",
+        alignItems: 'center',
+        shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 2,
@@ -73,25 +76,25 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     modalBackdrop: {
-        backgroundColor: "rgba(100,100,100, 0.2)",
-        width: "100%",
-        height: "100%",
+        backgroundColor: 'rgba(100,100,100, 0.2)',
+        width: '100%',
+        height: '100%',
     },
     openButton: {
-        backgroundColor: "#F194FF",
+        backgroundColor: '#F194FF',
         borderRadius: 20,
         padding: 10,
         elevation: 2,
     },
     textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center",
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
     modalText: {
         marginBottom: 15,
-        textAlign: "center",
+        textAlign: 'center',
     },
-});
+})
 
-export default App;
+export default App

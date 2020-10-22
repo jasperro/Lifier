@@ -1,35 +1,35 @@
-import * as Linking from "expo-linking";
+import * as Linking from 'expo-linking'
 
 export default {
-    prefixes: [Linking.makeUrl("/")],
+    prefixes: [Linking.makeUrl('/')],
     config: {
         screens: {
             Root: {
                 screens: {
                     Overview: {
                         screens: {
-                            Overview: "overview",
+                            Overview: 'overview',
                         },
                     },
                     Skills: {
                         screens: {
-                            Skills: "skills",
+                            Skills: 'skills',
                         },
                     },
                     Data: {
                         screens: {
-                            Stats: "data/stats",
-                            Points: "data/points",
+                            Stats: 'data/stats',
+                            Points: 'data/points',
                         },
                     },
                     Settings: {
                         screens: {
-                            Settings: "settings",
+                            Settings: 'settings',
                         },
                     },
                 },
             },
-            NotFound: "*",
+            NotFound: '*',
         },
     },
-};
+}

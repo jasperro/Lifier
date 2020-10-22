@@ -1,22 +1,22 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 // import { createMaterialBottomTabNavigator as createBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator } from '@react-navigation/stack'
 
-import * as React from "react";
+import * as React from 'react'
 
-import { Text, Button } from "react-native-paper";
-import { StyleSheet } from "react-native";
-import { View } from "styled/Themed";
-import { fonts } from "root/AppContextProvider";
+import { Text, Button } from 'react-native-paper'
+import { StyleSheet } from 'react-native'
+import { View } from 'styled/Themed'
+import { fonts } from 'root/AppContextProvider'
 
-import Overview from "../screens/Overview";
-import Settings from "../screens/Settings";
-import Data from "../screens/Data";
-import Skills from "../screens/Skills";
+import Overview from '../screens/Overview'
+import Settings from '../screens/Settings'
+import Data from '../screens/Data'
+import Skills from '../screens/Skills'
 
-const BottomTab = createBottomTabNavigator();
+const BottomTab = createBottomTabNavigator()
 
 export default function BottomTabNavigator() {
     return (
@@ -63,42 +63,41 @@ export default function BottomTabNavigator() {
                 }}
             />
         </BottomTab.Navigator>
-    );
+    )
 }
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
 function TabBarIcon(props: { name: string; color: string }) {
-    return (
-        <MaterialCommunityIcons size={26} {...props} />
-    );
+    return <MaterialCommunityIcons size={26} {...props} />
 }
 
 const DefaultStackOptions = {
     header: ({ scene, previous, navigation }) => {
-        const { options } = scene.descriptor;
-        const title = options.headerTitle !== undefined
-            ? options.headerTitle
-            : options.title !== undefined
+        const { options } = scene.descriptor
+        const title =
+            options.headerTitle !== undefined
+                ? options.headerTitle
+                : options.title !== undefined
                 ? options.title
-                : scene.route.name;
+                : scene.route.name
 
-        const backbutton = previous
-            ? <Button onPress={navigation.goBack}>Back</Button>
-            : undefined;
+        const backbutton = previous ? (
+            <Button onPress={navigation.goBack}>Back</Button>
+        ) : undefined
 
         return (
             <View style={styles.headercontainer}>
                 <Text style={styles.headertext}>{title}</Text>
                 {backbutton}
             </View>
-        );
+        )
     },
-};
+}
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const OverviewStack = createStackNavigator();
+const OverviewStack = createStackNavigator()
 
 function OverviewNavigator() {
     return (
@@ -106,13 +105,13 @@ function OverviewNavigator() {
             <OverviewStack.Screen
                 name="Overview"
                 component={Overview}
-                options={{ headerTitle: "Overview", ...DefaultStackOptions }}
+                options={{ headerTitle: 'Overview', ...DefaultStackOptions }}
             />
         </OverviewStack.Navigator>
-    );
+    )
 }
 
-const SkillsStack = createStackNavigator();
+const SkillsStack = createStackNavigator()
 
 function SkillsNavigator() {
     return (
@@ -120,13 +119,13 @@ function SkillsNavigator() {
             <SkillsStack.Screen
                 name="Skills"
                 component={Skills}
-                options={{ headerTitle: "Skills", ...DefaultStackOptions }}
+                options={{ headerTitle: 'Skills', ...DefaultStackOptions }}
             />
         </SkillsStack.Navigator>
-    );
+    )
 }
 
-const SettingsStack = createStackNavigator();
+const SettingsStack = createStackNavigator()
 
 function SettingsNavigator() {
     return (
@@ -134,13 +133,13 @@ function SettingsNavigator() {
             <SettingsStack.Screen
                 name="Settings"
                 component={Settings}
-                options={{ headerTitle: "Settings", ...DefaultStackOptions }}
+                options={{ headerTitle: 'Settings', ...DefaultStackOptions }}
             />
         </SettingsStack.Navigator>
-    );
+    )
 }
 
-const DataStack = createStackNavigator();
+const DataStack = createStackNavigator()
 
 function DataNavigator() {
     return (
@@ -149,9 +148,9 @@ function DataNavigator() {
                 name="Stats"
                 component={Data}
                 options={{
-                    headerTitle: "Stats",
+                    headerTitle: 'Stats',
                     headerStyle: {
-                        backgroundColor: "#f4511e",
+                        backgroundColor: '#f4511e',
                     },
                     ...DefaultStackOptions,
                 }}
@@ -160,15 +159,15 @@ function DataNavigator() {
                 name="Points"
                 component={Data}
                 options={{
-                    headerTitle: "Points",
+                    headerTitle: 'Points',
                     headerStyle: {
-                        backgroundColor: "#ff4455",
+                        backgroundColor: '#ff4455',
                     },
                     ...DefaultStackOptions,
                 }}
             />
         </DataStack.Navigator>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -181,4 +180,4 @@ const styles = StyleSheet.create({
         paddingTop: 60,
         paddingLeft: 40,
     },
-});
+})

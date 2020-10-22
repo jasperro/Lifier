@@ -1,9 +1,9 @@
-import * as React from "react";
-import { StyleSheet } from "react-native";
+import * as React from 'react'
+import { StyleSheet } from 'react-native'
 
-import { Subheading, Divider, FAB } from "react-native-paper";
-import { View } from "styled/Themed";
-import Footer from "../components/Layout/Footer";
+import { Subheading, Divider, FAB } from 'react-native-paper'
+import { View } from 'styled/Themed'
+import Footer from '../components/Layout/Footer'
 
 export default function Overview() {
     return (
@@ -14,10 +14,10 @@ export default function Overview() {
                 style={styles.fab}
                 icon="plus"
                 label="Timer"
-                onPress={() => console.log("Pressed")}
+                onPress={() => console.log('Pressed')}
             />
         </View>
-    );
+    )
 }
 
 // Structuur interface
@@ -47,12 +47,12 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        color: "#4D6180",
+        color: '#4D6180',
     },
     fab: {
-        position: "absolute",
+        position: 'absolute',
         margin: 16,
         right: 0,
         bottom: 0,
     },
-});
+})

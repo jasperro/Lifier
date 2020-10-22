@@ -1,11 +1,11 @@
-import * as React from "react";
-import { StyleSheet } from "react-native";
+import * as React from 'react'
+import { StyleSheet } from 'react-native'
 
-import { Text, TextInput, Button } from "react-native-paper";
-import { View } from "styled/Themed";
-import { SettingsItem } from "../components/Settings";
-import { AppConsumer } from "../AppContextProvider";
-import database from "model/database";
+import { Text, TextInput, Button } from 'react-native-paper'
+import { View } from 'styled/Themed'
+import { SettingsItem } from '../components/Settings'
+import { AppConsumer } from '../AppContextProvider'
+import database from 'model/database'
 // import { setSettingState, getSettingState } from "../database/settings";
 
 /* (async function () {
@@ -14,7 +14,7 @@ import database from "model/database";
 })(); */
 
 export default function Settings() {
-    database.then((database) => console.log(database));
+    database.then((database) => console.log(database))
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Settings</Text>
@@ -26,14 +26,26 @@ export default function Settings() {
             <AppConsumer>
                 {(appConsumer) => (
                     <View>
-                        <Button onPress={() => appConsumer.updateTheme("#ff5400")}>Orange</Button>
-                        <Button onPress={() => appConsumer.updateTheme("#ff0000")}>Red</Button>
-                        <Button onPress={() => appConsumer.updateTheme("#005522")}>Dark Green</Button>
+                        <Button
+                            onPress={() => appConsumer.updateTheme('#ff5400')}
+                        >
+                            Orange
+                        </Button>
+                        <Button
+                            onPress={() => appConsumer.updateTheme('#ff0000')}
+                        >
+                            Red
+                        </Button>
+                        <Button
+                            onPress={() => appConsumer.updateTheme('#005522')}
+                        >
+                            Dark Green
+                        </Button>
                     </View>
                 )}
             </AppConsumer>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -43,11 +55,11 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        fontWeight: "bold",
+        fontWeight: 'bold',
     },
     separator: {
         marginVertical: 30,
         height: 1,
-        width: "80%",
+        width: '80%',
     },
-});
+})
