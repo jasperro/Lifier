@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import * as React from 'react'
 
-import { Text, Button } from 'react-native-paper'
+import { Text, Button, Surface } from 'react-native-paper'
 import { StyleSheet } from 'react-native'
 import { View } from 'styled/Themed'
 import { fonts } from 'root/fontconfig'
@@ -91,10 +91,10 @@ const DefaultStackOptions = {
         ) : undefined
 
         return (
-            <View style={styles.headercontainer}>
+            <Surface style={styles.headercontainer}>
                 <Text style={styles.headertext}>{title}</Text>
                 {backbutton}
-            </View>
+            </Surface>
         )
     },
 }
@@ -199,8 +199,8 @@ const styles = StyleSheet.create({
         ...fonts.light,
     },
     headercontainer: {
-        paddingBottom: 40,
-        paddingTop: 60,
-        paddingLeft: 40,
+        paddingBottom: 25,
+        paddingTop: 30,
+        paddingLeft: 30,
     },
 })

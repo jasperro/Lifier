@@ -12,7 +12,6 @@ async function getRxDB() {
     const rxdb = await createRxDatabase({
         name: 'mydatabase',
         adapter: 'react-native-sqlite', // the name of your adapter
-        ignoreDuplicate: true, // Expo herlaadt database elke keer, en reexport, dit maakt een nieuwe database
         multiInstance: false,
     })
 
@@ -21,6 +20,7 @@ async function getRxDB() {
 }
 
 // Haal de value uit de functie
+
 const database = getRxDB()
 // Exporteer return value
 export default database

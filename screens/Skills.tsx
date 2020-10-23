@@ -1,7 +1,7 @@
-import * as React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, ScrollView } from 'react-native'
 
-import { Text, TextInput, FAB, Button } from 'react-native-paper'
+import { Text, TextInput, FAB, Button, Surface } from 'react-native-paper'
 import { View } from 'styled/Themed'
 import { fonts } from 'root/fontconfig'
 
@@ -13,7 +13,6 @@ export function SkillCategoriesScreen({ navigation }) {
                     /* 1. Navigate to the Details route with params */
                     navigation.navigate('SkillCategory', {
                         itemId: 86,
-                        otherParam: 'anything you want here',
                     })
                 }}
             >
@@ -53,11 +52,11 @@ const DefaultStackOptions = (path: Array<string> = []) => {
             }
 
             return (
-                <View style={styles.headercontainer}>
+                <Surface style={styles.headercontainer}>
                     {pathElements}
                     <Text style={styles.headertext}>{title}</Text>
                     {backbutton}
-                </View>
+                </Surface>
             )
         },
     }
@@ -65,16 +64,17 @@ const DefaultStackOptions = (path: Array<string> = []) => {
 
 export function SkillCategoryScreen({ route, navigation }) {
     const { itemId } = route.params
-    const { otherParam } = route.params
-    navigation.setOptions({
-        headerTitle: JSON.stringify(itemId),
-        ...DefaultStackOptions(['Skill Tree']),
-    })
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerTitle: JSON.stringify(itemId),
+            ...DefaultStackOptions(['Skill Tree']),
+        })
+    }, [])
     return (
         <View style={styles.container}>
             <ScrollView>
                 <Text>itemId: {JSON.stringify(itemId)}</Text>
-                <Text>otherParam: {JSON.stringify(otherParam)}</Text>
                 <Button
                     onPress={() => {
                         /* 1. Navigate to the Details route with params */
@@ -97,11 +97,12 @@ export function SkillCategoryScreen({ route, navigation }) {
 
 export function SkillScreen({ route, navigation }) {
     const { skillId } = route.params
-    const { otherParam } = route.params
-    navigation.setOptions({
-        headerTitle: JSON.stringify(skillId),
-        ...DefaultStackOptions(['Skill Tree', 'Skill Category']),
-    })
+    useEffect(() => {
+        navigation.setOptions({
+            headerTitle: JSON.stringify(skillId),
+            ...DefaultStackOptions(['Skill Tree', 'Skill Category']),
+        })
+    }, [])
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -153,8 +154,8 @@ const styles = StyleSheet.create({
         ...fonts.light,
     },
     headercontainer: {
-        paddingBottom: 40,
-        paddingTop: 60,
-        paddingLeft: 40,
+        paddingBottom: 25,
+        paddingTop: 30,
+        paddingLeft: 30,
     },
 })

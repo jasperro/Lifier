@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, useWindowDimensions } from 'react-native'
-import { View } from 'styled/Themed'
-import { LineChart } from 'react-native-chart-kit'
+import { View, ScrollView } from 'styled/Themed'
+import { LineChart, BarChart } from 'react-native-chart-kit'
 
 import { Text } from 'react-native-paper'
 import Footer from '../components/Layout/Footer'
@@ -10,14 +10,15 @@ import { withTheme, useTheme, Subheading } from 'react-native-paper'
 
 export default function Data() {
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.separator} />
 
             <Subheading style={styles.title}>Recent Activity</Subheading>
+            <GrafiekBar />
             <Grafiek />
             <Grafiek />
             <Footer path="/screens/Data.tsx" />
-        </View>
+        </ScrollView>
     )
 }
 
@@ -89,6 +90,57 @@ function Grafiek() {
                 },
             }}
             bezier
+            style={{
+                marginVertical: 8,
+                borderRadius: 16,
+            }}
+        />
+    )
+}
+
+function GrafiekBar() {
+    const { dark: isDarkTheme, colors } = useTheme()
+    return (
+        <BarChart
+            data={{
+                labels: [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                ],
+                datasets: [
+                    {
+                        data: [100, 200, 150, 170, 120, 80],
+                    },
+                ],
+            }}
+            width={useDebounce(useWindowDimensions().width - 80, 200)} // from react-native
+            height={220}
+            yAxisLabel="$"
+            yAxisSuffix="k"
+            yAxisInterval={1} // optional, defaults to 1
+            chartConfig={{
+                backgroundColor: colors.accent,
+                backgroundGradientFrom: colors.accent,
+                backgroundGradientTo: colors.accent,
+                decimalPlaces: 2, // optional, defaults to 2dp
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                style: {
+                    borderRadius: 16,
+                },
+                propsForDots: {
+                    r: '6',
+                    strokeWidth: '2',
+                    stroke: colors.accent,
+                },
+                propsForLabels: {
+                    fontFamily: 'InterMedium',
+                },
+            }}
             style={{
                 marginVertical: 8,
                 borderRadius: 16,

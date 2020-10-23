@@ -1,11 +1,12 @@
 import { decode, encode } from 'base-64'
 
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import useCachedResources from './hooks/useCachedResources'
 import Navigation from './navigation'
+import database from 'model/database'
 
 import {
     DarkTheme as NavigationDarkTheme,
@@ -54,6 +55,34 @@ export default function App() {
 
     const [isThemeDark, setIsThemeDark] = React.useState(false)
     const [accentColor, setAccentColor] = React.useState('#0077ce')
+
+    useEffect(() => {
+        async function databaseStuff() {
+            database.then(async (database) => {
+                // Pak de lijst met instellingen uit de database
+                const settingsCollection = database.settings
+
+                // Zet switch naar state uit database
+                const query = settingsCollection
+                    .findOne()
+                    .where('setting_id')
+                    .eq('dark_mode')
+                query.exec().then(async (document) => {
+                    if (document == null) {
+                        document = await settingsCollection.atomicUpsert({
+                            setting_id: 'dark_mode',
+                            bool_state: false,
+                        })
+                    }
+                    document.$.subscribe((changeEvent) =>
+                        setIsThemeDark(changeEvent.bool_state)
+                    )
+                })
+            })
+        }
+
+        databaseStuff()
+    }, [])
 
     const baseTheme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme
 

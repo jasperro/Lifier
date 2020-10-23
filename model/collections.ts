@@ -13,6 +13,11 @@ export default async function initializeCollections(database: RxDatabase) {
     const settingCollection = await database.collection({
         name: 'settings',
         schema: Setting,
+        methods: {
+            getSetting: function () {
+                return this.bool_state
+            },
+        },
     })
 }
 

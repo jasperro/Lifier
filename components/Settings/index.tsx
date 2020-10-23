@@ -10,6 +10,7 @@ export function SettingsItem(props: {
 }) {
     const [isEnabled, setIsEnabled] = useState(false)
     const toggleSwitch = async () => {
+        setIsEnabled(!isEnabled)
         database.then(async (database) => {
             // Pak de lijst met instellingen uit de database
             const settingsCollection = database.settings
@@ -34,6 +35,12 @@ export function SettingsItem(props: {
                     .where('setting_id')
                     .eq(props.settingid)
                 query.exec().then(async (document) => {
+                    if (document == null) {
+                        document = await settingsCollection.atomicUpsert({
+                            setting_id: props.settingid,
+                            bool_state: false,
+                        })
+                    }
                     document.$.subscribe((changeEvent) =>
                         setIsEnabled(changeEvent.bool_state)
                     )
