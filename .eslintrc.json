@@ -24,5 +24,12 @@
     "plugins": ["react", "@typescript-eslint", "prettier"],
     "rules": {
         "prettier/prettier": "error"
+    },
+    "settings": {
+        "react": {
+            "createClass": "createReactClass",
+            "version": "detect"
+        },
+        "linkComponents": [{ "name": "Link", "linkAttribute": "to" }]
     }
 }

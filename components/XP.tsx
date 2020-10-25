@@ -1,17 +1,17 @@
-import React from 'react'
-import { TextInput, Text } from 'react-native-paper'
-import { View } from './Style/Themed'
-import { TouchableOpacity } from 'react-native'
+import React from "react";
+import { TextInput, Text } from "react-native-paper";
+import { View } from "./Style/Themed";
+import { TouchableOpacity } from "react-native";
 
 // Input en knop om XP te veranderen als debug
 export class XPSetter extends React.Component {
     state = {
         xp: 0,
-    }
+    };
 
     handleInput = (text: string) => {
-        this.setState({ xp: parseInt(text) })
-    }
+        this.setState({ xp: parseInt(text) });
+    };
 
     render() {
         return (
@@ -21,6 +21,6 @@ export class XPSetter extends React.Component {
                     <Text> Submit </Text>
                 </TouchableOpacity>
             </View>
-        )
+        );
     }
 }

@@ -1,29 +1,29 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import {
     StyleSheet,
     View as OriginalView,
     ScrollView as OriginalScrollView,
     StyleProp,
     ViewStyle,
-} from 'react-native'
-import { withTheme, useTheme } from 'react-native-paper'
+} from "react-native";
+import { withTheme, useTheme } from "react-native-paper";
 
 type ViewProps = React.ComponentPropsWithRef<typeof View> & {
-    children: React.ReactNode
-    style?: StyleProp<ViewStyle>
+    children: React.ReactNode;
+    style?: StyleProp<ViewStyle>;
 
-    theme: ReactNativePaper.Theme
-}
+    theme: ReactNativePaper.Theme;
+};
 
 type ScrollViewProps = React.ComponentPropsWithRef<typeof ScrollView> & {
-    children: React.ReactNode
-    style?: StyleProp<ViewStyle>
+    children: React.ReactNode;
+    style?: StyleProp<ViewStyle>;
 
-    theme: ReactNativePaper.Theme
-}
+    theme: ReactNativePaper.Theme;
+};
 
 const ThemedView = ({ style, theme, ...rest }: ViewProps) => {
-    const { dark: isDarkTheme, colors } = useTheme()
+    const { dark: isDarkTheme, colors } = useTheme();
     return (
         <OriginalView
             {...rest}
@@ -34,11 +34,11 @@ const ThemedView = ({ style, theme, ...rest }: ViewProps) => {
                 style,
             ]}
         />
-    )
-}
+    );
+};
 
 const ThemedScrollView = ({ style, theme, ...rest }: ScrollViewProps) => {
-    const { dark: isDarkTheme, colors } = useTheme()
+    const { dark: isDarkTheme, colors } = useTheme();
     return (
         <OriginalScrollView
             {...rest}
@@ -49,8 +49,8 @@ const ThemedScrollView = ({ style, theme, ...rest }: ScrollViewProps) => {
                 style,
             ]}
         />
-    )
-}
+    );
+};
 
-export const View = withTheme(ThemedView)
-export const ScrollView = withTheme(ThemedScrollView)
+export const View = withTheme(ThemedView);
+export const ScrollView = withTheme(ThemedScrollView);

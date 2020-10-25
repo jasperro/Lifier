@@ -1,17 +1,17 @@
-import React, { useContext } from 'react'
-import { StyleSheet } from 'react-native'
+import React, { useContext } from "react";
+import { StyleSheet } from "react-native";
 
-import { Text, TextInput, Button, useTheme } from 'react-native-paper'
-import { View } from 'styled/Themed'
-import { SettingsItem } from '../components/Settings'
-import PreferencesContext from 'root/PreferencesContext'
-import database from 'model/database'
+import { Text, TextInput, Button, useTheme } from "react-native-paper";
+import { View } from "styled/Themed";
+import { SettingsItem } from "../components/Settings";
+import PreferencesContext from "root/PreferencesContext";
+import database from "model/database";
 
 export default function Settings() {
-    const theme = useTheme()
+    const theme = useTheme();
     const { toggleTheme, isThemeDark, setAccentColor } = React.useContext(
         PreferencesContext
-    )
+    );
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Settings</Text>
@@ -20,11 +20,11 @@ export default function Settings() {
                 settingid="db_sync"
                 displayname="Database Synchronisation"
             />
-            <Button onPress={() => setAccentColor('#ff0000')}>Red</Button>
-            <Button onPress={() => setAccentColor('#0077ce')}>Default</Button>
+            <Button onPress={() => setAccentColor("#ff0000")}>Red</Button>
+            <Button onPress={() => setAccentColor("#0077ce")}>Default</Button>
             <Button onPress={() => toggleTheme()}>Dark mode toggle</Button>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
     separator: {
         marginVertical: 30,
         height: 1,
-        width: '80%',
+        width: "80%",
     },
-})
+});

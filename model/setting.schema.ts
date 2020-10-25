@@ -1,17 +1,17 @@
 export default {
-    title: 'setting',
+    title: "setting",
     version: 0,
-    description: 'describes a setting',
-    type: 'object',
+    description: "describes a setting",
+    type: "object",
     properties: {
-        bool_state: {
-            type: 'boolean',
-            default: false,
-        },
         setting_id: {
-            type: 'string',
+            type: "string",
             primary: true,
         },
+        bool_state: {
+            type: "boolean",
+            default: false,
+        },
     },
-    required: ['setting_id'],
-}
+    required: ["setting_id"],
+};

@@ -1,16 +1,21 @@
 export default {
-    title: 'setting',
+    title: "skill",
     version: 0,
-    description: 'describes a setting',
-    type: 'object',
+    description: "describes a skill",
+    type: "object",
     properties: {
-        bool_state: {
-            type: 'boolean',
+        skill_id: {
+            type: "string",
             primary: true,
         },
-        setting_id: {
-            type: 'string',
+        display_name: {
+            type: "string",
+        },
+        color: {
+            type: "string",
+            pattern: "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$",
+            default: "#0077ce",
         },
     },
-    required: ['setting_id'],
-}
+    required: ["display_name"],
+};

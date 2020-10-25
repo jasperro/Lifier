@@ -1,24 +1,24 @@
-import { decode, encode } from 'base-64'
+import { decode, encode } from "base-64";
 
-import { StatusBar } from 'expo-status-bar'
-import React, { useEffect } from 'react'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import useCachedResources from './hooks/useCachedResources'
-import Navigation from './navigation'
-import database from 'model/database'
+import useCachedResources from "./hooks/useCachedResources";
+import Navigation from "./navigation";
+import database from "model/database";
 
 import {
     DarkTheme as NavigationDarkTheme,
     DefaultTheme as NavigationDefaultTheme,
-} from '@react-navigation/native'
+} from "@react-navigation/native";
 import {
     DarkTheme as PaperDarkTheme,
     DefaultTheme as PaperDefaultTheme,
     Provider as PaperProvider,
-} from 'react-native-paper'
-import { PreferencesProvider } from './PreferencesContext'
-import { fonts as fontList } from './fontconfig'
+} from "react-native-paper";
+import { PreferencesProvider } from "./PreferencesContext";
+import { fonts as fontList } from "./fontconfig";
 
 const CombinedDefaultTheme = {
     ...PaperDefaultTheme,
@@ -28,7 +28,7 @@ const CombinedDefaultTheme = {
         ...NavigationDefaultTheme.colors,
     },
     fonts: fontList,
-}
+};
 const CombinedDarkTheme = {
     ...PaperDarkTheme,
     ...NavigationDarkTheme,
@@ -37,54 +37,54 @@ const CombinedDarkTheme = {
         ...NavigationDarkTheme.colors,
     },
     fonts: fontList,
-}
+};
 
 if (!global.btoa) {
-    global.btoa = encode
+    global.btoa = encode;
 }
 
 if (!global.atob) {
-    global.atob = decode
+    global.atob = decode;
 }
 
 // Avoid using node dependent modules
-process.browser = true
+process.browser = true;
 
 export default function App() {
-    const isLoadingComplete = useCachedResources()
+    const isLoadingComplete = useCachedResources();
 
-    const [isThemeDark, setIsThemeDark] = React.useState(false)
-    const [accentColor, setAccentColor] = React.useState('#0077ce')
+    const [isThemeDark, setIsThemeDark] = React.useState(false);
+    const [accentColor, setAccentColor] = React.useState("#0077ce");
 
     useEffect(() => {
         async function databaseStuff() {
             database.then(async (database) => {
                 // Pak de lijst met instellingen uit de database
-                const settingsCollection = database.settings
+                const settingsCollection = database.settings;
 
                 // Zet switch naar state uit database
                 const query = settingsCollection
                     .findOne()
-                    .where('setting_id')
-                    .eq('dark_mode')
+                    .where("setting_id")
+                    .eq("dark_mode");
                 query.exec().then(async (document) => {
                     if (document == null) {
                         document = await settingsCollection.atomicUpsert({
-                            setting_id: 'dark_mode',
+                            setting_id: "dark_mode",
                             bool_state: false,
-                        })
+                        });
                     }
                     document.$.subscribe((changeEvent) =>
                         setIsThemeDark(changeEvent.bool_state)
-                    )
-                })
-            })
+                    );
+                });
+            });
         }
 
-        databaseStuff()
-    }, [])
+        databaseStuff();
+    }, []);
 
-    const baseTheme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme
+    const baseTheme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
     const theme = {
         ...baseTheme,
@@ -94,11 +94,11 @@ export default function App() {
             accent: accentColor,
         },
         fonts: fontList,
-    }
+    };
 
     const toggleTheme = React.useCallback(() => {
-        return setIsThemeDark(!isThemeDark)
-    }, [isThemeDark])
+        return setIsThemeDark(!isThemeDark);
+    }, [isThemeDark]);
 
     const preferences = React.useMemo(
         () => ({
@@ -107,10 +107,10 @@ export default function App() {
             setAccentColor,
         }),
         [toggleTheme, isThemeDark, setAccentColor]
-    )
+    );
 
     if (!isLoadingComplete) {
-        return null
+        return null;
     }
     return (
         <PreferencesProvider value={preferences}>
@@ -121,5 +121,5 @@ export default function App() {
                 </SafeAreaProvider>
             </PaperProvider>
         </PreferencesProvider>
-    )
+    );
 }

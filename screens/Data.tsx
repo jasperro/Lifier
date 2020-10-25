@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, useWindowDimensions } from 'react-native'
-import { View, ScrollView } from 'styled/Themed'
-import { LineChart, BarChart } from 'react-native-chart-kit'
+import React, { useEffect, useState } from "react";
+import { StyleSheet, useWindowDimensions } from "react-native";
+import { View, ScrollView } from "styled/Themed";
+import { LineChart, BarChart } from "react-native-chart-kit";
 
-import { Text } from 'react-native-paper'
-import Footer from '../components/Layout/Footer'
+import { Text } from "react-native-paper";
+import Footer from "../components/Layout/Footer";
 
-import { withTheme, useTheme, Subheading } from 'react-native-paper'
+import { withTheme, useTheme, Subheading } from "react-native-paper";
 
 export default function Data() {
     return (
@@ -19,45 +19,45 @@ export default function Data() {
             <Grafiek />
             <Footer path="/screens/Data.tsx" />
         </ScrollView>
-    )
+    );
 }
 
 function useDebounce(value, delay) {
     // State and setters for debounced value
-    const [debouncedValue, setDebouncedValue] = useState(value)
+    const [debouncedValue, setDebouncedValue] = useState(value);
 
     useEffect(
         () => {
             // Update debounced value after delay
             const handler = setTimeout(() => {
-                setDebouncedValue(value)
-            }, delay)
+                setDebouncedValue(value);
+            }, delay);
 
             // Cancel the timeout if value changes (also on delay change or unmount)
             // This is how we prevent debounced value from updating if value is changed ...
             // .. within the delay period. Timeout gets cleared and restarted.
             return () => {
-                clearTimeout(handler)
-            }
+                clearTimeout(handler);
+            };
         },
         [value, delay] // Only re-call effect if value or delay changes
-    )
+    );
 
-    return debouncedValue
+    return debouncedValue;
 }
 
 function Grafiek() {
-    const { dark: isDarkTheme, colors } = useTheme()
+    const { dark: isDarkTheme, colors } = useTheme();
     return (
         <LineChart
             data={{
                 labels: [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
                 ],
                 datasets: [
                     {
@@ -81,12 +81,12 @@ function Grafiek() {
                     borderRadius: 16,
                 },
                 propsForDots: {
-                    r: '6',
-                    strokeWidth: '2',
+                    r: "6",
+                    strokeWidth: "2",
                     stroke: colors.accent,
                 },
                 propsForLabels: {
-                    fontFamily: 'InterMedium',
+                    fontFamily: "InterMedium",
                 },
             }}
             bezier
@@ -95,21 +95,21 @@ function Grafiek() {
                 borderRadius: 16,
             }}
         />
-    )
+    );
 }
 
 function GrafiekBar() {
-    const { dark: isDarkTheme, colors } = useTheme()
+    const { dark: isDarkTheme, colors } = useTheme();
     return (
         <BarChart
             data={{
                 labels: [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
                 ],
                 datasets: [
                     {
@@ -133,12 +133,12 @@ function GrafiekBar() {
                     borderRadius: 16,
                 },
                 propsForDots: {
-                    r: '6',
-                    strokeWidth: '2',
+                    r: "6",
+                    strokeWidth: "2",
                     stroke: colors.accent,
                 },
                 propsForLabels: {
-                    fontFamily: 'InterMedium',
+                    fontFamily: "InterMedium",
                 },
             }}
             style={{
@@ -146,7 +146,7 @@ function GrafiekBar() {
                 borderRadius: 16,
             }}
         />
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -156,12 +156,12 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: '#4D6180',
+        fontWeight: "bold",
+        color: "#4D6180",
     },
     separator: {
         marginVertical: 30,
         height: 1,
-        width: '80%',
+        width: "80%",
     },
-})
+});

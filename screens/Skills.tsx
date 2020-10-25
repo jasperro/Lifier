@@ -1,19 +1,21 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, ScrollView } from 'react-native'
+import React, { useEffect } from "react";
+import { StyleSheet, ScrollView } from "react-native";
 
-import { Text, TextInput, FAB, Button, Surface } from 'react-native-paper'
-import { View } from 'styled/Themed'
-import { fonts } from 'root/fontconfig'
+import { Text, FAB, Button, Appbar } from "react-native-paper";
+import { View } from "styled/Themed";
+import { fonts } from "root/fontconfig";
+import { CommonActions } from "@react-navigation/native";
 
 export function SkillCategoriesScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Button
+                mode="outlined"
                 onPress={() => {
                     /* 1. Navigate to the Details route with params */
-                    navigation.navigate('SkillCategory', {
+                    navigation.navigate("SkillCategory", {
                         itemId: 86,
-                    })
+                    });
                 }}
             >
                 Go to skill category
@@ -22,55 +24,45 @@ export function SkillCategoriesScreen({ navigation }) {
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => console.log('Pressed')}
+                onPress={() => console.log("Pressed")}
             />
         </View>
-    )
+    );
 }
 
 const DefaultStackOptions = (path: Array<string> = []) => {
     return {
-        header: ({ scene, previous, navigation }) => {
-            const { options } = scene.descriptor
+        header: function Header({ scene, previous, navigation }) {
+            const { options } = scene.descriptor;
             const title =
                 options.headerTitle !== undefined
                     ? options.headerTitle
                     : options.title !== undefined
                     ? options.title
-                    : scene.route.name
+                    : scene.route.name;
 
             const backbutton = previous ? (
-                <Button onPress={navigation.goBack}>Back</Button>
-            ) : undefined
-
-            const pathElements = []
-
-            for (const [index, value] of path.entries()) {
-                pathElements.push(
-                    <Text style={styles.headertext}>{value}</Text>
-                )
-            }
+                <Appbar.BackAction onPress={navigation.goBack} />
+            ) : undefined;
 
             return (
-                <Surface style={styles.headercontainer}>
-                    {pathElements}
-                    <Text style={styles.headertext}>{title}</Text>
+                <Appbar.Header>
                     {backbutton}
-                </Surface>
-            )
+                    <Appbar.Content title={title} subtitle={path.join(" > ")} />
+                </Appbar.Header>
+            );
         },
-    }
-}
+    };
+};
 
 export function SkillCategoryScreen({ route, navigation }) {
-    const { itemId } = route.params
+    const { itemId } = route.params;
 
     useEffect(() => {
         navigation.setOptions({
-            headerTitle: JSON.stringify(itemId),
-            ...DefaultStackOptions(['Skill Tree']),
-        })
-    }, [])
+            ...DefaultStackOptions([JSON.stringify(itemId)]),
+        });
+    }, []);
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -78,9 +70,9 @@ export function SkillCategoryScreen({ route, navigation }) {
                 <Button
                     onPress={() => {
                         /* 1. Navigate to the Details route with params */
-                        navigation.navigate('Skill', {
+                        navigation.navigate("Skill", {
                             skillId: 291390321,
-                        })
+                        });
                     }}
                 >
                     Go to skill
@@ -89,20 +81,19 @@ export function SkillCategoryScreen({ route, navigation }) {
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => console.log('Pressed')}
+                onPress={() => console.log("Pressed")}
             />
         </View>
-    )
+    );
 }
 
 export function SkillScreen({ route, navigation }) {
-    const { skillId } = route.params
+    const { skillId } = route.params;
     useEffect(() => {
         navigation.setOptions({
-            headerTitle: JSON.stringify(skillId),
-            ...DefaultStackOptions(['Skill Tree', 'Skill Category']),
-        })
-    }, [])
+            ...DefaultStackOptions(["Skill Category", JSON.stringify(skillId)]),
+        });
+    }, []);
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -111,10 +102,27 @@ export function SkillScreen({ route, navigation }) {
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => console.log('Pressed')}
+                onPress={() =>
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 1,
+                            routes: [
+                                { name: "SkillCategories" },
+                                {
+                                    name: "SkillCategory",
+                                    params: { itemId: 39 },
+                                },
+                                {
+                                    name: "Skill",
+                                    params: { skillId: 42203 },
+                                },
+                            ],
+                        })
+                    )
+                }
             />
         </View>
-    )
+    );
 }
 
 // Opbouw
@@ -131,20 +139,20 @@ export function SkillScreen({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
     },
     title: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
     separator: {
         marginVertical: 30,
         height: 1,
-        width: '80%',
+        width: "80%",
     },
     fab: {
-        position: 'absolute',
+        position: "absolute",
         margin: 16,
         right: 0,
         bottom: 0,
@@ -158,4 +166,4 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         paddingLeft: 30,
     },
-})
+});

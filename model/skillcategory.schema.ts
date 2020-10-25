@@ -1,46 +1,28 @@
 export default {
-    title: 'hero schema',
+    title: "skill category",
     version: 0,
-    description: 'describes a simple hero',
-    type: 'object',
+    description: "describes a skill category that references skills",
+    type: "object",
     properties: {
-        name: {
-            type: 'string',
+        skill_category_id: {
+            type: "string",
             primary: true,
         },
-        color: {
-            type: 'string',
-        },
-        healthpoints: {
-            type: 'number',
-            minimum: 0,
-            maximum: 100,
-        },
-        secret: {
-            type: 'string',
-        },
-        birthyear: {
-            type: 'number',
-            final: true,
-            minimum: 1900,
-            maximum: 2050,
+        display_name: {
+            type: "string",
         },
         skills: {
-            type: 'array',
-            maxItems: 5,
-            uniqueItems: true,
+            type: "array",
+            ref: "skill",
             items: {
-                type: 'object',
-                properties: {
-                    name: {
-                        type: 'string',
-                    },
-                    damage: {
-                        type: 'number',
-                    },
-                },
+                type: "string",
             },
         },
+        color: {
+            type: "string",
+            pattern: "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$",
+            default: "#0077ce",
+        },
     },
-    required: ['color'],
-}
+    required: ["display_name"],
+};
