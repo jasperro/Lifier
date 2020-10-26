@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
 import { View, ScrollView } from "styled/Themed";
 import { LineChart, BarChart, Bar } from "react-native-chart-kit";
+import { VictoryBar } from "victory-native";
 
 import { Text } from "react-native-paper";
 import Footer from "../components/Layout/Footer";
@@ -28,6 +29,8 @@ export default function Data() {
 
             <GrafiekBar />
             <Footer path="/screens/Data.tsx" />
+
+            <VictoryBar />
         </ScrollView>
     );
 }
