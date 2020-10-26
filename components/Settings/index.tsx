@@ -18,7 +18,7 @@ export function SettingsItem(props: {
             // Als de instelling niet bestaat, maak de instelling aan.
             const setting = await settingsCollection.atomicUpsert({
                 setting_id: props.settingid,
-                bool_state: !isEnabled,
+                state: !isEnabled,
             });
         });
     };
@@ -38,12 +38,12 @@ export function SettingsItem(props: {
                     if (document == null) {
                         document = await settingsCollection.atomicUpsert({
                             setting_id: props.settingid,
-                            bool_state: false,
+                            state: false,
                         });
                     }
-                    document.$.subscribe((changeEvent) =>
-                        setIsEnabled(changeEvent.bool_state)
-                    );
+                    document.$.subscribe((changeEvent) => {
+                        setIsEnabled(changeEvent.state);
+                    });
                 });
             });
         }

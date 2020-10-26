@@ -5,18 +5,22 @@ export default {
     type: "object",
     properties: {
         event_id: {
-            type: "string", // Generate random uuid?
+            type: "string", // timestamp met random drie chars
             primary: true,
         },
         action_type: {
-            type: "string", // SKILL, WORK || SCHOOL, OTHER
+            type: "string",
+            default: "OTHER",
+            // Toegestane waarden voor actie
+            enum: ["SKILL", "WORK", "SCHOOL", "XP", "OTHER"],
         },
         start_time: {
-            type: "integer", // Unix epoch time
+            type: "integer", // Unix epoch
         },
         duration: {
-            type: "integer", // Unix epoch time
+            type: "integer", // Tijd in seconden
         },
     },
-    required: ["event_id"],
+    required: ["event_id", "action_type", "start_time"],
+    indexes: ["action_type", "start_time"],
 };

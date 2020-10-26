@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
 
-import { Text, TextInput, Button, useTheme } from "react-native-paper";
+import { Text, TextInput, Button, Colors, useTheme } from "react-native-paper";
 import { View } from "styled/Themed";
 import { SettingsItem } from "../components/Settings";
 import PreferencesContext from "root/PreferencesContext";
 import database from "model/database";
+import { removeRxDatabase } from "rxdb";
 
 export default function Settings() {
     const theme = useTheme();
@@ -20,9 +21,26 @@ export default function Settings() {
                 settingid="db_sync"
                 displayname="Database Synchronisation"
             />
-            <Button onPress={() => setAccentColor("#ff0000")}>Red</Button>
+            <Button onPress={() => setAccentColor(Colors.red500)}>Red</Button>
+            <Button onPress={() => setAccentColor(Colors.green500)}>
+                Green
+            </Button>
+            <Button onPress={() => setAccentColor(Colors.teal500)}>Teal</Button>
+            <Button onPress={() => setAccentColor(Colors.yellow500)}>
+                Yellow
+            </Button>
             <Button onPress={() => setAccentColor("#0077ce")}>Default</Button>
             <Button onPress={() => toggleTheme()}>Dark mode toggle</Button>
+            <Button onPress={() => removeRxDatabase("database", "indexeddb")}>
+                Delete web database
+            </Button>
+            <Button
+                onPress={() =>
+                    removeRxDatabase("database", "react-native-sqlite")
+                }
+            >
+                Delete mobile database
+            </Button>
         </View>
     );
 }

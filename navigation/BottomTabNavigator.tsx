@@ -9,7 +9,7 @@ import {
 
 import * as React from "react";
 
-import { Text, Button, Appbar } from "react-native-paper";
+import { Text, Button } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import { View } from "styled/Themed";
 import { fonts } from "root/fontconfig";
@@ -22,6 +22,8 @@ import {
     SkillCategoryScreen,
     SkillScreen,
 } from "../screens/Skills";
+
+import { DefaultStackOptions } from "root/navigation";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -79,33 +81,6 @@ function TabBarIcon(props: { name: string; color: string }) {
     return <MaterialCommunityIcons size={26} {...props} />;
 }
 
-const DefaultStackOptions = {
-    header: function Header({ scene, previous, navigation }) {
-        const { options } = scene.descriptor;
-        const title =
-            options.headerTitle !== undefined
-                ? options.headerTitle
-                : options.title !== undefined
-                ? options.title
-                : scene.route.name;
-
-        const _goBack = () => {
-            navigation.goBack;
-        };
-
-        const backbutton = previous ? (
-            <Appbar.BackAction onPress={_goBack} />
-        ) : undefined;
-
-        return (
-            <Appbar.Header>
-                {backbutton}
-                <Appbar.Content title={title} />
-            </Appbar.Header>
-        );
-    },
-};
-
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const OverviewStack = createStackNavigator();
@@ -118,7 +93,7 @@ function OverviewNavigator() {
                 component={Overview}
                 options={{
                     headerTitle: "Overview",
-                    ...DefaultStackOptions,
+                    ...DefaultStackOptions(),
                 }}
             />
         </OverviewStack.Navigator>
@@ -135,7 +110,7 @@ function SkillsNavigator() {
                 component={SkillCategoriesScreen}
                 options={{
                     headerTitle: "Skill Tree",
-                    ...DefaultStackOptions,
+                    ...DefaultStackOptions(),
                 }}
             />
             <SkillsStack.Screen
@@ -143,7 +118,7 @@ function SkillsNavigator() {
                 component={SkillCategoryScreen}
                 options={{
                     headerTitle: "Skill Category",
-                    ...DefaultStackOptions,
+                    ...DefaultStackOptions(),
                 }}
             />
             <SkillsStack.Screen
@@ -151,7 +126,7 @@ function SkillsNavigator() {
                 component={SkillScreen}
                 options={{
                     headerTitle: "Skill",
-                    ...DefaultStackOptions,
+                    ...DefaultStackOptions(),
                 }}
             />
         </SkillsStack.Navigator>
@@ -166,7 +141,7 @@ function SettingsNavigator() {
             <SettingsStack.Screen
                 name="Settings"
                 component={Settings}
-                options={{ headerTitle: "Settings", ...DefaultStackOptions }}
+                options={{ headerTitle: "Settings", ...DefaultStackOptions() }}
             />
         </SettingsStack.Navigator>
     );
@@ -185,7 +160,7 @@ function DataNavigator() {
                     headerStyle: {
                         backgroundColor: "#f4511e",
                     },
-                    ...DefaultStackOptions,
+                    ...DefaultStackOptions(),
                 }}
             />
             <DataStack.Screen
@@ -196,7 +171,7 @@ function DataNavigator() {
                     headerStyle: {
                         backgroundColor: "#ff4455",
                     },
-                    ...DefaultStackOptions,
+                    ...DefaultStackOptions(),
                 }}
             />
         </DataStack.Navigator>

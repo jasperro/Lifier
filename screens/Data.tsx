@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
 import { View, ScrollView } from "styled/Themed";
-import { LineChart, BarChart } from "react-native-chart-kit";
+import { LineChart, BarChart, Bar } from "react-native-chart-kit";
 
 import { Text } from "react-native-paper";
 import Footer from "../components/Layout/Footer";
 
 import { withTheme, useTheme, Subheading } from "react-native-paper";
+
+function chartBackground(colors) {
+    return {
+        backgroundGradientFrom: `${colors.surface}`,
+        backgroundGradientTo: `${colors.surface}`,
+        color: (opacity = 1) => `${colors.accent}`,
+        labelColor: (opacity = 1) => `${colors.text}`,
+    };
+}
 
 export default function Data() {
     return (
@@ -14,9 +23,10 @@ export default function Data() {
             <View style={styles.separator} />
 
             <Subheading style={styles.title}>Recent Activity</Subheading>
+            <Grafiek />
+            <Grafiek />
+
             <GrafiekBar />
-            <Grafiek />
-            <Grafiek />
             <Footer path="/screens/Data.tsx" />
         </ScrollView>
     );
@@ -71,12 +81,8 @@ function Grafiek() {
             yAxisSuffix="k"
             yAxisInterval={1} // optional, defaults to 1
             chartConfig={{
-                backgroundColor: colors.accent,
-                backgroundGradientFrom: colors.accent,
-                backgroundGradientTo: colors.accent,
+                ...chartBackground(colors),
                 decimalPlaces: 2, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 style: {
                     borderRadius: 16,
                 },
@@ -123,12 +129,8 @@ function GrafiekBar() {
             yAxisSuffix="k"
             yAxisInterval={1} // optional, defaults to 1
             chartConfig={{
-                backgroundColor: colors.accent,
-                backgroundGradientFrom: colors.accent,
-                backgroundGradientTo: colors.accent,
+                ...chartBackground(colors),
                 decimalPlaces: 2, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 style: {
                     borderRadius: 16,
                 },

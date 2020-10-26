@@ -8,9 +8,8 @@ export default {
             type: "string",
             primary: true,
         },
-        bool_state: {
-            type: "boolean",
-            default: false,
+        state: {
+            type: ["boolean", "number", "string"],
         },
     },
     required: ["setting_id"],

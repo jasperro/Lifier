@@ -7,6 +7,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import useCachedResources from "./hooks/useCachedResources";
 import Navigation from "./navigation";
 import database from "model/database";
+import { enableScreens } from "react-native-screens";
 
 import {
     DarkTheme as NavigationDarkTheme,
@@ -49,6 +50,7 @@ if (!global.atob) {
 
 // Avoid using node dependent modules
 process.browser = true;
+enableScreens();
 
 export default function App() {
     const isLoadingComplete = useCachedResources();
@@ -71,11 +73,11 @@ export default function App() {
                     if (document == null) {
                         document = await settingsCollection.atomicUpsert({
                             setting_id: "dark_mode",
-                            bool_state: false,
+                            state: false,
                         });
                     }
                     document.$.subscribe((changeEvent) =>
-                        setIsThemeDark(changeEvent.bool_state)
+                        setIsThemeDark(changeEvent.state)
                     );
                 });
             });

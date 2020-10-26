@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { StyleSheet, ScrollView } from "react-native";
 
-import { Text, FAB, Button, Appbar } from "react-native-paper";
+import { Text, FAB, Button } from "react-native-paper";
 import { View } from "styled/Themed";
 import { fonts } from "root/fontconfig";
 import { CommonActions } from "@react-navigation/native";
+import { DefaultStackOptions } from "root/navigation";
 
 export function SkillCategoriesScreen({ navigation }) {
     return (
@@ -30,32 +31,7 @@ export function SkillCategoriesScreen({ navigation }) {
     );
 }
 
-const DefaultStackOptions = (path: Array<string> = []) => {
-    return {
-        header: function Header({ scene, previous, navigation }) {
-            const { options } = scene.descriptor;
-            const title =
-                options.headerTitle !== undefined
-                    ? options.headerTitle
-                    : options.title !== undefined
-                    ? options.title
-                    : scene.route.name;
-
-            const backbutton = previous ? (
-                <Appbar.BackAction onPress={navigation.goBack} />
-            ) : undefined;
-
-            return (
-                <Appbar.Header>
-                    {backbutton}
-                    <Appbar.Content title={title} subtitle={path.join(" > ")} />
-                </Appbar.Header>
-            );
-        },
-    };
-};
-
-export function SkillCategoryScreen({ route, navigation }) {
+export function SkillCategoryScreen({ route, previous, navigation }) {
     const { itemId } = route.params;
 
     useEffect(() => {
@@ -87,11 +63,28 @@ export function SkillCategoryScreen({ route, navigation }) {
     );
 }
 
-export function SkillScreen({ route, navigation }) {
+export function SkillScreen({ route, previous, navigation }) {
     const { skillId } = route.params;
     useEffect(() => {
         navigation.setOptions({
-            ...DefaultStackOptions(["Skill Category", JSON.stringify(skillId)]),
+            ...DefaultStackOptions(
+                ["Skill Category", JSON.stringify(skillId)],
+                () => {
+                    navigation.dispatch(
+                        navigation.canGoBack()
+                            ? CommonActions.goBack()
+                            : CommonActions.reset({
+                                  index: 1,
+                                  routes: [
+                                      {
+                                          name: "SkillCategory",
+                                          params: { itemId: 39 },
+                                      },
+                                  ],
+                              })
+                    );
+                }
+            ),
         });
     }, []);
     return (

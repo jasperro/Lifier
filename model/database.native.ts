@@ -11,7 +11,7 @@ addRxPlugin(HTTPAdapter);
 
 async function getRxDB() {
     const rxdb = await createRxDatabase({
-        name: "mydatabase",
+        name: "database",
         adapter: "react-native-sqlite", // the name of your adapter
         multiInstance: false,
     });

@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native";
 import { Subheading, Divider, FAB } from "react-native-paper";
 import { View } from "styled/Themed";
 import Footer from "../components/Layout/Footer";
+import database from "model/database";
 
 export default function Overview() {
     return (
@@ -14,7 +15,16 @@ export default function Overview() {
                 style={styles.fab}
                 icon="plus"
                 label="Timer"
-                onPress={() => console.log("Pressed")}
+                onPress={async () => {
+                    database.then(async (database) => {
+                        const skillsCollection = database.skills;
+
+                        const document = await skillsCollection.insert({
+                            display_name: "Dit is een skill",
+                        });
+                        //document.$.subscribe((changeEvent) => {});
+                    });
+                }}
             />
         </View>
     );
