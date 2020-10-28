@@ -2,7 +2,10 @@ import SkillCategory from "./skillcategory.schema";
 import Skill from "./skill.schema";
 import Event from "./event.schema";
 import Setting from "./setting.schema";
-import { RxDatabase, randomCouchString } from "rxdb";
+import { RxDatabase } from "rxdb";
+import timebID from "root/utils/timebID";
+
+const idGetter = new timebID();
 
 export default async function initializeCollections(
     database: RxDatabase
@@ -18,7 +21,7 @@ export default async function initializeCollections(
     });
 
     skillsCollection.preInsert(function (plainData) {
-        plainData.skill_id = Date.now().toString() + randomCouchString(3);
+        plainData.skill_id = idGetter.getID();
     }, false);
 
     const eventsCollection = await database.collection({
@@ -28,7 +31,7 @@ export default async function initializeCollections(
 
     eventsCollection.preInsert(function (plainData) {
         const currentTime = Date.now();
-        plainData.event_id = currentTime.toString() + randomCouchString(3);
+        plainData.event_id = idGetter.getID();
         if (!plainData.start_time) {
             plainData.start_time = currentTime;
         }

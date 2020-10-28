@@ -2392,6 +2392,13 @@
   dependencies:
     source-map "^0.6.1"
 
+"@types/victory@^33.1.4":
+  version "33.1.4"
+  resolved "https://registry.yarnpkg.com/@types/victory/-/victory-33.1.4.tgz#b843b7cee8ed1ab846d4dd03eb048a178e197b4c"
+  integrity sha512-y0uROW9/p2ltaZW+VcH1llrtu6Uwp1lSJ8zZbVjcXJJgddU3Is2aUvU6PxFQhbjBMtjaqNdw1tH/44c5bn/Zsw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/webpack-sources@*":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/webpack-sources/-/webpack-sources-2.0.0.tgz#08216ab9be2be2e1499beaebc4d469cec81e82a7"
@@ -10245,11 +10252,6 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-paths-js@^0.4.10:
-  version "0.4.11"
-  resolved "https://registry.yarnpkg.com/paths-js/-/paths-js-0.4.11.tgz#b2a9d5f94ee9949aa8fee945f78a12abff44599e"
-  integrity sha512-3mqcLomDBXOo7Fo+UlaenG6f71bk1ZezPQy2JCmYHy2W2k5VKpP+Jbin9H0bjXynelTbglCqdFhSEkeIkKTYUA==
-
 pbkdf2@^3.0.3:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/pbkdf2/-/pbkdf2-3.1.1.tgz#cb8724b0fada984596856d1a6ebafd3584654b94"
@@ -10393,11 +10395,6 @@ pnp-webpack-plugin@^1.5.0:
   integrity sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==
   dependencies:
     ts-pnp "^1.1.6"
-
-point-in-polygon@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/point-in-polygon/-/point-in-polygon-1.0.1.tgz#d59b64e8fee41c49458aac82b56718c5957b2af7"
-  integrity sha1-1Ztk6P7kHElFiqyCtWcYxZV7Kvc=
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -11395,15 +11392,6 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
-
-react-native-chart-kit@^6.6.1:
-  version "6.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-chart-kit/-/react-native-chart-kit-6.6.1.tgz#cd49bfdad88aaf6e33115f62a8cdf9df53d34563"
-  integrity sha512-aYPqKW37CxOVnP6jWq+I7mQ4AWJ6kDvD2InMI143ShQCmOmWGMbykIgFZ3xs8KFCgQx8YUaPgnvayH9zuOP07Q==
-  dependencies:
-    lodash "^4.17.13"
-    paths-js "^0.4.10"
-    point-in-polygon "^1.0.1"
 
 react-native-gesture-handler@~1.7.0:
   version "1.7.0"
@@ -13946,7 +13934,7 @@ victory-zoom-container@^35.0.7, victory-zoom-container@^35.3.1:
     prop-types "^15.5.8"
     victory-core "^35.3.1"
 
-victory@^35.0.7:
+victory@^35.0.7, victory@^35.3.1:
   version "35.3.1"
   resolved "https://registry.yarnpkg.com/victory/-/victory-35.3.1.tgz#6bd629e73e3121bfb930c5e7dba10d5f393db235"
   integrity sha512-CXDb+/8fH585YaUsVpNAzXEjVu1ZOG4S4L7B15pXMLjMb0Nt4I4sACzCY2WyRNO+Md0PIlEee7iZ5UdxuGCyCg==

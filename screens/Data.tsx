@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
 import { View, ScrollView } from "styled/Themed";
-import { LineChart, BarChart, Bar } from "react-native-chart-kit";
-import { VictoryBar } from "victory-native";
-
-import { Text } from "react-native-paper";
-import Footer from "../components/Layout/Footer";
-
+import {
+    VictoryBar,
+    VictoryChart,
+    VictoryTheme,
+    VictoryAxis,
+    Background,
+} from "victory-native";
+import { Svg, Defs, LinearGradient, Stop } from "react-native-svg";
 import { withTheme, useTheme, Subheading } from "react-native-paper";
 
 function chartBackground(colors) {
@@ -19,138 +21,67 @@ function chartBackground(colors) {
 }
 
 export default function Data() {
+    const height = 400;
+    const width = useWindowDimensions().width;
+
+    const { dark: isDarkTheme, colors } = useTheme();
     return (
         <ScrollView style={styles.container}>
             <View style={styles.separator} />
 
             <Subheading style={styles.title}>Recent Activity</Subheading>
-            <Grafiek />
-            <Grafiek />
-
-            <GrafiekBar />
-            <Footer path="/screens/Data.tsx" />
-
-            <VictoryBar />
+            <Svg style={{ position: "absolute" }} width="0" height="0">
+                <Defs>
+                    <LinearGradient
+                        id="fillShadowRGradient"
+                        gradientUnits="userSpaceOnUse"
+                        y2={height}
+                        x1={0}
+                        y1={0}
+                        x2={0}
+                    >
+                        <Stop
+                            offset={0}
+                            stopColor={colors.accent}
+                            stopOpacity={0.8}
+                        ></Stop>
+                        <Stop
+                            offset={1}
+                            stopColor={colors.accent}
+                            stopOpacity={0.4}
+                        ></Stop>
+                    </LinearGradient>
+                </Defs>
+            </Svg>
+            <VictoryChart
+                height={400}
+                width={width}
+                theme={VictoryTheme.material}
+                style={{
+                    background: { fill: colors.surface },
+                }}
+                backgroundComponent={<Background />}
+                domainPadding={60}
+            >
+                <VictoryBar
+                    cornerRadius={0}
+                    style={{
+                        data: {
+                            fill: "url(#fillShadowRGradient)",
+                        },
+                    }}
+                    barWidth={60}
+                    data={[
+                        { x: "cats", y: 1 },
+                        { x: "dogs", y: 2 },
+                        { x: "birds", y: 3 },
+                        { x: "fish", y: 2 },
+                        { x: "frogs", y: 1 },
+                    ]}
+                    width={width}
+                />
+            </VictoryChart>
         </ScrollView>
-    );
-}
-
-function useDebounce(value, delay) {
-    // State and setters for debounced value
-    const [debouncedValue, setDebouncedValue] = useState(value);
-
-    useEffect(
-        () => {
-            // Update debounced value after delay
-            const handler = setTimeout(() => {
-                setDebouncedValue(value);
-            }, delay);
-
-            // Cancel the timeout if value changes (also on delay change or unmount)
-            // This is how we prevent debounced value from updating if value is changed ...
-            // .. within the delay period. Timeout gets cleared and restarted.
-            return () => {
-                clearTimeout(handler);
-            };
-        },
-        [value, delay] // Only re-call effect if value or delay changes
-    );
-
-    return debouncedValue;
-}
-
-function Grafiek() {
-    const { dark: isDarkTheme, colors } = useTheme();
-    return (
-        <LineChart
-            data={{
-                labels: [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                ],
-                datasets: [
-                    {
-                        data: [100, 200, 150, 170, 120, 80],
-                    },
-                ],
-            }}
-            width={useDebounce(useWindowDimensions().width - 80, 200)} // from react-native
-            height={220}
-            yAxisLabel="$"
-            yAxisSuffix="k"
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={{
-                ...chartBackground(colors),
-                decimalPlaces: 2, // optional, defaults to 2dp
-                style: {
-                    borderRadius: 16,
-                },
-                propsForDots: {
-                    r: "6",
-                    strokeWidth: "2",
-                    stroke: colors.accent,
-                },
-                propsForLabels: {
-                    fontFamily: "InterMedium",
-                },
-            }}
-            bezier
-            style={{
-                marginVertical: 8,
-                borderRadius: 16,
-            }}
-        />
-    );
-}
-
-function GrafiekBar() {
-    const { dark: isDarkTheme, colors } = useTheme();
-    return (
-        <BarChart
-            data={{
-                labels: [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                ],
-                datasets: [
-                    {
-                        data: [100, 200, 150, 170, 120, 80],
-                    },
-                ],
-            }}
-            width={useDebounce(useWindowDimensions().width - 80, 200)} // from react-native
-            height={220}
-            yAxisLabel="$"
-            yAxisSuffix="k"
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={{
-                ...chartBackground(colors),
-                decimalPlaces: 2, // optional, defaults to 2dp
-                style: {
-                    borderRadius: 16,
-                },
-                propsForDots: {
-                    r: "6",
-                    strokeWidth: "2",
-                    stroke: colors.accent,
-                },
-                propsForLabels: {
-                    fontFamily: "InterMedium",
-                },
-            }}
-            style={{
-                marginVertical: 8,
-                borderRadius: 16,
-            }}
-        />
     );
 }
 
@@ -158,6 +89,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingLeft: 40,
+        paddingRight: 40,
     },
     title: {
         fontSize: 20,

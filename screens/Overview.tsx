@@ -19,10 +19,11 @@ export default function Overview() {
                     database.then(async (database) => {
                         const skillsCollection = database.skills;
 
-                        const document = await skillsCollection.insert({
-                            display_name: "Dit is een skill",
-                        });
-                        //document.$.subscribe((changeEvent) => {});
+                        const document = await skillsCollection.bulkInsert(
+                            Array(1000).fill({
+                                display_name: "Dit is een skill",
+                            })
+                        );
                     });
                 }}
             />
