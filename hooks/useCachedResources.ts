@@ -8,6 +8,7 @@ import {
 } from "@expo-google-fonts/inter";
 import * as SplashScreen from "expo-splash-screen";
 import * as React from "react";
+import database from "model/database";
 
 export default function useCachedResources() {
     const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -17,7 +18,6 @@ export default function useCachedResources() {
         async function loadResourcesAndDataAsync() {
             try {
                 // SplashScreen.preventAutoHideAsync();
-
                 // Load fonts
                 await Font.loadAsync({
                     ...Ionicons.font,

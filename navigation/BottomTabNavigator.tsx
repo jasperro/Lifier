@@ -23,7 +23,7 @@ import {
     SkillScreen,
 } from "../screens/Skills";
 
-import { DefaultStackOptions } from "root/navigation";
+import DefaultStackOptions from "./DefaultStackOptions";
 
 const BottomTab = createBottomTabNavigator();
 

@@ -4,33 +4,51 @@ import { View, ScrollView } from "styled/Themed";
 import {
     VictoryBar,
     VictoryChart,
-    VictoryTheme,
     VictoryAxis,
     Background,
 } from "victory-native";
-import { Svg, Defs, LinearGradient, Stop } from "react-native-svg";
+import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { withTheme, useTheme, Subheading } from "react-native-paper";
+import chartTheme from "root/constants/chartTheme";
 
-function chartBackground(colors) {
-    return {
-        backgroundGradientFrom: `${colors.surface}`,
-        backgroundGradientTo: `${colors.surface}`,
-        color: (opacity = 1) => `${colors.accent}`,
-        labelColor: (opacity = 1) => `${colors.text}`,
-    };
-}
-
-export default function Data() {
+function Data() {
     const height = 400;
-    const width = useWindowDimensions().width;
+    const width = useWindowDimensions().width - 40;
 
-    const { dark: isDarkTheme, colors } = useTheme();
+    const { dark: isDarkTheme, colors, fonts } = useTheme();
     return (
         <ScrollView style={styles.container}>
             <View style={styles.separator} />
 
             <Subheading style={styles.title}>Recent Activity</Subheading>
-            <Svg style={{ position: "absolute" }} width="0" height="0">
+            <VictoryChart
+                height={400}
+                width={width}
+                theme={chartTheme(colors, fonts)}
+                style={{
+                    background: { fill: colors.surface },
+                }}
+                backgroundComponent={<Background />}
+                domainPadding={60}
+            >
+                <VictoryBar
+                    cornerRadius={20}
+                    style={{
+                        data: {
+                            fill: "url(#fillShadowRGradient)",
+                        },
+                    }}
+                    barWidth={40}
+                    data={[
+                        { x: "Monday", y: 1 },
+                        { x: "Tuesday", y: 2 },
+                        { x: "Wednesday", y: 3 },
+                        { x: "Thursday", y: 2 },
+                        { x: "Friday", y: 1 },
+                    ]}
+                    width={width}
+                />
+
                 <Defs>
                     <LinearGradient
                         id="fillShadowRGradient"
@@ -52,44 +70,18 @@ export default function Data() {
                         ></Stop>
                     </LinearGradient>
                 </Defs>
-            </Svg>
-            <VictoryChart
-                height={400}
-                width={width}
-                theme={VictoryTheme.material}
-                style={{
-                    background: { fill: colors.surface },
-                }}
-                backgroundComponent={<Background />}
-                domainPadding={60}
-            >
-                <VictoryBar
-                    cornerRadius={0}
-                    style={{
-                        data: {
-                            fill: "url(#fillShadowRGradient)",
-                        },
-                    }}
-                    barWidth={60}
-                    data={[
-                        { x: "cats", y: 1 },
-                        { x: "dogs", y: 2 },
-                        { x: "birds", y: 3 },
-                        { x: "fish", y: 2 },
-                        { x: "frogs", y: 1 },
-                    ]}
-                    width={width}
-                />
             </VictoryChart>
         </ScrollView>
     );
 }
 
+export default withTheme(Data);
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingLeft: 40,
-        paddingRight: 40,
+        paddingLeft: 30,
+        paddingRight: 30,
     },
     title: {
         fontSize: 20,

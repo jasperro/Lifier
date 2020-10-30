@@ -5,7 +5,7 @@ import { Text, FAB, Button } from "react-native-paper";
 import { View } from "styled/Themed";
 import { fonts } from "root/fontconfig";
 import { CommonActions } from "@react-navigation/native";
-import { DefaultStackOptions } from "root/navigation";
+import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 
 export function SkillCategoriesScreen({ navigation }) {
     return (

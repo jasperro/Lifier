@@ -14,6 +14,7 @@ async function getRxDB() {
         name: "database",
         adapter: "react-native-sqlite", // the name of your adapter
         multiInstance: false,
+        ignoreDuplicate: true,
     });
 
     await initializeCollections(rxdb);
