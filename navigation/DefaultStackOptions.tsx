@@ -1,7 +1,7 @@
 import React from "react";
 import { Appbar } from "react-native-paper";
 
-export default (path: Array<string> = [], backaction: () => any) => {
+export default (path: Array<string> = [], backaction: () => any): React.FC => {
     return {
         header: function Header({ scene, previous, navigation }) {
             const { options } = scene.descriptor;

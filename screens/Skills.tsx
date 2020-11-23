@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { StyleSheet, ScrollView } from "react-native";
-
 import { Text, FAB, Button } from "react-native-paper";
 import { View } from "styled/Themed";
 import { fonts } from "root/fontconfig";
 import { CommonActions } from "@react-navigation/native";
+import database from "model/database";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 
-export function SkillCategoriesScreen({ navigation }) {
+export function SkillCategoriesScreen({ navigation }): React.FC {
     return (
         <View style={styles.container}>
             <Button
@@ -31,7 +31,16 @@ export function SkillCategoriesScreen({ navigation }) {
     );
 }
 
-export function SkillCategoryScreen({ route, previous, navigation }) {
+function createSkill() {
+    database.then(async (database) => {
+        const skillsCollection = database.skills;
+        const skill = await skillsCollection.insert({
+            display_name: Math.random().toString(),
+        });
+    });
+}
+
+export function SkillCategoryScreen({ route, navigation }): React.FC {
     const { itemId } = route.params;
 
     useEffect(() => {
@@ -57,13 +66,13 @@ export function SkillCategoryScreen({ route, previous, navigation }) {
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => console.log("Pressed")}
+                onPress={async () => createSkill()}
             />
         </View>
     );
 }
 
-export function SkillScreen({ route, previous, navigation }) {
+export function SkillScreen({ route, navigation }): React.FC {
     const { skillId } = route.params;
     useEffect(() => {
         navigation.setOptions({

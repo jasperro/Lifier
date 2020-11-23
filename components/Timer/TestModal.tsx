@@ -8,7 +8,7 @@ import {
     TouchableHighlight,
 } from "react-native";
 
-const App = () => {
+const App = (): JSX.Element => {
     const [modalVisible, setModalVisible] = useState(false);
     return (
         <View style={styles.centeredView}>

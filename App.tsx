@@ -20,6 +20,7 @@ import {
 } from "react-native-paper";
 import { PreferencesProvider } from "./PreferencesContext";
 import { fonts as fontList } from "./fontconfig";
+import { RxDatabase } from "rxdb";
 
 const CombinedDefaultTheme = {
     ...PaperDefaultTheme,
@@ -52,7 +53,7 @@ if (!global.atob) {
 process.browser = true;
 enableScreens();
 
-export default function App() {
+export default function App(): JSX.Element {
     const isLoadingComplete = useCachedResources();
 
     const [isThemeDark, setIsThemeDark] = React.useState(false);
@@ -60,7 +61,7 @@ export default function App() {
 
     useEffect(() => {
         async function databaseStuff() {
-            database.then(async (database) => {
+            database.then(async (database: RxDatabase) => {
                 // Pak de lijst met instellingen uit de database
                 const settingsCollection = database.settings;
 
@@ -76,9 +77,10 @@ export default function App() {
                             state: false,
                         });
                     }
-                    document.$.subscribe((changeEvent) =>
-                        setIsThemeDark(changeEvent.state)
-                    );
+                    document.$.subscribe((changeEvent: SettingType) => {
+                        console.dir(changeEvent);
+                        setIsThemeDark(changeEvent.state);
+                    });
                 });
             });
         }

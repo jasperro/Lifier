@@ -22,6 +22,16 @@ export default {
             type: "string",
             pattern: "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$",
         },
+        index: {
+            type: "number", //position in the list, not changed directly by user.
+        },
     },
     required: ["display_name"],
+};
+
+export type SkillCategoryType = {
+    skill_category_id: string;
+    display_name: string;
+    skills?: Array<unknown>;
+    color?: string; // optional
 };

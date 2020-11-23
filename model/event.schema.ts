@@ -12,7 +12,7 @@ export default {
             type: "string",
             default: "OTHER",
             // Toegestane waarden voor actie
-            enum: ["SKILL", "WORK", "SCHOOL", "XP", "OTHER"],
+            enum: ["SKILL", "WORK", "SCHOOL", "XP", "TASK", "OTHER"],
         },
         start_time: {
             type: "integer", // Unix epoch

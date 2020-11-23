@@ -1,4 +1,4 @@
-import { createRxDatabase, addRxPlugin, RxDatabase, isRxDatabase } from "rxdb";
+import { createRxDatabase, addRxPlugin } from "rxdb";
 import initializeCollections from "./collections";
 import IndexedDBAdapter from "pouchdb-adapter-idb"; // Vervangen door pouchdb-adapter-indexeddb als pouchdb/pouchdb#8209 gefixt wordt
 //import HTTPAdapter from "pouchdb-adapter-http";

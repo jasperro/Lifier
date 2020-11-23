@@ -1,26 +1,30 @@
-import React, { useContext } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 
-import { Text, TextInput, Button, Colors, useTheme } from "react-native-paper";
+import { Text, Button, Colors, useTheme } from "react-native-paper";
 import { View } from "styled/Themed";
-import { SettingsItem } from "../components/Settings";
+import { SettingsItemBoolean } from "../components/Settings";
 import PreferencesContext from "root/PreferencesContext";
-import database from "model/database";
+
 import { removeRxDatabase } from "rxdb";
 
 export default function Settings() {
     const theme = useTheme();
-    const { toggleTheme, isThemeDark, setAccentColor } = React.useContext(
+    const { toggleTheme, setAccentColor } = React.useContext(
         PreferencesContext
     );
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Settings</Text>
-            <SettingsItem settingid="dark_mode" displayname="Dark Mode" />
-            <SettingsItem
+            <SettingsItemBoolean
+                settingid="dark_mode"
+                displayname="Dark Mode"
+            />
+            <SettingsItemBoolean
                 settingid="db_sync"
                 displayname="Database Synchronisation"
             />
+            {/*<SettingsItemString settingid="color" displayname="Display Color" />*/}
             <Button onPress={() => setAccentColor(Colors.red500)}>Red</Button>
             <Button onPress={() => setAccentColor(Colors.green500)}>
                 Green
@@ -31,7 +35,7 @@ export default function Settings() {
             </Button>
             <Button onPress={() => setAccentColor("#0077ce")}>Default</Button>
             <Button onPress={() => toggleTheme()}>Dark mode toggle</Button>
-            <Button onPress={() => removeRxDatabase("database", "indexeddb")}>
+            <Button onPress={() => removeRxDatabase("database", "idb")}>
                 Delete web database
             </Button>
             <Button

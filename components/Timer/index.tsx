@@ -5,7 +5,7 @@ import { View } from "styled/Themed";
 import TestModal from "./TestModal";
 
 class Timer extends React.Component {
-    render() {
+    render(): JSX.Element {
         return (
             <View style={styles.container}>
                 <Text>10:10</Text>

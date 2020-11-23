@@ -1,4 +1,4 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import {
     Inter_100Thin,
@@ -6,9 +6,8 @@ import {
     Inter_400Regular,
     Inter_500Medium,
 } from "@expo-google-fonts/inter";
-import * as SplashScreen from "expo-splash-screen";
+
 import * as React from "react";
-import database from "model/database";
 
 export default function useCachedResources() {
     const [isLoadingComplete, setLoadingComplete] = React.useState(false);

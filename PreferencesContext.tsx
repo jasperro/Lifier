@@ -1,7 +1,9 @@
 import React from "react";
 
 const PreferencesContext = React.createContext({
-    toggleTheme: () => {},
+    toggleTheme: () => {
+        return;
+    },
     isThemeDark: false,
     accentColor: "#ff0000",
 });

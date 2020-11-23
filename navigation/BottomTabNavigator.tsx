@@ -1,17 +1,12 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// import { createMaterialBottomTabNavigator as createBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import {
-    createStackNavigator,
-    StackNavigationProp,
-} from "@react-navigation/stack";
+//import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createMaterialBottomTabNavigator as createBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import * as React from "react";
 
-import { Text, Button } from "react-native-paper";
 import { StyleSheet } from "react-native";
-import { View } from "styled/Themed";
 import { fonts } from "root/fontconfig";
 
 import Overview from "../screens/Overview";
@@ -26,7 +21,6 @@ import {
 import DefaultStackOptions from "./DefaultStackOptions";
 
 const BottomTab = createBottomTabNavigator();
-
 export default function BottomTabNavigator() {
     return (
         <BottomTab.Navigator

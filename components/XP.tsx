@@ -9,11 +9,11 @@ export class XPSetter extends React.Component {
         xp: 0,
     };
 
-    handleInput = (text: string) => {
+    handleInput = (text: string): void => {
         this.setState({ xp: parseInt(text) });
     };
 
-    render() {
+    render(): JSX.Element {
         return (
             <View>
                 <TextInput onChangeText={() => 0} onSubmitEditing={() => 0} />

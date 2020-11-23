@@ -7,7 +7,7 @@ export default class timebID {
         this.sessionId = Constants.sessionId.slice(0, 8);
     }
 
-    getID() {
+    getID(): string {
         const time = Date.now(),
             hexCurrentTime = time.toString(16);
 
@@ -16,7 +16,9 @@ export default class timebID {
 
             if (this.iterator > 255) {
                 this.iterator = 0;
-                while (Date.now() <= time) {}
+                while (Date.now() <= time) {
+                    return;
+                }
             }
         } else {
             this.iterator = 0;

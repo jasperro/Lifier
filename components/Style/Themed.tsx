@@ -1,29 +1,32 @@
-import React, { Component } from "react";
+import React from "react";
 import {
     StyleSheet,
     View as OriginalView,
     ScrollView as OriginalScrollView,
     StyleProp,
     ViewStyle,
+    TextStyle,
 } from "react-native";
-import { withTheme, useTheme } from "react-native-paper";
+import { useTheme, Subheading } from "react-native-paper";
+import Color from "color";
 
 type ViewProps = React.ComponentPropsWithRef<typeof View> & {
     children: React.ReactNode;
     style?: StyleProp<ViewStyle>;
-
-    theme: ReactNativePaper.Theme;
 };
 
 type ScrollViewProps = React.ComponentPropsWithRef<typeof ScrollView> & {
     children: React.ReactNode;
     style?: StyleProp<ViewStyle>;
-
-    theme: ReactNativePaper.Theme;
 };
 
-const ThemedView = ({ style, theme, ...rest }: ViewProps) => {
-    const { dark: isDarkTheme, colors } = useTheme();
+type SubheadingProps = React.ComponentPropsWithRef<typeof Subheading> & {
+    style?: StyleProp<TextStyle>;
+    children: React.ReactNode;
+};
+
+const ThemedView: React.FC = ({ style, ...rest }: ViewProps) => {
+    const { colors } = useTheme();
     return (
         <OriginalView
             {...rest}
@@ -37,8 +40,19 @@ const ThemedView = ({ style, theme, ...rest }: ViewProps) => {
     );
 };
 
-const ThemedScrollView = ({ style, theme, ...rest }: ScrollViewProps) => {
-    const { dark: isDarkTheme, colors } = useTheme();
+export const ColoredSubheading: React.FC = ({ ...rest }: SubheadingProps) => {
+    const { colors } = useTheme();
+    const styles = StyleSheet.create({
+        title: {
+            fontSize: 20,
+            color: `${Color(colors.accent).desaturate(0.6)}`,
+        },
+    });
+    return <Subheading {...rest} style={styles.title} />;
+};
+
+const ThemedScrollView: React.FC = ({ style, ...rest }: ScrollViewProps) => {
+    const { colors } = useTheme();
     return (
         <OriginalScrollView
             {...rest}
@@ -52,5 +66,5 @@ const ThemedScrollView = ({ style, theme, ...rest }: ScrollViewProps) => {
     );
 };
 
-export const View = withTheme(ThemedView);
-export const ScrollView = withTheme(ThemedScrollView);
+export const View = ThemedView;
+export const ScrollView = ThemedScrollView;

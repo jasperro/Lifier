@@ -14,3 +14,8 @@ export default {
     },
     required: ["setting_id"],
 };
+
+export type SettingType = {
+    setting_id: string;
+    state?: boolean | number | string;
+};

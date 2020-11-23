@@ -1,16 +1,28 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
-import { Subheading, Divider, FAB } from "react-native-paper";
-import { View } from "styled/Themed";
-import Footer from "../components/Layout/Footer";
+import { FAB } from "react-native-paper";
+import { View, ColoredSubheading } from "styled/Themed";
 import database from "model/database";
 
-export default function Overview() {
+export default function Overview(): React.FC {
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            elevation: 0,
+            paddingLeft: 40,
+        },
+        fab: {
+            position: "absolute",
+            margin: 16,
+            right: 0,
+            bottom: 0,
+        },
+    });
     return (
         <View style={styles.container}>
-            <Subheading style={styles.title}>Recent Activity</Subheading>
-            <Subheading style={styles.title}>Time</Subheading>
+            <ColoredSubheading>Recent Activity</ColoredSubheading>
+            <ColoredSubheading>Time</ColoredSubheading>
             <FAB
                 style={styles.fab}
                 icon="plus"
@@ -49,21 +61,3 @@ export default function Overview() {
 
 // XP Bar is waarchijnlijk deel van de parent element, anders wordt de root element wel ContainerWithXPBar
 */
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        elevation: 0,
-        paddingLeft: 40,
-    },
-    title: {
-        fontSize: 20,
-        color: "#4D6180",
-    },
-    fab: {
-        position: "absolute",
-        margin: 16,
-        right: 0,
-        bottom: 0,
-    },
-});
