@@ -9,9 +9,10 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 import { fonts } from "root/fontconfig";
 
-import Overview from "../screens/Overview";
+import Tasks from "../screens/Tasks";
 import Settings from "../screens/Settings";
 import Data from "../screens/Data";
+import Dashboard from "../screens/Dashboard";
 import {
     SkillCategoriesScreen,
     SkillCategoryScreen,
@@ -24,17 +25,26 @@ const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
     return (
         <BottomTab.Navigator
-            initialRouteName="Overview"
+            initialRouteName="Tasks"
             tabBarOptions={{
                 animationEnabled: true,
             }}
         >
             <BottomTab.Screen
-                name="Overview"
-                component={OverviewNavigator}
+                name="Tasks"
+                component={TasksNavigator}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <TabBarIcon name="calendar-check" color={color} />
+                    ),
+                }}
+            />
+            <BottomTab.Screen
+                name="Dashboard"
+                component={DashboardNavigator}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <TabBarIcon name="view-dashboard" color={color} />
                     ),
                 }}
             />
@@ -61,7 +71,7 @@ export default function BottomTabNavigator() {
                 component={SettingsNavigator}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <TabBarIcon name="settings" color={color} />
+                        <TabBarIcon name="cog" color={color} />
                     ),
                 }}
             />
@@ -77,20 +87,37 @@ function TabBarIcon(props: { name: string; color: string }) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const OverviewStack = createStackNavigator();
+const TasksStack = createStackNavigator();
 
-function OverviewNavigator() {
+function TasksNavigator() {
     return (
-        <OverviewStack.Navigator>
-            <OverviewStack.Screen
-                name="Overview"
-                component={Overview}
+        <TasksStack.Navigator>
+            <TasksStack.Screen
+                name="Tasks"
+                component={Tasks}
                 options={{
-                    headerTitle: "Overview",
+                    headerTitle: "Tasks",
                     ...DefaultStackOptions(),
                 }}
             />
-        </OverviewStack.Navigator>
+        </TasksStack.Navigator>
+    );
+}
+
+const DashboardStack = createStackNavigator();
+
+function DashboardNavigator() {
+    return (
+        <DashboardStack.Navigator>
+            <DashboardStack.Screen
+                name="Dashboard"
+                component={Dashboard}
+                options={{
+                    headerTitle: "Dashboard",
+                    ...DefaultStackOptions(),
+                }}
+            />
+        </DashboardStack.Navigator>
     );
 }
 
@@ -180,6 +207,6 @@ const styles = StyleSheet.create({
     headercontainer: {
         paddingBottom: 25,
         paddingTop: 30,
-        paddingLeft: 30,
+        paddingLeft: 10,
     },
 });

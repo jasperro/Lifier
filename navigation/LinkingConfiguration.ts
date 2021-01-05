@@ -6,9 +6,14 @@ export default {
         screens: {
             Root: {
                 screens: {
-                    Overview: {
+                    Tasks: {
                         screens: {
-                            Overview: "overview",
+                            Tasks: "tasks",
+                        },
+                    },
+                    Dashboard: {
+                        screens: {
+                            Dashboard: "dashboard",
                         },
                     },
                     Skills: {

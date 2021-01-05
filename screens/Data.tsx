@@ -75,8 +75,8 @@ export default Data;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingLeft: 30,
-        paddingRight: 30,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     separator: {
         marginVertical: 30,

@@ -166,6 +166,6 @@ const styles = StyleSheet.create({
     headercontainer: {
         paddingBottom: 25,
         paddingTop: 30,
-        paddingLeft: 30,
+        paddingLeft: 10,
     },
 });
