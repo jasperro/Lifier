@@ -1,78 +1,139 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
-import {
-    FAB,
-    Card,
-    ProgressBar,
-    Surface,
-    Paragraph,
-    useTheme,
-} from "react-native-paper";
+import { FAB, Card, ProgressBar, Text, useTheme } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, ColoredSubheading } from "styled/Themed";
+import { View, ColoredSubheading, TransparentView } from "styled/Themed";
 import database from "model/database";
 
+function ActivityCard(props): React.FC {
+    const { colors } = useTheme();
+    return (
+        <Card style={{ marginBottom: 4, marginTop: 4 }}>
+            <Card.Title
+                title={props.title}
+                subtitle={props.subtitle}
+                left={() => (
+                    <MaterialCommunityIcons
+                        name={props.icon}
+                        size={48}
+                        color={colors.primary}
+                        style={{ width: 64 }}
+                    />
+                )}
+            />
+        </Card>
+    );
+}
+
 export default function Dashboard(): React.FC {
+    const { colors } = useTheme();
     const styles = StyleSheet.create({
         container: {
             flex: 1,
             elevation: 0,
-            paddingLeft: 10,
-            paddingRight: 10,
+            paddingLeft: 16,
+            paddingRight: 16,
         },
         fab: {
             position: "absolute",
             margin: 16,
             right: 0,
-            bottom: 64,
+            bottom: 90,
         },
         xpbar: {
             position: "absolute",
-            padding: 16,
             right: 0,
+            left: 0,
             bottom: 0,
-            width: "100%",
+            backgroundColor: colors.surface,
         },
     });
-    const { colors } = useTheme();
     return (
         <View style={styles.container}>
             <ColoredSubheading>Recent Activity</ColoredSubheading>
-            <Card>
-                <Card.Title
-                    title="Power Chords"
-                    subtitle="4 Uur restrerend"
-                    left={() => (
-                        <MaterialCommunityIcons
-                            name="guitar-acoustic"
-                            size={48}
-                            color={colors.primary}
-                        />
-                    )}
-                />
-            </Card>
-            <Card>
-                <Card.Title
-                    title="Javascript"
-                    subtitle="2 Uur restrerend"
-                    left={() => (
-                        <MaterialCommunityIcons
-                            name="xml"
-                            size={48}
-                            color={colors.primary}
-                        />
-                    )}
-                />
-            </Card>
+            <ActivityCard
+                title="Power Chords"
+                subtitle="4 uur restrerend"
+                icon="guitar-acoustic"
+            ></ActivityCard>
+            <ActivityCard
+                title="Javascript"
+                subtitle="2 Uur restrerend"
+                icon="xml"
+            />
             <ColoredSubheading>Time</ColoredSubheading>
-            <Surface style={styles.xpbar}>
-                <ProgressBar
-                    style={{ borderRadius: 90, height: 10 }}
-                    progress={0.8}
-                />
-                <Paragraph>100XP/Level 20</Paragraph>
-            </Surface>
+            <View style={styles.xpbar}>
+                <ProgressBar style={{ height: 10 }} progress={0.8} />
+                <TransparentView
+                    style={{
+                        flex: 1,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        minHeight: 70,
+                        alignItems: "stretch",
+                        paddingLeft: 20,
+                        paddingRight: 20,
+                    }}
+                >
+                    <TransparentView
+                        style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                        }}
+                    >
+                        <View
+                            style={{
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                                backgroundColor: colors.background,
+                                justifyContent: "center",
+                                marginRight: 10,
+                            }}
+                        >
+                            <Text style={{ fontSize: 20, textAlign: "center" }}>
+                                14
+                            </Text>
+                        </View>
+                        <Text
+                            style={{ fontSize: 16, fontFamily: "InterLight" }}
+                        >
+                            Rookie Guitar Player
+                        </Text>
+                    </TransparentView>
+                    <TransparentView
+                        style={{
+                            flex: 1,
+                            flexDirection: "row-reverse",
+                            alignItems: "center",
+                        }}
+                    >
+                        <View
+                            style={{
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                                backgroundColor: colors.primary,
+                                justifyContent: "center",
+                                marginLeft: 10,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 20,
+                                    textAlign: "center",
+                                    color: "white",
+                                }}
+                            >
+                                15
+                            </Text>
+                        </View>
+                        <Text style={{ fontSize: 16 }}>230/300XP</Text>
+                    </TransparentView>
+                </TransparentView>
+            </View>
             <FAB
                 style={styles.fab}
                 icon="plus"
@@ -81,7 +142,7 @@ export default function Dashboard(): React.FC {
                     database.then(async (database) => {
                         const skillsCollection = database.skills;
 
-                        const document = await skillsCollection.bulkInsert(
+                        await skillsCollection.bulkInsert(
                             Array(1000).fill({
                                 display_name: "Dit is een skill",
                             })

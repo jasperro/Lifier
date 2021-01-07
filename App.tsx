@@ -21,6 +21,7 @@ import {
 import { PreferencesProvider } from "./PreferencesContext";
 import { fonts as fontList } from "./fontconfig";
 import { RxDatabase } from "rxdb";
+import { SettingType } from "model/setting.schema";
 
 const CombinedDefaultTheme = {
     ...PaperDefaultTheme,
@@ -78,8 +79,11 @@ export default function App(): JSX.Element {
                         });
                     }
                     document.$.subscribe((changeEvent: SettingType) => {
-                        console.dir(changeEvent);
-                        setIsThemeDark(changeEvent.state);
+                        setIsThemeDark(
+                            typeof changeEvent.state == "boolean"
+                                ? changeEvent.state
+                                : false
+                        );
                     });
                 });
             });
@@ -109,8 +113,9 @@ export default function App(): JSX.Element {
             toggleTheme,
             isThemeDark,
             setAccentColor,
+            accentColor,
         }),
-        [toggleTheme, isThemeDark, setAccentColor]
+        [toggleTheme, isThemeDark, setAccentColor, accentColor]
     );
 
     if (!isLoadingComplete) {

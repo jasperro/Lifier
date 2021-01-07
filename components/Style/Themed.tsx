@@ -40,10 +40,26 @@ const ThemedView: React.FC = ({ style, ...rest }: ViewProps) => {
     );
 };
 
+export const TransparentView: React.FC = ({ style, ...rest }: ViewProps) => {
+    return (
+        <OriginalView
+            {...rest}
+            style={[
+                {
+                    backgroundColor: "transparent",
+                },
+                style,
+            ]}
+        />
+    );
+};
+
 export const ColoredSubheading: React.FC = ({ ...rest }: SubheadingProps) => {
     const { colors } = useTheme();
     const styles = StyleSheet.create({
         title: {
+            marginTop: 10,
+            marginBottom: 5,
             fontSize: 20,
             color: `${Color(colors.accent).desaturate(0.6)}`,
         },
