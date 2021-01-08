@@ -1,7 +1,12 @@
+import { StackRouterOptions } from "@react-navigation/native";
+import { StackNavigationOptions } from "@react-navigation/stack";
 import React from "react";
 import { Appbar } from "react-native-paper";
 
-export default (path: Array<string> = [], backaction: () => any): React.FC => {
+export default (
+    path: Array<string> = [],
+    backaction: () => any
+): StackNavigationOptions => {
     return {
         header: function Header({ scene, previous, navigation }) {
             const { options } = scene.descriptor;

@@ -7,7 +7,7 @@ import { CommonActions } from "@react-navigation/native";
 import database from "model/database";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 
-export function SkillCategoriesScreen({ navigation }): React.FC {
+export function SkillCategoriesScreen({ navigation }): JSX.Element {
     return (
         <View style={styles.container}>
             <Button
@@ -40,7 +40,7 @@ function createSkill() {
     });
 }
 
-export function SkillCategoryScreen({ route, navigation }): React.FC {
+export function SkillCategoryScreen({ route, navigation }): JSX.Element {
     const { itemId } = route.params;
 
     useEffect(() => {
@@ -72,7 +72,7 @@ export function SkillCategoryScreen({ route, navigation }): React.FC {
     );
 }
 
-export function SkillScreen({ route, navigation }): React.FC {
+export function SkillScreen({ route, navigation }): JSX.Element {
     const { skillId } = route.params;
     useEffect(() => {
         navigation.setOptions({

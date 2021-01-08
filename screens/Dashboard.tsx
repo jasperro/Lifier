@@ -1,12 +1,19 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View as TransparentView } from "react-native";
 
-import { FAB, Card, ProgressBar, Text, useTheme } from "react-native-paper";
+import {
+    FAB,
+    Card,
+    ProgressBar,
+    Text,
+    useTheme,
+    Button,
+} from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, ColoredSubheading, TransparentView } from "styled/Themed";
+import { View, ColoredSubheading } from "styled/Themed";
 import database from "model/database";
 
-function ActivityCard(props): React.FC {
+function ActivityCard(props): JSX.Element {
     const { colors } = useTheme();
     return (
         <Card style={{ marginBottom: 4, marginTop: 4 }}>
@@ -26,7 +33,7 @@ function ActivityCard(props): React.FC {
     );
 }
 
-export default function Dashboard(): React.FC {
+export default function Dashboard(): JSX.Element {
     const { colors } = useTheme();
     const styles = StyleSheet.create({
         container: {
@@ -48,6 +55,12 @@ export default function Dashboard(): React.FC {
             bottom: 0,
             backgroundColor: colors.surface,
         },
+        xpdot: {
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            justifyContent: "center",
+        },
     });
     return (
         <View style={styles.container}>
@@ -63,6 +76,9 @@ export default function Dashboard(): React.FC {
                 icon="xml"
             />
             <ColoredSubheading>Time</ColoredSubheading>
+            <Button icon="plus" mode="contained">
+                Start a new timer
+            </Button>
             <View style={styles.xpbar}>
                 <ProgressBar style={{ height: 10 }} progress={0.8} />
                 <TransparentView
@@ -84,14 +100,13 @@ export default function Dashboard(): React.FC {
                         }}
                     >
                         <View
-                            style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                backgroundColor: colors.background,
-                                justifyContent: "center",
-                                marginRight: 10,
-                            }}
+                            style={[
+                                styles.xpdot,
+                                {
+                                    backgroundColor: colors.background,
+                                    marginRight: 10,
+                                },
+                            ]}
                         >
                             <Text style={{ fontSize: 20, textAlign: "center" }}>
                                 14
@@ -111,14 +126,13 @@ export default function Dashboard(): React.FC {
                         }}
                     >
                         <View
-                            style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                backgroundColor: colors.primary,
-                                justifyContent: "center",
-                                marginLeft: 10,
-                            }}
+                            style={[
+                                styles.xpdot,
+                                {
+                                    backgroundColor: colors.primary,
+                                    marginLeft: 10,
+                                },
+                            ]}
                         >
                             <Text
                                 style={{

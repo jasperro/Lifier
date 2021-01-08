@@ -4,17 +4,50 @@ import { StyleSheet } from "react-native";
 import {
     FAB,
     Card,
-    Title,
-    Paragraph,
-    Button,
-    Avatar,
     useTheme,
+    Menu,
+    Divider,
+    IconButton,
 } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, ColoredSubheading } from "styled/Themed";
+import { View, ScrollView, ColoredSubheading } from "styled/Themed";
 import database from "model/database";
+import ChipExample from "root/components/ChipTest";
 
-export default function Tasks(): React.FC {
+const SortMenu = (): JSX.Element => {
+    const [visible, setVisible] = React.useState(false);
+
+    const openMenu = () => setVisible(true);
+    const closeMenu = () => setVisible(false);
+
+    return (
+        <View
+            style={{
+                paddingTop: 50,
+                flexDirection: "row",
+                justifyContent: "flex-end",
+            }}
+        >
+            <Menu
+                visible={visible}
+                onDismiss={closeMenu}
+                anchor={
+                    <IconButton icon="dots-vertical" onPress={openMenu}>
+                        Show menu
+                    </IconButton>
+                }
+            >
+                <Menu.Item onPress={() => {}} title="Total Hours" />
+                <Menu.Item onPress={() => {}} title="Work Hours" />
+                <Menu.Item onPress={() => {}} title="Skill Hours" />
+                <Divider />
+                <Menu.Item onPress={() => {}} title="XP Earned" />
+            </Menu>
+        </View>
+    );
+};
+
+export default function Tasks(): JSX.Element {
     const styles = StyleSheet.create({
         container: {
             flex: 1,
@@ -31,32 +64,37 @@ export default function Tasks(): React.FC {
     });
     const { colors } = useTheme();
     return (
-        <View style={styles.container}>
-            <ColoredSubheading>Uncompleted</ColoredSubheading>
-            <Card>
-                <Card.Title
-                    title="Maak een planning"
-                    left={() => (
-                        <MaterialCommunityIcons
-                            name="view-dashboard"
-                            size={48}
-                            color={colors.accent}
-                        />
-                    )}
-                />
-            </Card>
-            <Card>
-                <Card.Title
-                    title="Maak een python-api"
-                    left={() => (
-                        <MaterialCommunityIcons
-                            name="language-python"
-                            size={48}
-                            color={colors.accent}
-                        />
-                    )}
-                />
-            </Card>
+        <>
+            <ScrollView style={styles.container}>
+                <ColoredSubheading>Uncompleted</ColoredSubheading>
+                <SortMenu></SortMenu>
+                <Card>
+                    <Card.Title
+                        title="Maak een planning"
+                        left={() => (
+                            <MaterialCommunityIcons
+                                name="view-dashboard"
+                                size={48}
+                                color={colors.accent}
+                            />
+                        )}
+                    />
+                </Card>
+                <Card>
+                    <Card.Title
+                        title="Maak een python-api"
+                        left={() => (
+                            <MaterialCommunityIcons
+                                name="language-python"
+                                size={48}
+                                color={colors.accent}
+                            />
+                        )}
+                    />
+                </Card>
+
+                <ChipExample></ChipExample>
+            </ScrollView>
             <FAB
                 style={styles.fab}
                 icon="plus"
@@ -73,7 +111,7 @@ export default function Tasks(): React.FC {
                     });
                 }}
             />
-        </View>
+        </>
     );
 }
 

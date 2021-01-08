@@ -6,9 +6,9 @@ import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { useTheme } from "react-native-paper";
 import chartTheme from "root/constants/chartTheme";
 
-function Data(): React.FC {
+function Data(): JSX.Element {
     const height = 400;
-    const width = useWindowDimensions().width - 40;
+    const width = useWindowDimensions().width;
 
     const { colors, fonts } = useTheme();
     return (
@@ -19,6 +19,7 @@ function Data(): React.FC {
             <VictoryChart
                 height={400}
                 width={width}
+                padding={{ right: 0, left: 40, top: 50, bottom: 50 }}
                 theme={chartTheme(colors, fonts)}
                 style={{
                     background: { fill: colors.surface },

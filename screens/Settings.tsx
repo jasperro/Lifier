@@ -8,7 +8,7 @@ import PreferencesContext from "root/PreferencesContext";
 
 import { removeRxDatabase } from "rxdb";
 
-export default function Settings() {
+export default function Settings(): JSX.Element {
     const theme = useTheme();
     const { toggleTheme, setAccentColor } = React.useContext(
         PreferencesContext
