@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, ScrollView, FlatList } from "react-native";
 import { Text, FAB, Button } from "react-native-paper";
 import { View } from "styled/Themed";
 import { fonts } from "root/fontconfig";
 import { CommonActions } from "@react-navigation/native";
-import database from "model/database";
+import databasePromise from "model/database";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 
 export function SkillCategoriesScreen({ navigation }): JSX.Element {
@@ -13,7 +13,7 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
             <Button
                 mode="outlined"
                 onPress={() => {
-                    /* 1. Navigate to the Details route with params */
+                    /* Navigate to skill category route with params */
                     navigation.navigate("SkillCategory", {
                         itemId: 86,
                     });
@@ -22,21 +22,16 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                 Go to skill category
             </Button>
             <ScrollView></ScrollView>
-            <FAB
-                style={styles.fab}
-                icon="plus"
-                onPress={() => console.log("Pressed")}
-            />
+            <FAB style={styles.fab} icon="plus" onPress={() => createSkill()} />
         </View>
     );
 }
 
-function createSkill() {
-    database.then(async (database) => {
-        const skillsCollection = database.skills;
-        const skill = await skillsCollection.insert({
-            display_name: Math.random().toString(),
-        });
+async function createSkill() {
+    const database = await databasePromise;
+    const skillsCollection = database.skills;
+    const skill = await skillsCollection.insert({
+        display_name: Math.random().toString(),
     });
 }
 
@@ -48,13 +43,32 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
             ...DefaultStackOptions([JSON.stringify(itemId)]),
         });
     }, []);
+
+    const [list, setList] = useState({});
+    useEffect(() => {
+        (async () => {
+            const database = await databasePromise;
+            const skillcategoryCollection = database.skills;
+
+            const query = skillcategoryCollection.find();
+            query.$.subscribe((documents) => setList(documents));
+        })();
+    }, []);
     return (
         <View style={styles.container}>
             <ScrollView>
+                <Text>{JSON.stringify(list)}</Text>
+                <FlatList
+                    data={list}
+                    keyExtractor={(item) => item.skill_id}
+                    renderItem={({ item }) => (
+                        <Text key={item.skill_id}>{item.display_name}</Text>
+                    )}
+                />
                 <Text>itemId: {JSON.stringify(itemId)}</Text>
                 <Button
                     onPress={() => {
-                        /* 1. Navigate to the Details route with params */
+                        /* Navigate to skill route with params */
                         navigation.navigate("Skill", {
                             skillId: 291390321,
                         });

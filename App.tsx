@@ -6,7 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import useCachedResources from "./hooks/useCachedResources";
 import Navigation from "./navigation";
-import database from "model/database";
+import databasePromise from "model/database";
 import { enableScreens } from "react-native-screens";
 
 import {
@@ -61,35 +61,31 @@ export default function App(): JSX.Element {
     const [accentColor, setAccentColor] = React.useState("#0077ce");
 
     useEffect(() => {
-        async function databaseStuff() {
-            database.then(async (database: RxDatabase) => {
-                // Pak de lijst met instellingen uit de database
-                const settingsCollection = database.settings;
+        (async () => {
+            const database = await databasePromise;
+            // Pak de lijst met instellingen uit de database
+            const settingsCollection = database.settings;
 
-                // Zet switch naar state uit database
-                const query = settingsCollection
-                    .findOne()
-                    .where("setting_id")
-                    .eq("dark_mode");
-                query.exec().then(async (document) => {
-                    if (document == null) {
-                        document = await settingsCollection.atomicUpsert({
-                            setting_id: "dark_mode",
-                            state: false,
-                        });
-                    }
-                    document.$.subscribe((changeEvent: SettingType) => {
-                        setIsThemeDark(
-                            typeof changeEvent.state == "boolean"
-                                ? changeEvent.state
-                                : false
-                        );
-                    });
+            // Zet switch naar state uit database
+            const query = settingsCollection
+                .findOne()
+                .where("setting_id")
+                .eq("dark_mode");
+            let document = await query.exec();
+            if (document == null) {
+                document = await settingsCollection.atomicUpsert({
+                    setting_id: "dark_mode",
+                    state: false,
                 });
+            }
+            document.$.subscribe((changeEvent: SettingType) => {
+                setIsThemeDark(
+                    typeof changeEvent.state == "boolean"
+                        ? changeEvent.state
+                        : false
+                );
             });
-        }
-
-        databaseStuff();
+        })();
     }, []);
 
     const baseTheme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;

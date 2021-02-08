@@ -18,6 +18,7 @@ export default {
         // Precalculate xp amount from time by default
         xp_amount: {
             type: "number",
+            default: 0,
         },
         expected_completion_time: {
             type: "number", //unix epoch seconds
