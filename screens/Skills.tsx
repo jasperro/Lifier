@@ -6,6 +6,7 @@ import { fonts } from "root/fontconfig";
 import { CommonActions } from "@react-navigation/native";
 import databasePromise from "model/database";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
+import _ from "lodash";
 
 export function SkillCategoriesScreen({ navigation }): JSX.Element {
     const [list, setList] = useState([]);
@@ -52,12 +53,28 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
     );
 }
 
-async function createSkill() {
+async function createSkill(categoryId) {
     const database = await databasePromise;
     const skillsCollection = database.skills;
+
+    const skillcategoryCollection = database.skillcategories;
+    const displayName = Math.random().toString();
     const skill = await skillsCollection.insert({
-        display_name: Math.random().toString(),
+        display_name: displayName,
     });
+
+    console.log(skill.skill_id);
+
+    const query = skillcategoryCollection.findOne(categoryId);
+    const result = await query.exec();
+    let existingSkills = await result.skills;
+    existingSkills = existingSkills ? existingSkills : [];
+
+    await skillcategoryCollection.upsert(
+        _.merge({}, result.toJSON(), {
+            skills: [...existingSkills, skill.skill_id],
+        })
+    );
 }
 
 async function createSkillCategory() {
@@ -72,17 +89,18 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
     const { categoryId, displayName } = route.params;
 
     useEffect(() => {
-        CommonActions.reset({
-            index: 1,
-            routes: [
-                {
-                    name: "SkillCategories",
-                },
-            ],
-        });
         navigation.setOptions({
             ...DefaultStackOptions([JSON.stringify(displayName)], () => {
-                CommonActions.goBack();
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [
+                            {
+                                name: "SkillCategories",
+                            },
+                        ],
+                    })
+                );
             }),
         });
     }, []);
@@ -91,10 +109,13 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
     useEffect(() => {
         (async () => {
             const database = await databasePromise;
-            const skillcategoryCollection = database.skills;
+            const skillcategoryCollection = database.skillcategories;
 
-            const query = skillcategoryCollection.find();
-            query.$.subscribe((documents) => setList(documents));
+            const query = skillcategoryCollection.findOne(categoryId);
+            query.$.subscribe(async (documents) => {
+                const newList = await documents.skills_;
+                setList(newList);
+            });
         })();
     }, []);
     return (
@@ -128,34 +149,34 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={async () => createSkill()}
+                onPress={async () => createSkill(categoryId)}
             />
         </View>
     );
 }
 
 export function SkillScreen({ route, navigation }): JSX.Element {
-    const { skillId, displayName, categoryId } = route.params;
+    const { skillId, displayName, categoryId, categoryName } = route.params;
     useEffect(() => {
         navigation.setOptions({
-            ...DefaultStackOptions(
-                ["Skill Category", JSON.stringify(skillId)],
-                () => {
-                    navigation.dispatch(
-                        navigation.canGoBack()
-                            ? CommonActions.goBack()
-                            : CommonActions.reset({
-                                  index: 1,
-                                  routes: [
-                                      {
-                                          name: "SkillCategory",
-                                          params: { categoryId: categoryId },
+            ...DefaultStackOptions([categoryName, displayName], () => {
+                navigation.dispatch(
+                    navigation.canGoBack()
+                        ? CommonActions.goBack()
+                        : CommonActions.reset({
+                              index: 1,
+                              routes: [
+                                  {
+                                      name: "SkillCategory",
+                                      params: {
+                                          categoryId: categoryId,
+                                          displayName: categoryName,
                                       },
-                                  ],
-                              })
-                    );
-                }
-            ),
+                                  },
+                              ],
+                          })
+                );
+            }),
         });
     }, []);
 
@@ -178,28 +199,6 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                 <Text>{title}</Text>
                 <Text>skillId: {JSON.stringify(skillId)}</Text>
             </ScrollView>
-            <FAB
-                style={styles.fab}
-                icon="plus"
-                onPress={() =>
-                    navigation.dispatch(
-                        CommonActions.reset({
-                            index: 1,
-                            routes: [
-                                { name: "SkillCategories" },
-                                {
-                                    name: "SkillCategory",
-                                    params: { itemId: 39 },
-                                },
-                                {
-                                    name: "Skill",
-                                    params: { skillId: 42203 },
-                                },
-                            ],
-                        })
-                    )
-                }
-            />
         </View>
     );
 }

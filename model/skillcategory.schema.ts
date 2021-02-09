@@ -13,7 +13,7 @@ export default {
         },
         skills: {
             type: "array",
-            ref: "skill",
+            ref: "skills",
             items: {
                 type: "string",
             },

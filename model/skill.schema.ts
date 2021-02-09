@@ -27,7 +27,7 @@ export default {
             type: "number", //position in the list, not changed directly by user.
         },
         category_id: {
-            ref: "skillcategory", // in welke categorie bevindt de skill zich?
+            ref: "skillcategories", // in welke categorie bevindt de skill zich?
             type: "string", // skillcategory_id
         },
     },
