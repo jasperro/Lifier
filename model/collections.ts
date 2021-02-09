@@ -9,10 +9,14 @@ import { v4 as uuidv4 } from "uuid";
 export default async function initializeCollections(
     database: RxDatabase
 ): Promise<any> {
-    await database.collection({
+    const categoriesCollection = await database.collection({
         name: "skillcategories",
         schema: SkillCategory,
     });
+
+    categoriesCollection.preInsert(function (plainData) {
+        plainData.skill_category_id = uuidv4();
+    }, false);
 
     const skillsCollection = await database.collection({
         name: "skills",

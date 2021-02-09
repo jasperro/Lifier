@@ -26,6 +26,10 @@ export default {
         index: {
             type: "number", //position in the list, not changed directly by user.
         },
+        category_id: {
+            ref: "skillcategory", // in welke categorie bevindt de skill zich?
+            type: "string", // skillcategory_id
+        },
     },
     required: ["display_name", "xp_amount"],
 };

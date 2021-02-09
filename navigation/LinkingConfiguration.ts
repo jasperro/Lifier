@@ -19,8 +19,8 @@ export default {
                     Skills: {
                         screens: {
                             SkillCategories: "skills",
-                            SkillCategory: "skills/category",
-                            Skill: "skills/skill",
+                            SkillCategory: "skills/category/:categoryId",
+                            Skill: "skills/skill/:categoryId/:skillId",
                         },
                     },
                     Data: {
