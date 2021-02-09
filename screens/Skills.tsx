@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, ScrollView, FlatList } from "react-native";
-import { Text, FAB, Button, Card } from "react-native-paper";
+import { Text, FAB, Button, Card, TextInput } from "react-native-paper";
 import { View } from "styled/Themed";
 import { fonts } from "root/fontconfig";
 import { CommonActions } from "@react-navigation/native";
@@ -8,8 +8,17 @@ import databasePromise from "model/database";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 import _ from "lodash";
 
+async function createSkillCategory(displayName) {
+    const database = await databasePromise;
+    const categoriesCollection = database.skillcategories;
+    const category = await categoriesCollection.insert({
+        display_name: displayName,
+    });
+}
+
 export function SkillCategoriesScreen({ navigation }): JSX.Element {
     const [list, setList] = useState([]);
+    const [newcategory, setNewCategory] = useState("");
     useEffect(() => {
         (async () => {
             const database = await databasePromise;
@@ -44,26 +53,28 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                 )}
             />
             <ScrollView></ScrollView>
+            <TextInput
+                label="Nieuwe Categorie Naam"
+                value={newcategory}
+                onChangeText={(newcategory) => setNewCategory(newcategory)}
+            />
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => createSkillCategory()}
+                onPress={() => createSkillCategory(newcategory)}
             />
         </View>
     );
 }
 
-async function createSkill(categoryId) {
+async function createSkill(categoryId, displayName) {
     const database = await databasePromise;
     const skillsCollection = database.skills;
 
     const skillcategoryCollection = database.skillcategories;
-    const displayName = Math.random().toString();
     const skill = await skillsCollection.insert({
         display_name: displayName,
     });
-
-    console.log(skill.skill_id);
 
     const query = skillcategoryCollection.findOne(categoryId);
     const result = await query.exec();
@@ -75,14 +86,6 @@ async function createSkill(categoryId) {
             skills: [...existingSkills, skill.skill_id],
         })
     );
-}
-
-async function createSkillCategory() {
-    const database = await databasePromise;
-    const categoriesCollection = database.skillcategories;
-    const category = await categoriesCollection.insert({
-        display_name: Math.random().toString(),
-    });
 }
 
 export function SkillCategoryScreen({ route, navigation }): JSX.Element {
@@ -105,6 +108,7 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
         });
     }, []);
 
+    const [newskill, setNewSkill] = useState("");
     const [list, setList] = useState([]);
     useEffect(() => {
         (async () => {
@@ -146,10 +150,15 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
                 />
                 <Text>itemId: {JSON.stringify(categoryId)}</Text>
             </ScrollView>
+            <TextInput
+                label="Nieuwe Skill Naam"
+                value={newskill}
+                onChangeText={(newskill) => setNewSkill(newskill)}
+            />
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={async () => createSkill(categoryId)}
+                onPress={async () => createSkill(categoryId, newskill)}
             />
         </View>
     );
@@ -188,9 +197,7 @@ export function SkillScreen({ route, navigation }): JSX.Element {
             const skillCollection = database.skills;
 
             const query = skillCollection.findOne(skillId);
-            console.log(performance.now());
             query.$.subscribe((data) => setTitle(data.display_name));
-            console.log(performance.now());
         })();
     }, []);
     return (

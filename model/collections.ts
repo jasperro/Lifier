@@ -6,6 +6,14 @@ import { RxDatabase } from "rxdb";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
+function generateKebabId(inString: string) {
+    return inString
+        .replace(/\W+/g, " ")
+        .split(/ |\B(?=[A-Z])/)
+        .map((word) => word.toLowerCase())
+        .join("-");
+}
+
 export default async function initializeCollections(
     database: RxDatabase
 ): Promise<any> {
@@ -15,8 +23,12 @@ export default async function initializeCollections(
     });
 
     categoriesCollection.preInsert(function (plainData) {
-        plainData.skill_category_id = uuidv4();
-    }, false);
+        plainData.skill_category_id = generateKebabId(plainData.display_name);
+    }, true);
+
+    categoriesCollection.preSave(function (plainData) {
+        plainData.skill_category_id = generateKebabId(plainData.display_name);
+    }, true);
 
     const skillsCollection = await database.collection({
         name: "skills",
