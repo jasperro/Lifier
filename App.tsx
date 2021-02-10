@@ -23,12 +23,17 @@ import { fonts as fontList } from "./fontconfig";
 import { RxDatabase } from "rxdb";
 import { SettingType } from "model/setting.schema";
 
+const ExtraTheme = {
+    colors: { textLight: "#ffffff", textDark: "#000000" },
+};
+
 const CombinedDefaultTheme = {
     ...PaperDefaultTheme,
     ...NavigationDefaultTheme,
     colors: {
         ...PaperDefaultTheme.colors,
         ...NavigationDefaultTheme.colors,
+        ...ExtraTheme.colors,
     },
     fonts: fontList,
 };
@@ -38,6 +43,7 @@ const CombinedDarkTheme = {
     colors: {
         ...PaperDarkTheme.colors,
         ...NavigationDarkTheme.colors,
+        ...ExtraTheme.colors,
     },
     fonts: fontList,
 };

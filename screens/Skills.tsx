@@ -1,6 +1,13 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { StyleSheet, ScrollView, FlatList, Dimensions } from "react-native";
-import { Text, FAB, Button, Card, TextInput } from "react-native-paper";
+import { StyleSheet, ScrollView, FlatList, Platform } from "react-native";
+import {
+    Text,
+    FAB,
+    Button,
+    Card,
+    TextInput,
+    useTheme,
+} from "react-native-paper";
 import { View } from "styled/Themed";
 import { fonts } from "root/fontconfig";
 import { FlatGrid } from "react-native-super-grid";
@@ -8,8 +15,10 @@ import { CommonActions } from "@react-navigation/native";
 import databasePromise from "model/database";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 import _ from "lodash";
+import Color from "color";
 
 export function SkillCategoriesScreen({ navigation }): JSX.Element {
+    const { colors } = useTheme();
     const [list, setList] = useState([]);
     useEffect(() => {
         (async () => {
@@ -23,26 +32,38 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
     return (
         <View style={styles.container}>
             <FlatGrid
-                itemDimension={230}
+                itemDimension={330}
                 spacing={10}
                 style={styles.cardlist}
                 data={list}
                 keyExtractor={(item) => item.skill_category_id}
                 renderItem={({ item }) => (
-                    <Card style={styles.card} key={item.skill_category_id}>
-                        <Card.Title title={item.display_name} />
-                        <Button
-                            onPress={() => {
-                                /* Navigate to skill route with params */
-                                navigation.navigate("SkillCategory", {
-                                    categoryId: item.skill_category_id,
-                                    displayName: item.display_name,
-                                });
+                    <Card
+                        onPress={() => {
+                            /* Navigate to skill route with params */
+                            navigation.navigate("SkillCategory", {
+                                categoryId: item.skill_category_id,
+                                displayName: item.display_name,
+                            });
+                        }}
+                        key={item.skill_category_id}
+                        style={[
+                            styles["card"],
+                            { backgroundColor: item.color },
+                        ]}
+                    >
+                        <Card.Title
+                            titleStyle={{
+                                fontSize: 50,
+                                lineHeight: 100,
+                                color: !item.color
+                                    ? colors.text
+                                    : Color(item.color).isDark
+                                    ? colors.textLight
+                                    : colors.textDark,
                             }}
-                            color={item.color}
-                        >
-                            Go to skill category
-                        </Button>
+                            title={item.display_name}
+                        />
                     </Card>
                 )}
             />
@@ -209,41 +230,44 @@ export function SkillScreen({ route, navigation }): JSX.Element {
 </ContainerWithXPBar>
 */
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: "80%",
-    },
-    fab: {
-        position: "absolute",
-        margin: 16,
-        right: 0,
-        bottom: 0,
-    },
-    bottominput: {
-        position: "absolute",
-        margin: 16,
-        right: "auto",
-        left: "auto",
-        bottom: 0,
-        width: "70%",
-    },
-    card: {
-        marginBottom: 4,
-        marginTop: 4,
-        height: 210,
-    },
+const styles = {
+    ...StyleSheet.create({
+        container: {
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+        },
+        title: {
+            fontSize: 20,
+            fontWeight: "bold",
+        },
+        separator: {
+            marginVertical: 30,
+            height: 1,
+            width: "80%",
+        },
+        fab: {
+            position: "absolute",
+            margin: 16,
+            right: 0,
+            bottom: 0,
+        },
+        bottominput: {
+            position: "absolute",
+            margin: 16,
+            right: "auto",
+            left: "auto",
+            bottom: 0,
+            width: "70%",
+        },
+        card: {
+            marginBottom: 4,
+            marginTop: 4,
+            height: 210,
+            ...(Platform.OS == "web" && { cursor: "pointer" }),
+        },
+    }),
     cardlist: {
         width: "100%",
     },
-});
+};
