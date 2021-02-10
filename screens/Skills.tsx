@@ -1,24 +1,16 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { StyleSheet, ScrollView, FlatList } from "react-native";
+import { StyleSheet, ScrollView, FlatList, Dimensions } from "react-native";
 import { Text, FAB, Button, Card, TextInput } from "react-native-paper";
 import { View } from "styled/Themed";
 import { fonts } from "root/fontconfig";
+import { FlatGrid } from "react-native-super-grid";
 import { CommonActions } from "@react-navigation/native";
 import databasePromise from "model/database";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 import _ from "lodash";
 
-async function createSkillCategory(displayName) {
-    const database = await databasePromise;
-    const categoriesCollection = database.skillcategories;
-    const category = await categoriesCollection.insert({
-        display_name: displayName,
-    });
-}
-
 export function SkillCategoriesScreen({ navigation }): JSX.Element {
     const [list, setList] = useState([]);
-    const [newcategory, setNewCategory] = useState("");
     useEffect(() => {
         (async () => {
             const database = await databasePromise;
@@ -30,14 +22,15 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
     }, []);
     return (
         <View style={styles.container}>
-            <FlatList
+            <FlatGrid
+                itemDimension={230}
+                spacing={10}
+                style={styles.cardlist}
                 data={list}
                 keyExtractor={(item) => item.skill_category_id}
                 renderItem={({ item }) => (
-                    <Card>
-                        <Text key={item.skill_category_id}>
-                            {item.display_name}
-                        </Text>
+                    <Card style={styles.card} key={item.skill_category_id}>
+                        <Card.Title title={item.display_name} />
                         <Button
                             onPress={() => {
                                 /* Navigate to skill route with params */
@@ -46,22 +39,17 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                                     displayName: item.display_name,
                                 });
                             }}
+                            color={item.color}
                         >
                             Go to skill category
                         </Button>
                     </Card>
                 )}
             />
-            <ScrollView></ScrollView>
-            <TextInput
-                label="Nieuwe Categorie Naam"
-                value={newcategory}
-                onChangeText={(newcategory) => setNewCategory(newcategory)}
-            />
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => createSkillCategory(newcategory)}
+                onPress={() => navigation.navigate("NewCategory")}
             />
         </View>
     );
@@ -124,33 +112,33 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
     }, []);
     return (
         <View style={styles.container}>
-            <ScrollView>
-                <Text>{JSON.stringify(list)}</Text>
-                <FlatList
-                    data={list}
-                    keyExtractor={(item) => item.skill_id}
-                    renderItem={({ item }) => (
-                        <Card>
-                            <Text key={item.skill_id}>{item.display_name}</Text>
-                            <Button
-                                onPress={() => {
-                                    /* Navigate to skill route with params */
-                                    navigation.navigate("Skill", {
-                                        categoryId: categoryId,
-                                        categoryName: displayName,
-                                        skillId: item.skill_id,
-                                        displayName: item.display_name,
-                                    });
-                                }}
-                            >
-                                Go to skill
-                            </Button>
-                        </Card>
-                    )}
-                />
-                <Text>itemId: {JSON.stringify(categoryId)}</Text>
-            </ScrollView>
+            <Text>{JSON.stringify(list)}</Text>
+            <FlatList
+                style={styles.cardlist}
+                data={list}
+                keyExtractor={(item) => item.skill_id}
+                renderItem={({ item }) => (
+                    <Card style={styles.card} key={item.skill_id}>
+                        <Card.Title title={item.display_name} />
+                        <Button
+                            onPress={() => {
+                                /* Navigate to skill route with params */
+                                navigation.navigate("Skill", {
+                                    categoryId: categoryId,
+                                    categoryName: displayName,
+                                    skillId: item.skill_id,
+                                    displayName: item.display_name,
+                                });
+                            }}
+                        >
+                            Go to skill
+                        </Button>
+                    </Card>
+                )}
+            />
+            <Text>itemId: {JSON.stringify(categoryId)}</Text>
             <TextInput
+                style={styles.bottominput}
                 label="Nieuwe Skill Naam"
                 value={newskill}
                 onChangeText={(newskill) => setNewSkill(newskill)}
@@ -242,13 +230,20 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
     },
-    headertext: {
-        fontSize: 40,
-        ...fonts.light,
+    bottominput: {
+        position: "absolute",
+        margin: 16,
+        right: "auto",
+        left: "auto",
+        bottom: 0,
+        width: "70%",
     },
-    headercontainer: {
-        paddingBottom: 25,
-        paddingTop: 30,
-        paddingLeft: 10,
+    card: {
+        marginBottom: 4,
+        marginTop: 4,
+        height: 210,
+    },
+    cardlist: {
+        width: "100%",
     },
 });

@@ -48,20 +48,6 @@ const SortMenu = (): JSX.Element => {
 };
 
 export default function Tasks(): JSX.Element {
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            elevation: 0,
-            paddingLeft: 10,
-            paddingRight: 10,
-        },
-        fab: {
-            position: "absolute",
-            margin: 16,
-            right: 0,
-            bottom: 0,
-        },
-    });
     const { colors } = useTheme();
     return (
         <>
@@ -114,6 +100,21 @@ export default function Tasks(): JSX.Element {
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        elevation: 0,
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
+    fab: {
+        position: "absolute",
+        margin: 16,
+        right: 0,
+        bottom: 0,
+    },
+});
 
 // Structuur interface
 /*

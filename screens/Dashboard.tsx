@@ -12,6 +12,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, ColoredSubheading } from "styled/Themed";
 import database from "model/database";
+import Timer from "root/components/Timer";
 
 function ActivityCard(props): JSX.Element {
     const { colors } = useTheme();
@@ -35,31 +36,13 @@ function ActivityCard(props): JSX.Element {
 
 export default function Dashboard(): JSX.Element {
     const { colors } = useTheme();
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            elevation: 0,
-            paddingLeft: 16,
-            paddingRight: 16,
-        },
-        fab: {
-            position: "absolute",
-            margin: 16,
-            right: 0,
-            bottom: 90,
-        },
+    const themedstyles = StyleSheet.create({
         xpbar: {
             position: "absolute",
             right: 0,
             left: 0,
             bottom: 0,
             backgroundColor: colors.surface,
-        },
-        xpdot: {
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            justifyContent: "center",
         },
     });
     return (
@@ -76,10 +59,8 @@ export default function Dashboard(): JSX.Element {
                 icon="xml"
             />
             <ColoredSubheading>Time</ColoredSubheading>
-            <Button icon="plus" mode="contained">
-                Start a new timer
-            </Button>
-            <View style={styles.xpbar}>
+            <Timer></Timer>
+            <View style={themedstyles.xpbar}>
                 <ProgressBar style={{ height: 10 }} progress={0.8} />
                 <TransparentView
                     style={{
@@ -167,6 +148,26 @@ export default function Dashboard(): JSX.Element {
         </View>
     );
 }
+const styles = StyleSheet.create({
+    xpdot: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        justifyContent: "center",
+    },
+    container: {
+        flex: 1,
+        elevation: 0,
+        paddingLeft: 16,
+        paddingRight: 16,
+    },
+    fab: {
+        position: "absolute",
+        margin: 16,
+        right: 0,
+        bottom: 90,
+    },
+});
 
 // Structuur interface
 /*
