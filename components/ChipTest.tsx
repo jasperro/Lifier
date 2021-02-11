@@ -1,57 +1,81 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Chip, List, useTheme } from "react-native-paper";
 import PreferencesContext from "root/PreferencesContext";
+import databasePromise from "model/database";
 
-const ChipExample = () => {
+function ChipExample() {
     const { isThemeDark } = React.useContext(PreferencesContext);
     const { colors } = useTheme();
 
-    const dataSource = ["Guitar", "Test", "Hamburger"];
+    const [dataSource, setDataSource] = useState([]);
 
+    const [clicked, setClicked] = useState([]);
+    useEffect(() => {
+        (async () => {
+            const database = await databasePromise;
+            const skillcategoryCollection = database.skillcategories;
+
+            const query = skillcategoryCollection.find();
+            query.$.subscribe((documents) => setDataSource(documents));
+        })();
+    }, []);
     return (
-        <>
-            <View style={[styles.container]}>
-                <List.Section title="Category">
-                    <View style={styles.row}>
-                        {dataSource.map((value, key) => {
-                            const [
-                                pressed,
-                                setPressed,
-                            ] = React.useState<boolean>(true);
-                            return (
-                                <Chip
-                                    key={key}
-                                    mode="outlined"
-                                    textStyle={{
-                                        color:
-                                            !isThemeDark && !pressed
-                                                ? "black"
-                                                : "white",
-                                        fontSize: 15,
-                                    }}
-                                    style={{
-                                        backgroundColor: pressed
-                                            ? colors.primary
-                                            : colors.surface,
-                                        margin: 5,
-                                        flexWrap: "wrap",
-                                    }}
-                                    onPress={() => {
-                                        setPressed(!pressed);
-                                        console.log(pressed);
-                                    }}
-                                >
-                                    {value}
-                                </Chip>
-                            );
-                        })}
-                    </View>
-                </List.Section>
-            </View>
-        </>
+        <View style={[styles.container]}>
+            <List.Section title="Category">
+                <View style={styles.row}>
+                    {dataSource.map((value, key) => {
+                        return (
+                            <Chip
+                                key={key}
+                                mode="outlined"
+                                textStyle={{
+                                    color:
+                                        !isThemeDark &&
+                                        !clicked.includes(
+                                            value.skill_category_id
+                                        )
+                                            ? "black"
+                                            : "white",
+                                    fontSize: 15,
+                                }}
+                                style={{
+                                    backgroundColor: clicked.includes(
+                                        value.skill_category_id
+                                    )
+                                        ? colors.primary
+                                        : colors.surface,
+                                    margin: 5,
+                                    flexWrap: "wrap",
+                                }}
+                                onPress={() => {
+                                    const index = clicked.indexOf(
+                                        value.skill_category_id
+                                    );
+                                    if (index <= -1) {
+                                        // Voeg item toe aan geselecteerde elementen
+                                        setClicked([
+                                            ...clicked,
+                                            value.skill_category_id,
+                                        ]);
+                                    } else {
+                                        // Haal item uit de geselecteerde elementen
+                                        setClicked([
+                                            ...clicked.slice(0, index),
+                                            ...clicked.slice(index + 1),
+                                        ]);
+                                    }
+                                }}
+                            >
+                                {value.display_name}
+                            </Chip>
+                        );
+                    })}
+                </View>
+            </List.Section>
+        </View>
     );
-};
+}
 
 ChipExample.title = "Chip";
 
