@@ -30,8 +30,8 @@ const Timer = (): JSX.Element => {
         setIsActive(false);
     }
 
+    let interval: ReturnType<typeof setTimeout>;
     useEffect(() => {
-        let interval: any;
         if (isActive) {
             interval = setInterval(() => {
                 setSeconds((seconds) => seconds + 1);

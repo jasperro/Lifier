@@ -5,7 +5,7 @@ import { Appbar } from "react-native-paper";
 
 export default (
     path: Array<string> = [],
-    backaction: () => any
+    backaction: Function | undefined = undefined
 ): StackNavigationOptions => {
     return {
         header: function Header({ scene, previous, navigation }) {

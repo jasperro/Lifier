@@ -24,7 +24,8 @@
     },
     "plugins": ["react", "@typescript-eslint", "prettier"],
     "rules": {
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        "react/prop-types": ["error", { "ignore": ["navigation"] }]
     },
     "settings": {
         "react": {

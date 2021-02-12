@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 import { View } from "styled/Themed";
 
-export default function Footer({}: { path: string }) {
+export default function Footer({}: { path: string }): JSX.Element {
     return <View style={styles.container} />;
 }
 

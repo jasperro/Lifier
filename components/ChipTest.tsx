@@ -3,26 +3,30 @@ import { View, StyleSheet } from "react-native";
 import { Chip, List, useTheme } from "react-native-paper";
 import PreferencesContext from "root/PreferencesContext";
 import databasePromise from "model/database";
+import { SkillCategoryType } from "root/model/skillcategory.schema";
 
-function ChipExample() {
+function ChipExample(): JSX.Element {
     const { isThemeDark } = React.useContext(PreferencesContext);
     const { colors } = useTheme();
 
-    const [dataSource, setDataSource] = useState([]);
+    const [dataSource, setDataSource] = useState<SkillCategoryType[]>([]);
 
-    const [clicked, setClicked] = useState([]);
+    const [clicked, setClicked] = useState<string[]>([]);
     useEffect(() => {
         (async () => {
             const database = await databasePromise;
             const skillcategoryCollection = database.skillcategories;
 
             const query = skillcategoryCollection.find();
-            query.$.subscribe((documents) => setDataSource(documents));
+            query.$.subscribe((documents: SkillCategoryType[]) =>
+                setDataSource(documents)
+            );
         })();
     }, []);
     return (
         <View style={[styles.container]}>
-            <List.Section title="Category">
+            <List.Section>
+                <List.Subheader>Category</List.Subheader>
                 <View style={styles.row}>
                     {dataSource.map((value, key) => {
                         return (
