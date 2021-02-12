@@ -1,5 +1,6 @@
 import SkillCategory from "./skillcategory.schema";
 import Skill from "./skill.schema";
+import Task from "./task.schema";
 import Event from "./event.schema";
 import Setting from "./setting.schema";
 import { RxDatabase } from "rxdb";
@@ -37,6 +38,15 @@ export default async function initializeCollections(
 
     skillsCollection.preInsert(function (plainData) {
         plainData.skill_id = uuidv4();
+    }, false);
+
+    const tasksCollection = await database.collection({
+        name: "tasks",
+        schema: Task,
+    });
+
+    tasksCollection.preInsert(function (plainData) {
+        plainData.task_id = uuidv4();
     }, false);
 
     const eventsCollection = await database.collection({

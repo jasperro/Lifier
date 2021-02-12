@@ -21,7 +21,7 @@ export default (
 
             const backbutton = backaction ? (
                 <Appbar.BackAction onPress={backaction} />
-            ) : undefined;
+            ) : null;
 
             return (
                 <Appbar.Header>

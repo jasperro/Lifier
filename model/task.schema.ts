@@ -31,3 +31,13 @@ export default {
     },
     required: ["display_name"],
 };
+
+export type TaskType = {
+    task_id: string;
+    display_name: string;
+    category?: Array<string>;
+    completed?: boolean;
+    completion_time?: number;
+    deadline_time?: number;
+    state?: boolean | number | string;
+};

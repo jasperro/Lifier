@@ -1,5 +1,7 @@
-import * as React from "react";
-import { StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, FlatList } from "react-native";
+import databasePromise from "model/database";
+import { TaskType } from "model/task.schema";
 
 import {
     FAB,
@@ -8,14 +10,15 @@ import {
     Menu,
     Divider,
     IconButton,
+    TextInput,
+    Button,
 } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, ScrollView, ColoredSubheading } from "styled/Themed";
-import database from "model/database";
 import ChipExample from "root/components/ChipTest";
 
 const SortMenu = (): JSX.Element => {
-    const [visible, setVisible] = React.useState(false);
+    const [visible, setVisible] = useState(false);
 
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
@@ -39,7 +42,7 @@ const SortMenu = (): JSX.Element => {
             >
                 <Menu.Item onPress={() => {}} title="Total Hours" />
                 <Menu.Item onPress={() => {}} title="Work Hours" />
-                <Menu.Item onPress={() => {}} title="Skill Hours" />
+                <Menu.Item onPress={() => {}} title="Task Hours" />
                 <Divider />
                 <Menu.Item onPress={() => {}} title="XP Earned" />
             </Menu>
@@ -47,55 +50,77 @@ const SortMenu = (): JSX.Element => {
     );
 };
 
+async function createTask(displayName: string) {
+    const database = await databasePromise;
+    const taskCollection = database.tasks;
+    await taskCollection.insert({
+        display_name: displayName,
+    });
+}
+
 export default function Tasks(): JSX.Element {
     const { colors } = useTheme();
+    const [newtask, setNewTask] = useState("");
+    const [list, setList] = useState([]);
+    useEffect(() => {
+        (async () => {
+            const database = await databasePromise;
+            const taskCollection = database.tasks;
+
+            const query = taskCollection.find();
+            query.$.subscribe(async (documents: TaskType) => {
+                setList(await documents);
+            });
+        })();
+    }, []);
     return (
         <>
             <ScrollView style={styles.container}>
                 <ColoredSubheading>Uncompleted</ColoredSubheading>
                 <SortMenu></SortMenu>
-                <Card>
-                    <Card.Title
-                        title="Maak een planning"
-                        left={() => (
-                            <MaterialCommunityIcons
-                                name="view-dashboard"
-                                size={48}
-                                color={colors.accent}
+                <FlatList
+                    style={styles.cardlist}
+                    data={list}
+                    keyExtractor={(item) => item.task_id}
+                    renderItem={({ item }) => (
+                        <Card style={styles.card} key={item.task_id}>
+                            <Card.Title
+                                title={item.display_name}
+                                left={() => (
+                                    <MaterialCommunityIcons
+                                        name="view-dashboard"
+                                        size={48}
+                                        color={colors.accent}
+                                    />
+                                )}
                             />
-                        )}
-                    />
-                </Card>
-                <Card>
-                    <Card.Title
-                        title="Maak een python-api"
-                        left={() => (
-                            <MaterialCommunityIcons
-                                name="language-python"
-                                size={48}
-                                color={colors.accent}
-                            />
-                        )}
-                    />
-                </Card>
+                            <Button
+                                onPress={() => {
+                                    /* Navigate to task route with params */
+                                    navigation.navigate("Task", {
+                                        taskId: item.task_id,
+                                    });
+                                }}
+                            >
+                                Go to task
+                            </Button>
+                        </Card>
+                    )}
+                />
 
                 <ChipExample></ChipExample>
             </ScrollView>
+            <TextInput
+                style={styles.bottominput}
+                label="Nieuwe Task Naam"
+                value={newtask}
+                onChangeText={(newtask) => setNewTask(newtask)}
+            />
             <FAB
                 style={styles.fab}
                 icon="plus"
                 label="Task"
-                onPress={async () => {
-                    database.then(async (database) => {
-                        const skillsCollection = database.skills;
-
-                        const document = await skillsCollection.bulkInsert(
-                            Array(1000).fill({
-                                display_name: "Dit is een skill",
-                            })
-                        );
-                    });
-                }}
+                onPress={async () => createTask(newtask)}
             />
         </>
     );
