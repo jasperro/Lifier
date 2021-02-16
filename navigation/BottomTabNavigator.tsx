@@ -31,7 +31,7 @@ export default function BottomTabNavigator() {
             }}
         >
             <BottomTab.Screen
-                name="Tasks"
+                name="Taken"
                 component={TasksNavigator}
                 options={{
                     tabBarIcon: ({ color }) => (
