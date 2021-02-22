@@ -126,7 +126,11 @@ export default function App(): JSX.Element {
     return (
         <PreferencesProvider value={preferences}>
             <PaperProvider theme={theme}>
-                <SafeAreaProvider>
+                <SafeAreaProvider
+                    style={{
+                        overflow: "hidden",
+                    }} /* Tijdelijke fix voor react-navigation */
+                >
                     <Navigation theme={theme} />
                     <StatusBar />
                 </SafeAreaProvider>
