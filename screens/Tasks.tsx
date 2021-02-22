@@ -15,6 +15,7 @@ import {
 } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, ScrollView, ColoredSubheading } from "styled/Themed";
+import { CommonActions } from "@react-navigation/native";
 import ChipExample from "root/components/ChipTest";
 
 const SortMenu = (): JSX.Element => {
@@ -59,7 +60,6 @@ async function createTask(displayName: string) {
 }
 
 export default function Tasks(): JSX.Element {
-    const { colors } = useTheme();
     const [newtask, setNewTask] = useState("");
     const [list, setList] = useState([]);
     useEffect(() => {
@@ -75,41 +75,39 @@ export default function Tasks(): JSX.Element {
     }, []);
     return (
         <>
-            <ScrollView style={styles.container}>
-                <ColoredSubheading>Uncompleted</ColoredSubheading>
-                <SortMenu></SortMenu>
-                <FlatList
-                    style={styles.cardlist}
-                    data={list}
-                    keyExtractor={(item) => item.task_id}
-                    renderItem={({ item }) => (
-                        <Card style={styles.card} key={item.task_id}>
-                            <Card.Title
-                                title={item.display_name}
-                                left={() => (
-                                    <MaterialCommunityIcons
-                                        name="view-dashboard"
-                                        size={48}
-                                        color={colors.accent}
-                                    />
-                                )}
-                            />
-                            <Button
-                                onPress={() => {
-                                    /* Navigate to task route with params */
-                                    navigation.navigate("Task", {
-                                        taskId: item.task_id,
-                                    });
-                                }}
-                            >
-                                Go to task
-                            </Button>
-                        </Card>
-                    )}
-                />
+            <ColoredSubheading>Uncompleted</ColoredSubheading>
+            <SortMenu></SortMenu>
+            <FlatList
+                style={styles.cardlist}
+                data={list}
+                keyExtractor={(item) => item.task_id}
+                renderItem={({ item }) => (
+                    <Card style={styles.card} key={item.task_id}>
+                        <Card.Title
+                            title={item.display_name}
+                            left={() => (
+                                <MaterialCommunityIcons
+                                    name="view-dashboard"
+                                    size={48}
+                                    color={"#514889"} // Placeholder voor kleur van categorie/skill
+                                />
+                            )}
+                        />
+                        <Button
+                            onPress={() => {
+                                /* Navigate to task route with params */
+                                CommonActions.navigate("Task", {
+                                    taskId: item.task_id,
+                                });
+                            }}
+                        >
+                            Go to task
+                        </Button>
+                    </Card>
+                )}
+            />
 
-                <ChipExample></ChipExample>
-            </ScrollView>
+            <ChipExample></ChipExample>
             <TextInput
                 style={styles.bottominput}
                 label="Nieuwe Task Naam"

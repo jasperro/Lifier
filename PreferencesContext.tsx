@@ -4,8 +4,11 @@ const PreferencesContext = React.createContext({
     toggleTheme: () => {
         return;
     },
+    setAccentColor: (color: string) => {
+        return;
+    },
     isThemeDark: false,
-    accentColor: "#ff0000",
+    accentColor: "#0077ce",
 });
 
 export const PreferencesProvider = PreferencesContext.Provider;

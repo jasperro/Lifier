@@ -7,6 +7,7 @@ import { SettingsItemBoolean } from "../components/Settings";
 import PreferencesContext from "root/PreferencesContext";
 
 import { removeRxDatabase } from "rxdb";
+import ColorPicker from "root/components/ColorPicker";
 
 export default function Settings(): JSX.Element {
     const theme = useTheme();
@@ -45,6 +46,7 @@ export default function Settings(): JSX.Element {
             >
                 Delete mobile database
             </Button>
+            <ColorPicker></ColorPicker>
         </View>
     );
 }

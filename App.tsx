@@ -1,7 +1,7 @@
 import { decode, encode } from "base-64";
 
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import useCachedResources from "./hooks/useCachedResources";
@@ -63,8 +63,8 @@ enableScreens();
 export default function App(): JSX.Element {
     const isLoadingComplete = useCachedResources();
 
-    const [isThemeDark, setIsThemeDark] = React.useState(false);
-    const [accentColor, setAccentColor] = React.useState("#0077ce");
+    const [isThemeDark, setIsThemeDark] = useState(false);
+    const [accentColor, setAccentColor] = useState("#0077ce");
 
     useEffect(() => {
         (async () => {
