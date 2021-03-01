@@ -17,6 +17,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, ScrollView, ColoredSubheading } from "styled/Themed";
 import { CommonActions } from "@react-navigation/native";
 import ChipExample from "root/components/ChipTest";
+import { SkillCategoryType } from "model/skillcategory.schema";
+import { isRxDocument } from "rxdb";
 
 const SortMenu = (): JSX.Element => {
     const [visible, setVisible] = useState(false);
@@ -54,14 +56,12 @@ const SortMenu = (): JSX.Element => {
 async function createTask(displayName: string) {
     const database = await databasePromise;
     const taskCollection = database.tasks;
-    await taskCollection.insert({
-        display_name: displayName,
-    });
+    await taskCollection.createNew(displayName);
 }
 
 export default function Tasks(): JSX.Element {
     const [newtask, setNewTask] = useState("");
-    const [list, setList] = useState([]);
+    const [list, setList] = useState<TaskType>();
     useEffect(() => {
         (async () => {
             const database = await databasePromise;
@@ -85,13 +85,26 @@ export default function Tasks(): JSX.Element {
                     <Card style={styles.card} key={item.task_id}>
                         <Card.Title
                             title={item.display_name}
-                            left={() => (
-                                <MaterialCommunityIcons
-                                    name="view-dashboard"
-                                    size={48}
-                                    color={"#514889"} // Placeholder voor kleur van categorie/skill
-                                />
-                            )}
+                            left={() => {
+                                // We hebben een lijst met RxDocument in list
+                                /*const [colorToSet, setColorToSet] = useState(
+                                    "#ffffff"
+                                );
+                                useEffect(() => {
+                                    async () => {
+                                        setColorToSet(
+                                            await item.category_.color
+                                        );
+                                    };
+                                });*/
+                                return (
+                                    <MaterialCommunityIcons
+                                        name="view-dashboard"
+                                        size={48}
+                                        color={"#514889"} // TODO: Vervangen door Cat. Kleur.
+                                    />
+                                );
+                            }}
                         />
                         <Button
                             onPress={() => {
@@ -136,6 +149,9 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 0,
         bottom: 0,
+    },
+    card: {
+        marginVertical: 4,
     },
 });
 

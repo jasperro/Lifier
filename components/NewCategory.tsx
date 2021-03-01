@@ -2,6 +2,20 @@ import React, { useState } from "react";
 import { Button } from "react-native-paper";
 import { TextInput } from "react-native-paper";
 import databasePromise from "model/database";
+import validator from "is-my-json-valid";
+import CategorySchema from "model/skillcategory.schema";
+
+//const validate = validator(CategorySchema);
+// Validatie voor input
+/*console.log(
+    "should be valid",
+    validate({
+        skill_category_id: "328847392",
+        display_name: "banaan",
+    }),
+    validate.errors
+);
+console.log("should not be valid", validate({}));*/
 
 async function createSkillCategory(
     displayName: string,
@@ -9,10 +23,7 @@ async function createSkillCategory(
 ) {
     const database = await databasePromise;
     const categoriesCollection = database.skillcategories;
-    const category = await categoriesCollection.insert({
-        display_name: displayName,
-        color: color ? color : undefined,
-    });
+    await categoriesCollection.createNew(displayName, color);
 }
 
 export default function NewCategoryScreen({ navigation }): JSX.Element {

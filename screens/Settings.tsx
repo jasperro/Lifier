@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 import { Text, Button, Colors, useTheme } from "react-native-paper";
-import { View } from "styled/Themed";
+import { ScrollView } from "styled/Themed";
 import { SettingsItemBoolean } from "../components/Settings";
 import PreferencesContext from "root/PreferencesContext";
 
@@ -15,7 +15,7 @@ export default function Settings(): JSX.Element {
         PreferencesContext
     );
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.title}>Settings</Text>
             <SettingsItemBoolean
                 settingid="dark_mode"
@@ -47,7 +47,7 @@ export default function Settings(): JSX.Element {
                 Delete mobile database
             </Button>
             <ColorPicker></ColorPicker>
-        </View>
+        </ScrollView>
     );
 }
 

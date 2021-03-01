@@ -32,7 +32,7 @@ function ColorPicker(): JSX.Element {
 
     return (
         <FlatGrid
-            itemDimension={130}
+            itemDimension={40}
             data={Object.keys(Colors)}
             renderItem={renderItem}
         />

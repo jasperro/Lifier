@@ -79,22 +79,7 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
 async function createSkill(categoryId, displayName) {
     const database = await databasePromise;
     const skillsCollection = database.skills;
-
-    const skillcategoryCollection = database.skillcategories;
-    const skill = await skillsCollection.insert({
-        display_name: displayName,
-    });
-
-    const query = skillcategoryCollection.findOne(categoryId);
-    const result = await query.exec();
-    let existingSkills = await result.skills;
-    existingSkills = existingSkills ? existingSkills : [];
-
-    await skillcategoryCollection.upsert(
-        _.merge({}, result.toJSON(), {
-            skills: [...existingSkills, skill.skill_id],
-        })
-    );
+    await skillsCollection.createNew(categoryId, displayName);
 }
 
 export function SkillCategoryScreen({ route, navigation }): JSX.Element {

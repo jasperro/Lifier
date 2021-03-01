@@ -6,6 +6,7 @@ import Setting from "./setting.schema";
 import { RxDatabase } from "rxdb";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
+import _ from "lodash";
 
 function generateKebabId(inString: string) {
     return inString
@@ -21,6 +22,17 @@ export default async function initializeCollections(
     const categoriesCollection = await database.collection({
         name: "skillcategories",
         schema: SkillCategory,
+        statics: {
+            createNew: async function (
+                displayName: string,
+                color: string | undefined
+            ) {
+                await this.insert({
+                    display_name: displayName,
+                    color: color ? color : undefined,
+                });
+            },
+        },
     });
 
     categoriesCollection.preInsert(function (plainData) {
@@ -34,6 +46,24 @@ export default async function initializeCollections(
     const skillsCollection = await database.collection({
         name: "skills",
         schema: Skill,
+        statics: {
+            createNew: async function (categoryId, displayName) {
+                const skill = await this.insert({
+                    display_name: displayName,
+                });
+
+                const query = categoriesCollection.findOne(categoryId);
+                const result = await query.exec();
+                let existingSkills = await result.skills;
+                existingSkills = existingSkills ? existingSkills : [];
+
+                await categoriesCollection.upsert(
+                    _.merge({}, result.toJSON(), {
+                        skills: [...existingSkills, skill.skill_id],
+                    })
+                );
+            },
+        },
     });
 
     skillsCollection.preInsert(function (plainData) {
@@ -43,6 +73,13 @@ export default async function initializeCollections(
     const tasksCollection = await database.collection({
         name: "tasks",
         schema: Task,
+        statics: {
+            createNew: async function (displayName: string) {
+                await this.insert({
+                    display_name: displayName,
+                });
+            },
+        },
     });
 
     tasksCollection.preInsert(function (plainData) {

@@ -11,13 +11,10 @@ export default {
         display_name: {
             type: "string",
         },
-        //Categories task belongs to
+        //Category task belongs to
         category: {
-            type: "array",
-            ref: "skill_category",
-            items: {
-                type: "string",
-            },
+            type: "string",
+            ref: "skillcategories",
         },
         completed: {
             type: "boolean",
