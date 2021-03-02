@@ -47,7 +47,7 @@ function ChipExample(): JSX.Element {
                                     backgroundColor: clicked.includes(
                                         value.skill_category_id
                                     )
-                                        ? colors.primary
+                                        ? value.color
                                         : colors.surface,
                                     margin: 5,
                                     flexWrap: "wrap",

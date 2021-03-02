@@ -79,6 +79,13 @@ export default async function initializeCollections(
                     display_name: displayName,
                 });
             },
+            changeCategory: async function (categoryID: string) {
+                await this.update({
+                    $set: {
+                        category: categoryID,
+                    },
+                });
+            },
         },
     });
 

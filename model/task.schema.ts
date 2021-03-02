@@ -13,7 +13,7 @@ export default {
         },
         //Category task belongs to
         category: {
-            type: "string",
+            type: ["string", "null"],
             ref: "skillcategories",
         },
         completed: {
@@ -24,6 +24,9 @@ export default {
         },
         deadline_time: {
             type: "number",
+        },
+        color: {
+            type: "string",
         },
     },
     required: ["display_name"],
@@ -37,4 +40,5 @@ export type TaskType = {
     completion_time?: number;
     deadline_time?: number;
     state?: boolean | number | string;
+    color?: string;
 };

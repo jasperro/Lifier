@@ -12,13 +12,13 @@ import {
     IconButton,
     TextInput,
     Button,
+    Text,
 } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, ScrollView, ColoredSubheading } from "styled/Themed";
 import { CommonActions } from "@react-navigation/native";
 import ChipExample from "root/components/ChipTest";
 import { SkillCategoryType } from "model/skillcategory.schema";
-import { isRxDocument } from "rxdb";
 
 const SortMenu = (): JSX.Element => {
     const [visible, setVisible] = useState(false);
@@ -61,15 +61,15 @@ async function createTask(displayName: string) {
 
 export default function Tasks(): JSX.Element {
     const [newtask, setNewTask] = useState("");
-    const [list, setList] = useState<TaskType>();
+    const [list, setList] = useState<Array<TaskType>>([]);
     useEffect(() => {
         (async () => {
             const database = await databasePromise;
             const taskCollection = database.tasks;
 
             const query = taskCollection.find();
-            query.$.subscribe(async (documents: TaskType) => {
-                setList(await documents);
+            query.$.subscribe((documents: TaskType) => {
+                setList(documents);
             });
         })();
     }, []);
@@ -81,13 +81,23 @@ export default function Tasks(): JSX.Element {
                 style={styles.cardlist}
                 data={list}
                 keyExtractor={(item) => item.task_id}
-                renderItem={({ item }) => (
-                    <Card style={styles.card} key={item.task_id}>
-                        <Card.Title
-                            title={item.display_name}
-                            left={() => {
-                                // We hebben een lijst met RxDocument in list
-                                /*const [colorToSet, setColorToSet] = useState(
+                renderItem={({ item }) => {
+                    function Icon() {
+                        return (
+                            <MaterialCommunityIcons
+                                name="view-dashboard"
+                                size={48}
+                                color={item.color}
+                            />
+                        );
+                    }
+                    return (
+                        <Card style={styles.card} key={item.task_id}>
+                            <Card.Title
+                                title={item.display_name}
+                                left={() => {
+                                    // We hebben een lijst met RxDocument in list
+                                    /*const [colorToSet, setColorToSet] = useState(
                                     "#ffffff"
                                 );
                                 useEffect(() => {
@@ -97,27 +107,22 @@ export default function Tasks(): JSX.Element {
                                         );
                                     };
                                 });*/
-                                return (
-                                    <MaterialCommunityIcons
-                                        name="view-dashboard"
-                                        size={48}
-                                        color={"#514889"} // TODO: Vervangen door Cat. Kleur.
-                                    />
-                                );
-                            }}
-                        />
-                        <Button
-                            onPress={() => {
-                                /* Navigate to task route with params */
-                                CommonActions.navigate("Task", {
-                                    taskId: item.task_id,
-                                });
-                            }}
-                        >
-                            Go to task
-                        </Button>
-                    </Card>
-                )}
+                                    return <Icon></Icon>;
+                                }}
+                            />
+                            <Button
+                                onPress={() => {
+                                    /* Navigate to task route with params */
+                                    CommonActions.navigate("Task", {
+                                        taskId: item.task_id,
+                                    });
+                                }}
+                            >
+                                Go to task {item.color}
+                            </Button>
+                        </Card>
+                    );
+                }}
             />
 
             <ChipExample></ChipExample>
@@ -125,7 +130,9 @@ export default function Tasks(): JSX.Element {
                 style={styles.bottominput}
                 label="Nieuwe Task Naam"
                 value={newtask}
-                onChangeText={(newtask) => setNewTask(newtask)}
+                onChangeText={(newtask) => {
+                    setNewTask(newtask);
+                }}
             />
             <FAB
                 style={styles.fab}
