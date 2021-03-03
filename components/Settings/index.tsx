@@ -5,6 +5,9 @@ import { Switch, Text } from "react-native-paper";
 import { SkillCategoryType } from "root/model/skillcategory.schema";
 import { SettingType } from "root/model/setting.schema";
 import { View } from "styled/Themed";
+import ColorPicker from "root/components/ColorPicker";
+import { RxCollection, RxDatabase, RxQuery } from "rxdb";
+import PreferencesContext from "root/PreferencesContext";
 
 export function SettingsItemBoolean(props: {
     displayname: string;
@@ -120,6 +123,56 @@ export function SettingsItemString(props: {
                 value={isEnabled}
                 style={styles.settingswitch}
             />
+        </View>
+    );
+}
+
+export function SettingsItemColor(props: {
+    displayname: string;
+    settingid: string;
+}): JSX.Element {
+    const { setAccentColor } = React.useContext(PreferencesContext);
+
+    let query: RxQuery;
+    let database: RxDatabase;
+    let settingsCollection: RxCollection;
+    (async () => {
+        database = await databasePromise;
+        // Pak de lijst met instellingen uit de database
+        settingsCollection = database.settings;
+
+        // Zet switch naar state uit database
+        query = settingsCollection
+            .findOne()
+            .where("setting_id")
+            .eq(props.settingid);
+        query.exec().then(async (document: SettingType) => {
+            if (document == null) {
+                document = await settingsCollection.atomicUpsert({
+                    setting_id: props.settingid,
+                    state: "#0077ce",
+                });
+            }
+        });
+    })();
+
+    const onSelectColor = async (color: string) => {
+        setAccentColor(color);
+        query.exec().then(async (document: SettingType) => {
+            await settingsCollection.atomicUpsert({
+                setting_id: props.settingid,
+                state: color,
+            });
+        });
+    };
+
+    return (
+        <View style={styles.container}>
+            <View>
+                <Text>{props.displayname}</Text>
+                <Text>{props.settingid}</Text>
+            </View>
+            <ColorPicker onSelectColor={onSelectColor} />
         </View>
     );
 }

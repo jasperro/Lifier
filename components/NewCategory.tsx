@@ -4,6 +4,7 @@ import { TextInput } from "react-native-paper";
 import databasePromise from "model/database";
 import validator from "is-my-json-valid";
 import CategorySchema from "model/skillcategory.schema";
+import ColorPicker from "root/components/ColorPicker";
 
 //const validate = validator(CategorySchema);
 // Validatie voor input
@@ -41,6 +42,7 @@ export default function NewCategoryScreen({ navigation }): JSX.Element {
                 value={newcolor}
                 onChangeText={(newcolor) => setNewColor(newcolor)}
             />
+            <ColorPicker onSelectColor={(newcolor) => setNewColor(newcolor)} />
             <Button
                 onPress={() => {
                     createSkillCategory(newcategory, newcolor);

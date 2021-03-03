@@ -6,21 +6,29 @@ import { FlatGrid } from "react-native-super-grid";
 import { Colors } from "react-native-paper";
 import PreferencesContext from "root/PreferencesContext";
 
-function ColorPicker(): JSX.Element {
-    const [selectedColor, setSelectedColor] = useState("");
-    const { setAccentColor } = React.useContext(PreferencesContext);
+interface ColorPickerPropsType {
+    onSelectColor: (color: string) => unknown;
+}
 
-    const renderItem = ({ item }) => {
-        const fontColor = Color(Colors[item]).isDark() ? "#ffffff" : "#000000";
+function ColorPicker({ onSelectColor }: ColorPickerPropsType): JSX.Element {
+    const [selectedColor, setSelectedColor] = useState("");
+
+    const renderItem = ({ item }: { item: string }) => {
+        const newSelectedColor: string = Colors[item];
+        const fontColor = Color(newSelectedColor).isDark()
+            ? "#ffffff"
+            : "#000000";
         return (
             <TouchableOpacity
-                style={[styles.circle, { backgroundColor: Colors[item] }]}
+                style={[styles.circle, { backgroundColor: newSelectedColor }]}
                 onPress={() => {
-                    setSelectedColor(Colors[item]);
-                    setAccentColor(Colors[item]);
+                    setSelectedColor(newSelectedColor);
+                    if (onSelectColor) {
+                        onSelectColor(newSelectedColor);
+                    }
                 }}
             >
-                {selectedColor === Colors[item] && (
+                {selectedColor === newSelectedColor && (
                     <Icon
                         name="check"
                         style={{ color: fontColor, fontSize: 24 }}

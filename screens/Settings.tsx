@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 import { Text, Button, Colors, useTheme } from "react-native-paper";
 import { ScrollView } from "styled/Themed";
-import { SettingsItemBoolean } from "../components/Settings";
+import { SettingsItemBoolean, SettingsItemColor } from "../components/Settings";
 import PreferencesContext from "root/PreferencesContext";
 
 import { removeRxDatabase } from "rxdb";
@@ -24,6 +24,10 @@ export default function Settings(): JSX.Element {
             <SettingsItemBoolean
                 settingid="db_sync"
                 displayname="Database Synchronisation"
+            />
+            <SettingsItemColor
+                displayname="Accent Color"
+                settingid="accent_color"
             />
             {/*<SettingsItemString settingid="color" displayname="Display Color" />*/}
             <Button onPress={() => setAccentColor(Colors.red500)}>Red</Button>
@@ -46,7 +50,6 @@ export default function Settings(): JSX.Element {
             >
                 Delete mobile database
             </Button>
-            <ColorPicker></ColorPicker>
         </ScrollView>
     );
 }

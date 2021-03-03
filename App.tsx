@@ -20,7 +20,7 @@ import {
 } from "react-native-paper";
 import { PreferencesProvider } from "./PreferencesContext";
 import { fonts as fontList } from "./fontconfig";
-import { RxDatabase } from "rxdb";
+import { RxCollection, RxDatabase, RxQuery } from "rxdb";
 import { SettingType } from "model/setting.schema";
 
 const ExtraTheme = {
@@ -73,24 +73,49 @@ export default function App(): JSX.Element {
             const settingsCollection = database.settings;
 
             // Zet switch naar state uit database
-            const query = settingsCollection
-                .findOne()
-                .where("setting_id")
-                .eq("dark_mode");
-            let document = await query.exec();
-            if (document == null) {
-                document = await settingsCollection.atomicUpsert({
-                    setting_id: "dark_mode",
-                    state: false,
+            const darkPromise = async () => {
+                const query = settingsCollection
+                    .findOne()
+                    .where("setting_id")
+                    .eq("dark_mode");
+                let document = await query.exec();
+                if (document == null) {
+                    document = await settingsCollection.atomicUpsert({
+                        setting_id: "dark_mode",
+                        state: false,
+                    });
+                }
+                document.$.subscribe((changeEvent: SettingType) => {
+                    setIsThemeDark(
+                        typeof changeEvent.state == "boolean"
+                            ? changeEvent.state
+                            : false
+                    );
                 });
-            }
-            document.$.subscribe((changeEvent: SettingType) => {
-                setIsThemeDark(
-                    typeof changeEvent.state == "boolean"
-                        ? changeEvent.state
-                        : false
-                );
-            });
+            };
+
+            const accentPromise = async () => {
+                const query = settingsCollection
+                    .findOne()
+                    .where("setting_id")
+                    .eq("accent_color");
+                let document = await query.exec();
+                if (document == null) {
+                    document = await settingsCollection.atomicUpsert({
+                        setting_id: "accent_color",
+                        state: "#0077ce",
+                    });
+                }
+                document.$.subscribe((changeEvent: SettingType) => {
+                    setAccentColor(
+                        typeof changeEvent.state == "string"
+                            ? changeEvent.state
+                            : "#0077ce"
+                    );
+                });
+            };
+
+            await Promise.all([accentPromise(), darkPromise()]);
         })();
     }, []);
 
