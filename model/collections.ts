@@ -35,14 +35,6 @@ export default async function initializeCollections(
         },
     });
 
-    categoriesCollection.preInsert(function (plainData) {
-        plainData.skill_category_id = generateKebabId(plainData.display_name);
-    }, true);
-
-    categoriesCollection.preSave(function (plainData) {
-        plainData.skill_category_id = generateKebabId(plainData.display_name);
-    }, true);
-
     const skillsCollection = await database.collection({
         name: "skills",
         schema: Skill,
@@ -64,10 +56,36 @@ export default async function initializeCollections(
                 );
             },
         },
+        methods: {
+            changeDisplayName: async function (newName: string) {
+                await this.update({
+                    $set: {
+                        display_name: newName,
+                    },
+                });
+            },
+        },
     });
 
+    categoriesCollection.preInsert(async function (plainData) {
+        //Categorie-ID een verkorte versie van de uuid, omdat er verwacht wordt
+        //dat er weinig categorieën gemaakt gaan worden. TODO: Retry bij falen?
+
+        plainData.skill_category_id = btoa(uuidv4()).replace(/(.{8})..+/, "$1");
+        //Genereer categorie met opeenvolgende getallen, werkt niet met sync
+
+        /*const query = categoriesCollection
+            .findOne()
+            .sort({ skill_category_id: "desc" });
+        const result = await query.exec();
+        plainData.skill_category_id =
+            result && result.skill_category_id
+                ? (parseInt(result.skill_category_id) + 1).toString()
+                : "0";*/
+    }, false);
+
     skillsCollection.preInsert(function (plainData) {
-        plainData.skill_id = uuidv4();
+        plainData.skill_id = btoa(uuidv4());
     }, false);
 
     const tasksCollection = await database.collection({
@@ -92,6 +110,13 @@ export default async function initializeCollections(
     tasksCollection.preInsert(function (plainData) {
         plainData.task_id = uuidv4();
     }, false);
+
+    tasksCollection.preInsert(async function (plainData) {
+        const category = await categoriesCollection
+            .findOne(plainData.category)
+            .exec();
+        plainData.color = category == null ? category.color : null;
+    }, true);
 
     const eventsCollection = await database.collection({
         name: "events",

@@ -16,6 +16,7 @@ import databasePromise from "model/database";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 import _ from "lodash";
 import Color from "color";
+import { RxCollection, RxDatabase, RxDocument, RxQuery } from "rxdb";
 
 export function SkillCategoriesScreen({ navigation }): JSX.Element {
     const { colors } = useTheme();
@@ -104,18 +105,16 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
 
     const [newskill, setNewSkill] = useState("");
     const [list, setList] = useState([]);
-    useEffect(() => {
-        (async () => {
-            const database = await databasePromise;
-            const skillcategoryCollection = database.skillcategories;
+    (async () => {
+        const database = await databasePromise;
+        const skillcategoryCollection = database.skillcategories;
 
-            const query = skillcategoryCollection.findOne(categoryId);
-            query.$.subscribe(async (documents) => {
-                const newList = await documents.skills_;
-                setList(newList);
-            });
-        })();
-    }, []);
+        const query = skillcategoryCollection.findOne(categoryId);
+        query.$.subscribe(async (documents) => {
+            const newList = await documents.skills_;
+            setList(newList);
+        });
+    })();
     return (
         <View style={styles.container}>
             <Text>{JSON.stringify(list)}</Text>
@@ -160,9 +159,11 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
 
 export function SkillScreen({ route, navigation }): JSX.Element {
     const { skillId, displayName, categoryId, categoryName } = route.params;
+    const [newskill, setNewSkill] = useState("");
+    const [title, setTitle] = useState(displayName);
     useEffect(() => {
         navigation.setOptions({
-            ...DefaultStackOptions([categoryName, displayName], () => {
+            ...DefaultStackOptions([categoryName, title], () => {
                 navigation.dispatch(
                     navigation.canGoBack()
                         ? CommonActions.goBack()
@@ -181,25 +182,57 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                 );
             }),
         });
-    }, []);
+    }, [title]);
 
-    const [title, setTitle] = useState(displayName);
-    useLayoutEffect(() => {
-        (async () => {
-            const database = await databasePromise;
+    let database: RxDatabase;
+    let skillCollection: RxCollection;
+    let query: RxQuery;
+    (async () => {
+        database = await databasePromise;
+        skillCollection = database.skills;
 
-            const skillCollection = database.skills;
+        query = skillCollection.findOne(skillId);
+        query.$.subscribe((data) => setTitle(data.display_name));
+    })();
 
-            const query = skillCollection.findOne(skillId);
-            query.$.subscribe((data) => setTitle(data.display_name));
-        })();
-    }, []);
     return (
         <View style={styles.container}>
             <ScrollView>
-                <Text>{title}</Text>
+                <Text style={{ fontSize: 60 }}>{title}</Text>
                 <Text>skillId: {JSON.stringify(skillId)}</Text>
+                <Button
+                    onPress={async () => {
+                        const categoryCollection = database.skillcategories;
+                        const query = categoryCollection.findOne(categoryId);
+                        const result = await query.exec();
+                        await result.update({
+                            $set: {
+                                display_name: "a",
+                            },
+                        });
+                    }}
+                >
+                    Rename A to B
+                </Button>
             </ScrollView>
+
+            <TextInput
+                style={styles.bottominput}
+                label="Nieuwe Skill Naam"
+                value={newskill}
+                onChangeText={(newskill) => setNewSkill(newskill)}
+            />
+            <FAB
+                style={styles.fab}
+                icon="plus"
+                onPress={() =>
+                    query
+                        .exec()
+                        .then((document) =>
+                            document.changeDisplayName(newskill)
+                        )
+                }
+            />
         </View>
     );
 }

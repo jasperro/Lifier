@@ -26,7 +26,7 @@ export default {
             type: "number",
         },
         color: {
-            type: "string",
+            type: ["string", "null"],
         },
     },
     required: ["display_name"],
@@ -35,10 +35,10 @@ export default {
 export type TaskType = {
     task_id: string;
     display_name: string;
-    category?: Array<string>;
+    category?: string | null;
     completed?: boolean;
     completion_time?: number;
     deadline_time?: number;
     state?: boolean | number | string;
-    color?: string;
+    color?: string | null;
 };
