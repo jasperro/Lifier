@@ -92,7 +92,7 @@ export function SettingsItemString(props: {
             // Pak de lijst met instellingen uit de database
             const settingsCollection = database.settings;
 
-            // Zet switch naar state uit database
+            // Zet string naar state uit database
             const query = settingsCollection
                 .findOne()
                 .where("setting_id")
@@ -101,7 +101,7 @@ export function SettingsItemString(props: {
                 if (document == null) {
                     document = await settingsCollection.atomicUpsert({
                         setting_id: props.settingid,
-                        state: false,
+                        state: "",
                     });
                 }
                 document.$.subscribe((changeEvent) => {
@@ -133,31 +133,29 @@ export function SettingsItemColor(props: {
 }): JSX.Element {
     const { setAccentColor } = React.useContext(PreferencesContext);
 
-    let query: RxQuery;
-    let database: RxDatabase;
-    let settingsCollection: RxCollection;
-    (async () => {
-        database = await databasePromise;
-        // Pak de lijst met instellingen uit de database
-        settingsCollection = database.settings;
+    // Super janky? asyncData is ervoor om de query niet steeds te hoeven
+    // herdefiniëren en dat de dependencies gereed zijn. Alle constantes worden
+    // eenmalig ingesteld. Misschien useMemo gebruiken?
 
-        // Zet switch naar state uit database
-        query = settingsCollection
+    const asyncData = (async () => {
+        const database = await databasePromise;
+        // Pak de lijst met instellingen uit de database
+        const settingsCollection = database.settings;
+
+        // Stel query op
+        const query = settingsCollection
             .findOne()
             .where("setting_id")
             .eq(props.settingid);
-        query.exec().then(async (document: SettingType) => {
-            if (document == null) {
-                document = await settingsCollection.atomicUpsert({
-                    setting_id: props.settingid,
-                    state: "#0077ce",
-                });
-            }
-        });
+        return {
+            query: query,
+            settingsCollection: settingsCollection,
+        };
     })();
 
     const onSelectColor = async (color: string) => {
         setAccentColor(color);
+        const { query, settingsCollection } = await asyncData;
         query.exec().then(async (document: SettingType) => {
             await settingsCollection.atomicUpsert({
                 setting_id: props.settingid,

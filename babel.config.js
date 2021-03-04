@@ -4,6 +4,7 @@ module.exports = function (api) {
         presets: ["babel-preset-expo"],
         plugins: [
             "react-native-paper/babel",
+            "@babel/plugin-proposal-throw-expressions",
             [
                 "module-resolver",
                 {

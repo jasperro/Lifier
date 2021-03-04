@@ -1,6 +1,7 @@
-import { createRxDatabase, addRxPlugin } from "rxdb";
+import { createRxDatabase, addRxPlugin, removeRxDatabase } from "rxdb";
 import initializeCollections from "./collections";
-import IndexedDBAdapter from "pouchdb-adapter-idb"; // Vervangen door pouchdb-adapter-indexeddb als pouchdb/pouchdb#8209 gefixt wordt
+import IndexedDBAdapter from "pouchdb-adapter-idb";
+import { throwError } from "rxjs"; // Vervangen door pouchdb-adapter-indexeddb als pouchdb/pouchdb#8209 gefixt wordt
 //import HTTPAdapter from "pouchdb-adapter-http";
 
 //addRxPlugin(HTTPAdapter); // replication
@@ -13,7 +14,17 @@ async function getRxDB() {
         multiInstance: true,
     });
 
-    await initializeCollections(rxdb);
+    await initializeCollections(rxdb).catch((error) => {
+        try {
+            removeRxDatabase("database", "react-native-sqlite");
+        } catch (error) {}
+        try {
+            removeRxDatabase("database", "idb");
+        } catch (error) {}
+        throw new Error(
+            "Collections konden niet geïnitialiseerd worden, database wordt gewist"
+        );
+    });
 
     return rxdb;
 }

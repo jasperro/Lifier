@@ -9,7 +9,7 @@ export default {
             primary: true,
         },
         state: {
-            type: ["boolean", "number", "string"],
+            type: ["boolean", "number", "string", "null"],
         },
     },
     required: ["setting_id"],

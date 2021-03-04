@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
-import NewCategoryScreen from "root/components/NewCategory";
+import NewCategoryModal from "root/components/NewCategoryModal";
 
 import NotFoundScreen from "../screens/NotFoundScreen";
 import { RootStackParamList } from "../types";
@@ -26,7 +26,7 @@ function RootNavigator() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Root" component={BottomTabNavigator} />
-            <Stack.Screen name="NewCategory" component={NewCategoryScreen} />
+            <Stack.Screen name="NewCategory" component={NewCategoryModal} />
             <Stack.Screen
                 name="NotFound"
                 component={NotFoundScreen}

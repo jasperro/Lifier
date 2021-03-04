@@ -27,7 +27,7 @@ async function createSkillCategory(
     await categoriesCollection.createNew(displayName, color);
 }
 
-export default function NewCategoryScreen({ navigation }): JSX.Element {
+export default function NewCategoryModal({ navigation }): JSX.Element {
     const [newcategory, setNewCategory] = useState("");
     const [newcolor, setNewColor] = useState("");
     return (

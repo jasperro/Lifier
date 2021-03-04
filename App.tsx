@@ -65,6 +65,7 @@ export default function App(): JSX.Element {
 
     const [isThemeDark, setIsThemeDark] = useState(false);
     const [accentColor, setAccentColor] = useState("#0077ce");
+    const [isDBLoadingComplete, setIsDBLoadingComplete] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -115,7 +116,13 @@ export default function App(): JSX.Element {
                 });
             };
 
-            await Promise.all([accentPromise(), darkPromise()]);
+            await Promise.all([accentPromise(), darkPromise()]).catch(
+                (error) => {
+                    console.error(error.message);
+                }
+            );
+
+            setIsDBLoadingComplete(true);
         })();
     }, []);
 
@@ -145,7 +152,7 @@ export default function App(): JSX.Element {
         [toggleTheme, isThemeDark, setAccentColor, accentColor]
     );
 
-    if (!isLoadingComplete) {
+    if (!isLoadingComplete || !isDBLoadingComplete) {
         return null;
     }
     return (
