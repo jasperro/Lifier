@@ -51,7 +51,7 @@
         "react-native-super-grid": "^4.1.1",
         "react-native-svg": "12.1.0",
         "react-native-web": "~0.13.12",
-        "rxdb": "^9.6.0",
+        "rxdb": "^9.15.0",
         "rxjs": "^6.6.3",
         "uuid": "^8.3.1",
         "victory": "^35.3.1",

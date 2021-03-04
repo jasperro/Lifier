@@ -1,6 +1,6 @@
 export default {
-    title: "task",
     version: 0,
+    title: "task",
     description: "describes a task",
     type: "object",
     properties: {

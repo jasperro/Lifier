@@ -1,6 +1,6 @@
 export default {
-    title: "event",
     version: 0,
+    title: "event",
     description: "describes a event in time, with a duration and action",
     type: "object",
     properties: {

@@ -4,16 +4,10 @@ import { StyleSheet } from "react-native";
 import { Text, Button, Colors, useTheme } from "react-native-paper";
 import { ScrollView } from "styled/Themed";
 import { SettingsItemBoolean, SettingsItemColor } from "../components/Settings";
-import PreferencesContext from "root/PreferencesContext";
 
 import { removeRxDatabase } from "rxdb";
-import ColorPicker from "root/components/ColorPicker";
 
 export default function Settings(): JSX.Element {
-    const theme = useTheme();
-    const { toggleTheme, setAccentColor } = React.useContext(
-        PreferencesContext
-    );
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Settings</Text>
@@ -30,16 +24,6 @@ export default function Settings(): JSX.Element {
                 settingid="accent_color"
             />
             {/*<SettingsItemString settingid="color" displayname="Display Color" />*/}
-            <Button onPress={() => setAccentColor(Colors.red500)}>Red</Button>
-            <Button onPress={() => setAccentColor(Colors.green500)}>
-                Green
-            </Button>
-            <Button onPress={() => setAccentColor(Colors.teal500)}>Teal</Button>
-            <Button onPress={() => setAccentColor(Colors.yellow500)}>
-                Yellow
-            </Button>
-            <Button onPress={() => setAccentColor("#0077ce")}>Default</Button>
-            <Button onPress={() => toggleTheme()}>Dark mode toggle</Button>
             <Button onPress={() => removeRxDatabase("database", "idb")}>
                 Delete web database
             </Button>

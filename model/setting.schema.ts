@@ -1,6 +1,6 @@
 export default {
-    title: "setting",
     version: 0,
+    title: "setting",
     description: "describes a setting",
     type: "object",
     properties: {

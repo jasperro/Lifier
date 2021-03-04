@@ -1,6 +1,6 @@
 export default {
-    title: "skill category",
     version: 0,
+    title: "skill category",
     description: "describes a skill category that references skills",
     type: "object",
     properties: {

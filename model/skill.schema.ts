@@ -1,6 +1,6 @@
 export default {
-    title: "skill",
     version: 0,
+    title: "skill",
     description: "describes a skill",
     type: "object",
     properties: {

@@ -16,9 +16,6 @@ async function getRxDB() {
 
     await initializeCollections(rxdb).catch((error) => {
         try {
-            removeRxDatabase("database", "react-native-sqlite");
-        } catch (error) {}
-        try {
             removeRxDatabase("database", "idb");
         } catch (error) {}
         throw new Error(
