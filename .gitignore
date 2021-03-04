@@ -8,6 +8,9 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+.idea/*
+.history/*
+.vscode/*
 yarn-error.log
 
 # macOS

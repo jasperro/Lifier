@@ -17,6 +17,7 @@ import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 import _ from "lodash";
 import Color from "color";
 import { RxCollection, RxDatabase, RxDocument, RxQuery } from "rxdb";
+import { SkillCategoryType } from "root/model/skillcategory.schema";
 
 export function SkillCategoriesScreen({ navigation }): JSX.Element {
     const { colors } = useTheme();
@@ -37,7 +38,9 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                 spacing={10}
                 style={styles.cardlist}
                 data={list}
-                keyExtractor={(item) => item.skill_category_id}
+                keyExtractor={(item: SkillCategoryType) =>
+                    item.skill_category_id
+                }
                 renderItem={({ item }) => (
                     <Card
                         onPress={() => {
@@ -65,6 +68,24 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                             }}
                             title={item.display_name}
                         />
+                        <Button
+                            onPress={async () => {
+                                const database = await databasePromise;
+                                const categoryCollection =
+                                    database.skillcategories;
+                                const query = categoryCollection.findOne(
+                                    item.skill_category_id
+                                );
+                                const result = await query.exec();
+                                await result.update({
+                                    $set: {
+                                        display_name: Math.random().toString(),
+                                    },
+                                });
+                            }}
+                        >
+                            Rename to random name
+                        </Button>
                     </Card>
                 )}
             />
@@ -77,18 +98,14 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
     );
 }
 
-async function createSkill(categoryId, displayName) {
-    const database = await databasePromise;
-    const skillsCollection = database.skills;
-    await skillsCollection.createNew(categoryId, displayName);
-}
-
 export function SkillCategoryScreen({ route, navigation }): JSX.Element {
     const { categoryId, displayName } = route.params;
+    const [list, setList] = useState([]);
+    const [title, setTitle] = useState(displayName);
 
     useEffect(() => {
         navigation.setOptions({
-            ...DefaultStackOptions([JSON.stringify(displayName)], () => {
+            ...DefaultStackOptions([title], () => {
                 navigation.dispatch(
                     CommonActions.reset({
                         index: 1,
@@ -101,22 +118,27 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
                 );
             }),
         });
+    }, [title]);
+    let database: RxDatabase;
+    let query: RxQuery;
+    let skillcategoryCollection: RxCollection;
+    useEffect(() => {
+        (async () => {
+            database = await databasePromise;
+
+            skillcategoryCollection = database.skillcategories;
+            query = skillcategoryCollection.findOne(categoryId);
+
+            query.$.subscribe(async (documents) => {
+                const newList = await documents.skills_;
+                setList(newList);
+            });
+            query.$.subscribe((data) => setTitle(data.display_name));
+        })();
     }, []);
-
-    const [newskill, setNewSkill] = useState("");
-    const [list, setList] = useState([]);
-    (async () => {
-        const database = await databasePromise;
-        const skillcategoryCollection = database.skillcategories;
-
-        const query = skillcategoryCollection.findOne(categoryId);
-        query.$.subscribe(async (documents) => {
-            const newList = await documents.skills_;
-            setList(newList);
-        });
-    })();
     return (
         <View style={styles.container}>
+            <Text style={{ fontSize: 60 }}>{title}</Text>
             <Text>{JSON.stringify(list)}</Text>
             <FlatList
                 style={styles.cardlist}
@@ -130,7 +152,7 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
                                 /* Navigate to skill route with params */
                                 navigation.navigate("Skill", {
                                     categoryId: categoryId,
-                                    categoryName: displayName,
+                                    categoryName: title,
                                     skillId: item.skill_id,
                                     displayName: item.display_name,
                                 });
@@ -142,16 +164,15 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
                 )}
             />
             <Text>itemId: {JSON.stringify(categoryId)}</Text>
-            <TextInput
-                style={styles.bottominput}
-                label="Nieuwe Skill Naam"
-                value={newskill}
-                onChangeText={(newskill) => setNewSkill(newskill)}
-            />
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={async () => createSkill(categoryId, newskill)}
+                onPress={() =>
+                    navigation.navigate("NewSkill", {
+                        categoryId: categoryId,
+                        categoryName: displayName,
+                    })
+                }
             />
         </View>
     );
@@ -159,8 +180,8 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
 
 export function SkillScreen({ route, navigation }): JSX.Element {
     const { skillId, displayName, categoryId, categoryName } = route.params;
-    const [newskill, setNewSkill] = useState("");
     const [title, setTitle] = useState(displayName);
+    const [newSkill, setNewSkill] = useState("");
     useEffect(() => {
         navigation.setOptions({
             ...DefaultStackOptions([categoryName, title], () => {
@@ -200,27 +221,13 @@ export function SkillScreen({ route, navigation }): JSX.Element {
             <ScrollView>
                 <Text style={{ fontSize: 60 }}>{title}</Text>
                 <Text>skillId: {JSON.stringify(skillId)}</Text>
-                <Button
-                    onPress={async () => {
-                        const categoryCollection = database.skillcategories;
-                        const query = categoryCollection.findOne(categoryId);
-                        const result = await query.exec();
-                        await result.update({
-                            $set: {
-                                display_name: "a",
-                            },
-                        });
-                    }}
-                >
-                    Rename A to B
-                </Button>
             </ScrollView>
 
             <TextInput
                 style={styles.bottominput}
                 label="Nieuwe Skill Naam"
-                value={newskill}
-                onChangeText={(newskill) => setNewSkill(newskill)}
+                value={newSkill}
+                onChangeText={(newSkill) => setNewSkill(newSkill)}
             />
             <FAB
                 style={styles.fab}
@@ -229,7 +236,7 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                     query
                         .exec()
                         .then((document) =>
-                            document.changeDisplayName(newskill)
+                            document.changeDisplayName(newSkill)
                         )
                 }
             />
