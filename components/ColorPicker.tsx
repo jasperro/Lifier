@@ -38,13 +38,17 @@ function ColorPicker({ onSelectColor }: ColorPickerPropsType): JSX.Element {
         );
     };
 
-    return (
-        <FlatGrid
-            itemDimension={40}
-            data={Object.keys(Colors)}
-            renderItem={renderItem}
-        />
-    );
+    const returned = React.useMemo(() => {
+        return (
+            <FlatGrid
+                itemDimension={40}
+                data={Object.keys(Colors)}
+                renderItem={renderItem}
+            />
+        );
+    }, [selectedColor]);
+
+    return returned;
 }
 
 const styles = StyleSheet.create({
