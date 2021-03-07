@@ -3,13 +3,13 @@ import { View, StyleSheet } from "react-native";
 import { Chip, List, useTheme } from "react-native-paper";
 import PreferencesContext from "root/PreferencesContext";
 import databasePromise from "model/database";
-import { SkillCategoryType } from "root/model/skillcategory.schema";
+import { SkillCategorySchema } from "root/model/skillcategory.type";
 
 function ChipExample(): JSX.Element {
     const { isThemeDark } = React.useContext(PreferencesContext);
     const { colors } = useTheme();
 
-    const [dataSource, setDataSource] = useState<SkillCategoryType[]>([]);
+    const [dataSource, setDataSource] = useState<SkillCategorySchema[]>([]);
 
     const [clicked, setClicked] = useState<string[]>([]);
     useEffect(() => {
@@ -18,7 +18,7 @@ function ChipExample(): JSX.Element {
             const skillcategoryCollection = database.skillcategories;
 
             const query = skillcategoryCollection.find();
-            query.$.subscribe((documents: SkillCategoryType[]) =>
+            query.$.subscribe((documents: SkillCategorySchema[]) =>
                 setDataSource(documents)
             );
         })();

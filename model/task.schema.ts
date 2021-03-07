@@ -1,6 +1,6 @@
 export default {
     version: 0,
-    title: "task",
+    title: "task schema",
     description: "describes a task",
     type: "object",
     properties: {
@@ -30,15 +30,4 @@ export default {
         },
     },
     required: ["display_name"],
-};
-
-export type TaskType = {
-    task_id: string;
-    display_name: string;
-    category?: string | null;
-    completed?: boolean;
-    completion_time?: number;
-    deadline_time?: number;
-    state?: boolean | number | string;
-    color?: string | null;
 };

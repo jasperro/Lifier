@@ -21,7 +21,7 @@ import {
 import { PreferencesProvider } from "./PreferencesContext";
 import { fonts as fontList } from "./fontconfig";
 import { RxCollection, RxDatabase, RxQuery } from "rxdb";
-import { SettingType } from "model/setting.schema";
+import { SettingSchema } from "model/setting.type";
 
 const ExtraTheme = {
     colors: { textLight: "#ffffff", textDark: "#000000" },
@@ -86,7 +86,7 @@ export default function App(): JSX.Element {
                         state: false,
                     });
                 }
-                document.$.subscribe((changeEvent: SettingType) => {
+                document.$.subscribe((changeEvent: SettingSchema) => {
                     setIsThemeDark(
                         typeof changeEvent.state == "boolean"
                             ? changeEvent.state
@@ -107,7 +107,7 @@ export default function App(): JSX.Element {
                         state: "#0077ce",
                     });
                 }
-                document.$.subscribe((changeEvent: SettingType) => {
+                document.$.subscribe((changeEvent: SettingSchema) => {
                     setAccentColor(
                         typeof changeEvent.state == "string"
                             ? changeEvent.state

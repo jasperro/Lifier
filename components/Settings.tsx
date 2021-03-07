@@ -2,8 +2,8 @@ import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Switch, Text } from "react-native-paper";
-import { SkillCategoryType } from "root/model/skillcategory.schema";
-import { SettingType } from "root/model/setting.schema";
+import { SkillCategorySchema } from "root/model/skillcategory.type";
+import { SettingSchema } from "root/model/setting.type";
 import { View } from "styled/Themed";
 import ColorPicker from "root/components/ColorPicker";
 import { RxCollection, RxDatabase, RxQuery } from "rxdb";
@@ -38,7 +38,7 @@ export function SettingsItemBoolean(props: {
                 .findOne()
                 .where("setting_id")
                 .eq(props.settingid);
-            query.exec().then(async (document: SkillCategoryType) => {
+            query.exec().then(async (document: SkillCategorySchema) => {
                 if (document == null) {
                     document = await settingsCollection.atomicUpsert({
                         setting_id: props.settingid,
@@ -97,7 +97,7 @@ export function SettingsItemString(props: {
                 .findOne()
                 .where("setting_id")
                 .eq(props.settingid);
-            query.exec().then(async (document: SettingType) => {
+            query.exec().then(async (document: SettingSchema) => {
                 if (document == null) {
                     document = await settingsCollection.atomicUpsert({
                         setting_id: props.settingid,
@@ -156,7 +156,7 @@ export function SettingsItemColor(props: {
     const onSelectColor = async (color: string) => {
         setAccentColor(color);
         const { query, settingsCollection } = await asyncData;
-        query.exec().then(async (document: SettingType) => {
+        query.exec().then(async (document: SettingSchema) => {
             await settingsCollection.atomicUpsert({
                 setting_id: props.settingid,
                 state: color,

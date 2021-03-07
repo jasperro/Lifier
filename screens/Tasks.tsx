@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, FlatList } from "react-native";
 import databasePromise from "model/database";
-import { TaskType } from "model/task.schema";
 
 import {
     FAB,
@@ -18,7 +17,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, ScrollView, ColoredSubheading } from "styled/Themed";
 import { CommonActions } from "@react-navigation/native";
 import ChipExample from "root/components/ChipTest";
-import { SkillCategoryType } from "model/skillcategory.schema";
+import SkillCategorySchema from "model/skillcategory.type";
+import TaskType from "model/task.type";
 
 const SortMenu = (): JSX.Element => {
     const [visible, setVisible] = useState(false);

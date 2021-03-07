@@ -1,3 +1,8 @@
+import { SkillCategorySchema } from "./skillcategory.type";
+import { SkillSchema } from "./skill.type";
+import { TaskSchema } from "./task.type";
+import { EventSchema } from "./event.type";
+import { SettingSchema } from "./setting.type";
 import SkillCategory from "./skillcategory.schema";
 import Skill from "./skill.schema";
 import Task from "./task.schema";
@@ -85,6 +90,13 @@ export default async function initializeCollections(
         },
         events: {
             schema: Event,
+            statics: {
+                createNew: async function (actionType: string) {
+                    await this.insert({
+                        action_type: actionType,
+                    });
+                },
+            },
         },
         settings: {
             schema: Setting,

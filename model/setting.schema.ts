@@ -1,6 +1,8 @@
+/* Settings wordt gebruikt voor instellingen en opslag van XP-gegevens zoals profession en level */
+
 export default {
     version: 0,
-    title: "setting",
+    title: "setting schema",
     description: "describes a setting",
     type: "object",
     properties: {
@@ -13,9 +15,4 @@ export default {
         },
     },
     required: ["setting_id"],
-};
-
-export type SettingType = {
-    setting_id: string;
-    state?: boolean | number | string;
 };

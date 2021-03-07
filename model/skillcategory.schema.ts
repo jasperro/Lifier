@@ -1,6 +1,6 @@
 export default {
     version: 0,
-    title: "skill category",
+    title: "skill category schema",
     description: "describes a skill category that references skills",
     type: "object",
     properties: {
@@ -27,11 +27,4 @@ export default {
         },
     },
     required: ["display_name"],
-};
-
-export type SkillCategoryType = {
-    skill_category_id: string;
-    display_name: string;
-    skills?: Array<unknown>;
-    color?: string; // optional
 };

@@ -17,7 +17,7 @@ import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 import _ from "lodash";
 import Color from "color";
 import { RxCollection, RxDatabase, RxDocument, RxQuery } from "rxdb";
-import { SkillCategoryType } from "root/model/skillcategory.schema";
+import SkillCategorySchema from "root/model/skillcategory.type";
 
 export function SkillCategoriesScreen({ navigation }): JSX.Element {
     const { colors } = useTheme();
@@ -38,7 +38,7 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                 spacing={10}
                 style={styles.cardlist}
                 data={list}
-                keyExtractor={(item: SkillCategoryType) =>
+                keyExtractor={(item: SkillCategorySchema) =>
                     item.skill_category_id
                 }
                 renderItem={({ item }) => (

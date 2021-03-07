@@ -3,7 +3,7 @@ import { Button } from "react-native-paper";
 import { TextInput } from "react-native-paper";
 import databasePromise from "model/database";
 import validator from "is-my-json-valid";
-import CategorySchema from "model/skillcategory.schema";
+import { SkillCategorySchema } from "model/skillcategory.type";
 import ColorPicker from "root/components/ColorPicker";
 
 //const validate = validator(CategorySchema);
@@ -19,8 +19,8 @@ import ColorPicker from "root/components/ColorPicker";
 console.log("should not be valid", validate({}));*/
 
 async function createSkillCategory(
-    displayName: string,
-    color: string | undefined
+    displayName: SkillCategorySchema["display_name"],
+    color: SkillCategorySchema["color"]
 ) {
     const database = await databasePromise;
     const categoriesCollection = database.skillcategories;
