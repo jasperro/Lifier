@@ -5,6 +5,7 @@ import { VictoryBar, VictoryChart, Background } from "victory-native";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { useTheme } from "react-native-paper";
 import chartTheme from "root/constants/chartTheme";
+import AddNewEvent from "root/components/AddNewEvent";
 
 function Data(): JSX.Element {
     const height = 400;
@@ -14,6 +15,7 @@ function Data(): JSX.Element {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.separator} />
+            <AddNewEvent />
 
             <ColoredSubheading>Recent Activity</ColoredSubheading>
             <VictoryChart

@@ -6,7 +6,7 @@ import { SettingSchema } from "./setting.type";
 import SkillCategory from "./skillcategory.schema";
 import Skill from "./skill.schema";
 import Task from "./task.schema";
-import Event from "./event.schema";
+import Event, { action_enum, action_type_enum } from "./event.schema";
 import Setting from "./setting.schema";
 import { RxDatabase } from "rxdb";
 import "react-native-get-random-values";
@@ -91,9 +91,15 @@ export default async function initializeCollections(
         events: {
             schema: Event,
             statics: {
-                createNew: async function (actionType: string) {
+                createNew: async function (
+                    actionType: action_type_enum,
+                    action: action_enum
+                ) {
                     await this.insert({
-                        action_type: actionType,
+                        action_type: actionType
+                            ? action_type_enum[actionType]
+                            : undefined,
+                        action: action ? action_enum[action] : undefined,
                     });
                 },
             },

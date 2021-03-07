@@ -1,3 +1,19 @@
+export enum action_type_enum {
+    Other = "OTHER",
+    Skill = "SKILL",
+    XP = "XP",
+    Task = "TASK",
+}
+
+export enum action_enum {
+    Other = "OTHER",
+    Finished = "FINISHED",
+    Created = "CREATED",
+    Started = "STARTED",
+    Deleted = "DELETED",
+    Edited = "EDITED",
+}
+
 export default {
     version: 0,
     title: "event schema",
@@ -10,19 +26,19 @@ export default {
         },
         action_type: {
             type: "string",
-            default: "OTHER",
+            default: action_type_enum["Other"],
             // Toegestane waarden voor type van de actie (voor makkelijk sorteren)
             // Bij een SKILL telt generic bestede tijd voor XP mee.
             // Bij TASK telt completion event mee, met XP gebaseerd op bestede tijd.
             // XP wordt gebruikt bij het toevoegen van XP bij het testen.
-            enum: ["SKILL", "XP", "TASK", "OTHER"],
+            enum: Object.values(action_type_enum),
         },
         action: {
             type: "string",
-            default: "OTHER",
+            default: action_enum["Other"],
             // Toegestane waarden voor actie
             // FINISHED ook gebruiken bij XP toevoegen bij testen.
-            enum: ["FINISHED", "CREATED", "STARTED", "DELETED", "EDITED"],
+            enum: Object.values(action_enum),
         },
         xp_amount: {
             // Hoeveel het event waard is in XP bij "FINISHED"

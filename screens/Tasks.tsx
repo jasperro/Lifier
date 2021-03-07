@@ -17,8 +17,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, ScrollView, ColoredSubheading } from "styled/Themed";
 import { CommonActions } from "@react-navigation/native";
 import ChipExample from "root/components/ChipTest";
-import SkillCategorySchema from "model/skillcategory.type";
-import TaskType from "model/task.type";
+import { SkillCategorySchema } from "model/skillcategory.type";
+import { TaskSchema } from "model/task.type";
 
 const SortMenu = (): JSX.Element => {
     const [visible, setVisible] = useState(false);
@@ -61,14 +61,14 @@ async function createTask(displayName: string) {
 
 export default function Tasks(): JSX.Element {
     const [newtask, setNewTask] = useState("");
-    const [list, setList] = useState<Array<TaskType>>([]);
+    const [list, setList] = useState<Array<TaskSchema>>([]);
     useEffect(() => {
         (async () => {
             const database = await databasePromise;
             const taskCollection = database.tasks;
 
             const query = taskCollection.find();
-            query.$.subscribe((documents: TaskType) => {
+            query.$.subscribe((documents: TaskSchema) => {
                 setList(documents);
             });
         })();
