@@ -22,7 +22,7 @@ export default function AddNewEvent(props): JSX.Element {
             const database = await databasePromise;
             const eventCollection = database.events;
 
-            const query = eventCollection.find();
+            const query = eventCollection.find().sort({ start_time: "desc" });
             query.$.subscribe((documents: EventSchema) => {
                 setList(documents);
             });

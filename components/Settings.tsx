@@ -2,7 +2,6 @@ import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Switch, Text } from "react-native-paper";
-import { SkillCategorySchema } from "root/model/skillcategory.type";
 import { SettingSchema } from "root/model/setting.type";
 import { View } from "styled/Themed";
 import ColorPicker from "root/components/ColorPicker";
@@ -38,7 +37,7 @@ export function SettingsItemBoolean(props: {
                 .findOne()
                 .where("setting_id")
                 .eq(props.settingid);
-            query.exec().then(async (document: SkillCategorySchema) => {
+            query.exec().then(async (document: SettingSchema) => {
                 if (document == null) {
                     document = await settingsCollection.atomicUpsert({
                         setting_id: props.settingid,

@@ -1,18 +1,12 @@
 import * as React from "react";
 import { StyleSheet, View as TransparentView } from "react-native";
 
-import {
-    FAB,
-    Card,
-    ProgressBar,
-    Text,
-    useTheme,
-    Button,
-} from "react-native-paper";
+import { FAB, Card, useTheme } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, ColoredSubheading } from "styled/Themed";
 import database from "model/database";
 import Timer from "root/components/Timer";
+import XPBar from "root/components/XPBar";
 
 function ActivityCard(props): JSX.Element {
     const { colors } = useTheme();
@@ -35,16 +29,6 @@ function ActivityCard(props): JSX.Element {
 }
 
 export default function Dashboard(): JSX.Element {
-    const { colors } = useTheme();
-    const themedstyles = StyleSheet.create({
-        xpbar: {
-            position: "absolute",
-            right: 0,
-            left: 0,
-            bottom: 0,
-            backgroundColor: colors.surface,
-        },
-    });
     return (
         <View style={styles.container}>
             <ColoredSubheading>Recent Activity</ColoredSubheading>
@@ -59,76 +43,8 @@ export default function Dashboard(): JSX.Element {
                 icon="xml"
             />
             <ColoredSubheading>Time</ColoredSubheading>
-            <Timer></Timer>
-            <View style={themedstyles.xpbar}>
-                <ProgressBar style={{ height: 10 }} progress={0.8} />
-                <TransparentView
-                    style={{
-                        flex: 1,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        minHeight: 70,
-                        alignItems: "stretch",
-                        paddingLeft: 20,
-                        paddingRight: 20,
-                    }}
-                >
-                    <TransparentView
-                        style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center",
-                        }}
-                    >
-                        <View
-                            style={[
-                                styles.xpdot,
-                                {
-                                    backgroundColor: colors.background,
-                                    marginRight: 10,
-                                },
-                            ]}
-                        >
-                            <Text style={{ fontSize: 20, textAlign: "center" }}>
-                                14
-                            </Text>
-                        </View>
-                        <Text
-                            style={{ fontSize: 16, fontFamily: "InterLight" }}
-                        >
-                            Rookie Guitar Player
-                        </Text>
-                    </TransparentView>
-                    <TransparentView
-                        style={{
-                            flex: 1,
-                            flexDirection: "row-reverse",
-                            alignItems: "center",
-                        }}
-                    >
-                        <View
-                            style={[
-                                styles.xpdot,
-                                {
-                                    backgroundColor: colors.primary,
-                                    marginLeft: 10,
-                                },
-                            ]}
-                        >
-                            <Text
-                                style={{
-                                    fontSize: 20,
-                                    textAlign: "center",
-                                    color: "white",
-                                }}
-                            >
-                                15
-                            </Text>
-                        </View>
-                        <Text style={{ fontSize: 16 }}>230/300XP</Text>
-                    </TransparentView>
-                </TransparentView>
-            </View>
+            <Timer />
+            <XPBar />
             <FAB
                 style={styles.fab}
                 icon="plus"
@@ -149,12 +65,6 @@ export default function Dashboard(): JSX.Element {
     );
 }
 const styles = StyleSheet.create({
-    xpdot: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: "center",
-    },
     container: {
         flex: 1,
         elevation: 0,
