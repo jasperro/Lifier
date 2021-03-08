@@ -45,6 +45,7 @@ export default async function initializeCollections(
                 createNew: async function (categoryId, displayName) {
                     const skill = await this.insert({
                         display_name: displayName,
+                        ...(categoryId && { category_id: categoryId }),
                     });
 
                     const query = database.skillcategories.findOne(categoryId);
@@ -74,15 +75,40 @@ export default async function initializeCollections(
         tasks: {
             schema: Task,
             statics: {
-                createNew: async function (displayName: string) {
+                createNew: async function (
+                    displayName: string,
+                    skillId: string
+                ) {
+                    const color = skillId
+                        ? (async function () {
+                              const skill:
+                                  | SkillSchema
+                                  | undefined = await database.skills
+                                  .findOne(skillId)
+                                  .exec();
+                              const skillcategory:
+                                  | SkillCategorySchema
+                                  | undefined = await skill.category_id_;
+                              return skillcategory.color
+                                  ? skillcategory.color
+                                  : "#ff0022";
+                          })()
+                        : null;
                     await this.insert({
                         display_name: displayName,
+                        skill: skillId,
+                        color: await color,
                     });
                 },
                 changeCategory: async function (categoryID: string) {
                     await this.update({
                         $set: {
                             category: categoryID,
+                            color: (
+                                await database.skillcategories
+                                    .findOne(categoryID)
+                                    .exec()
+                            ).color,
                         },
                     });
                 },
@@ -90,8 +116,8 @@ export default async function initializeCollections(
             methods: {
                 finish: async function () {
                     const eventCollection = database.events;
-                    eventCollection.createNew("Task", "Completed");  
-                }
+                    eventCollection.createNew("Task", "Finished");
+                },
             },
         },
         events: {
@@ -140,12 +166,6 @@ export default async function initializeCollections(
         plainData.task_id = uuidv4();
     }, false);
 
-    database.tasks.preInsert(async function (plainData) {
-        const category = await database.skillcategories
-            .findOne(plainData.category)
-            .exec();
-        plainData.color = category != null ? category.color : null;
-    }, true);
     database.events.preInsert(function (plainData) {
         const currentTime = Date.now();
         plainData.event_id = uuidv4();

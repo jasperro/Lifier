@@ -53,6 +53,10 @@ export default {
             // Wordt gebruikt om default xp_amount te berekenen als die niet aanwezig is.
             type: "integer",
         },
+        task_id: {
+            ref: "tasks", // Tot welke task behoort het event
+            type: ["string", "null"], // task_id
+        },
     },
     required: ["event_id", "action_type", "start_time"],
     indexes: ["action_type", "start_time"],

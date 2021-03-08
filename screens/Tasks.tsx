@@ -19,6 +19,8 @@ import { CommonActions } from "@react-navigation/native";
 import ChipExample from "root/components/ChipTest";
 import { SkillCategorySchema } from "model/skillcategory.type";
 import { TaskSchema } from "model/task.type";
+import skillcategorySchema from "root/model/skillcategory.schema";
+import { SkillSchema } from "root/model/skill.type";
 
 const SortMenu = (): JSX.Element => {
     const [visible, setVisible] = useState(false);
@@ -82,7 +84,7 @@ export default function Tasks(): JSX.Element {
                 data={list}
                 keyExtractor={(item) => item.task_id}
                 renderItem={({ item }) => {
-                    function Icon() {
+                    const Icon = function Icon() {
                         return (
                             <MaterialCommunityIcons
                                 name="view-dashboard"
@@ -90,7 +92,7 @@ export default function Tasks(): JSX.Element {
                                 color={item.color}
                             />
                         );
-                    }
+                    };
                     return (
                         <Card style={styles.card} key={item.task_id}>
                             <Card.Title

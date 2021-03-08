@@ -3,7 +3,8 @@ import { ScrollView } from "react-native";
 import {
     Text,
     FAB,
-    TextInput
+    TextInput,
+    Button
 } from "react-native-paper";
 import { View } from "styled/Themed";
 import { CommonActions } from "@react-navigation/native";
@@ -12,11 +13,19 @@ import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 import { RxCollection, RxDatabase, RxQuery } from "rxdb";
 import { styles } from "./Skills";
 
+async function createTask(title: string, skillId: string) {
+    const database = await databasePromise;
+    const eventsCollection = database.events;
+    const taskCollection = database.tasks;
+    const newtask = await taskCollection.createNew(title, skillId);
+    await eventsCollection.createNew("Task", "Created");
+}
 
 export function SkillScreen({ route, navigation }): JSX.Element {
     const { skillId, displayName, categoryId, categoryName } = route.params;
     const [title, setTitle] = useState(displayName);
     const [newSkill, setNewSkill] = useState("");
+    const [newTask, setNewTask] = useState("");
     useEffect(() => {
         navigation.setOptions({
             ...DefaultStackOptions([categoryName, title], () => {
@@ -62,11 +71,31 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                 style={styles.bottominput}
                 label="Nieuwe Skill Naam"
                 value={newSkill}
-                onChangeText={(newSkill) => setNewSkill(newSkill)} />
+                onChangeText={(newSkill) => setNewSkill(newSkill)}
+            />
+            <TextInput
+                style={styles.bottominput}
+                label="Nieuwe Task Naam"
+                value={newTask}
+                onChangeText={(newTask) => setNewTask(newTask)}
+            />
+            <Button
+                onPress={() =>
+                    query.exec().then(() => createTask(newTask, skillId))
+                }
+            >
+                Maak nieuwe task bij deze skill
+            </Button>
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => query.exec().then((document) => document.changeDisplayName(newSkill))}
+                onPress={() =>
+                    query
+                        .exec()
+                        .then((document) =>
+                            document.changeDisplayName(newSkill)
+                        )
+                }
             />
         </View>
     );

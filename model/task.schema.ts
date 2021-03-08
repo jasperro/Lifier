@@ -11,10 +11,10 @@ export default {
         display_name: {
             type: "string",
         },
-        //Category task belongs to
-        category: {
+        //Skill task belongs to
+        skill: {
             type: ["string", "null"],
-            ref: "skillcategories",
+            ref: "skills",
         },
         completed: {
             type: "boolean",
@@ -30,8 +30,8 @@ export default {
         },
         xp_worth: {
             type: "number",
-            default: 100
-        }
+            default: 100,
+        },
     },
     required: ["display_name"],
 };
