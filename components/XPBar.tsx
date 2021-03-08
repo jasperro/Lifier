@@ -26,22 +26,27 @@ export default function XPBar(props): JSX.Element {
                 .findOne()
                 .where("setting_id")
                 .eq("current_xp");
-            query.exec().then(async (document: SettingSchema) => {
-                if (document == null) {
-                    document = await settingsCollection.atomicUpsert({
-                        setting_id: "current_xp",
-                        state: 0,
-                    });
-                }
-                document.$.subscribe((changeEvent) => {
-                    setXPAmount(changeEvent.state);
+
+            let result = await query.exec();
+            if (result == null) {
+                result = await settingsCollection.atomicUpsert({
+                    setting_id: "current_xp",
+                    state: 0,
                 });
+            }
+            result.$.subscribe((changeEvent) => {
+                setXPAmount(changeEvent.state);
             });
+            /*await result.update({
+                $inc: {
+                    state: 55,
+                },
+            });*/
         })();
     }, []);
     return (
         <View style={themedstyles.xpbar}>
-            <ProgressBar style={{ height: 10 }} progress={0.8} />
+            <ProgressBar style={{ height: 10 }} progress={XPAmount / 100} />
             <TransparentView
                 style={{
                     flex: 1,
@@ -103,7 +108,7 @@ export default function XPBar(props): JSX.Element {
                             15
                         </Text>
                     </View>
-                    <Text style={{ fontSize: 16 }}>{`${XPAmount}XP`}</Text>
+                    <Text style={{ fontSize: 16 }}>{`${XPAmount} XP`}</Text>
                 </TransparentView>
             </TransparentView>
         </View>

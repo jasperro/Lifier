@@ -13,11 +13,9 @@ import Tasks from "../screens/Tasks";
 import Settings from "../screens/Settings";
 import Data from "../screens/Data";
 import Dashboard from "../screens/Dashboard";
-import {
-    SkillCategoriesScreen,
-    SkillCategoryScreen,
-    SkillScreen,
-} from "../screens/Skills";
+import { SkillCategoryScreen } from "../screens/SkillCategoryScreen";
+import { SkillCategoriesScreen } from "../screens/SkillCategoriesScreen";
+import { SkillScreen } from "../screens/SkillScreen";
 
 import DefaultStackOptions from "./DefaultStackOptions";
 
