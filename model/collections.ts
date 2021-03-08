@@ -87,6 +87,12 @@ export default async function initializeCollections(
                     });
                 },
             },
+            methods: {
+                finish: async function () {
+                    const eventCollection = database.events;
+                    eventCollection.createNew("Task", "Completed");  
+                }
+            },
         },
         events: {
             schema: Event,

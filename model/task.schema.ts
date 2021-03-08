@@ -28,6 +28,10 @@ export default {
         color: {
             type: ["string", "null"],
         },
+        xp_worth: {
+            type: "number",
+            default: 100
+        }
     },
     required: ["display_name"],
 };
