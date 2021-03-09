@@ -79,7 +79,7 @@ export default async function initializeCollections(
                     displayName: string,
                     skillId: string
                 ) {
-                    const color = skillId
+                    const dbReturns = skillId
                         ? (async function () {
                               const skill:
                                   | SkillSchema
@@ -89,15 +89,25 @@ export default async function initializeCollections(
                               const skillcategory:
                                   | SkillCategorySchema
                                   | undefined = await skill.category_id_;
-                              return skillcategory.color
-                                  ? skillcategory.color
-                                  : "#ff0022";
+                              const categoryId:
+                                  | string
+                                  | undefined = await skill.category_id;
+                              return {
+                                  color: skillcategory.color
+                                      ? skillcategory.color
+                                      : "#ff0022",
+                                  categoryId: categoryId
+                                      ? categoryId
+                                      : undefined,
+                              };
                           })()
                         : null;
+                    const { color, categoryId } = await dbReturns;
                     await this.insert({
                         display_name: displayName,
                         skill: skillId,
-                        color: await color,
+                        category: categoryId,
+                        color: color,
                     });
                 },
                 changeCategory: async function (categoryID: string) {

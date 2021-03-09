@@ -5,7 +5,7 @@ import PreferencesContext from "root/PreferencesContext";
 import databasePromise from "model/database";
 import { SkillCategorySchema } from "root/model/skillcategory.type";
 
-function ChipExample(): JSX.Element {
+function ChipExample({ onSelect }: { onSelect: (list) => void }): JSX.Element {
     const { isThemeDark } = React.useContext(PreferencesContext);
     const { colors } = useTheme();
 
@@ -18,11 +18,15 @@ function ChipExample(): JSX.Element {
             const skillcategoryCollection = database.skillcategories;
 
             const query = skillcategoryCollection.find();
-            query.$.subscribe((documents: SkillCategorySchema[]) =>
-                setDataSource(documents)
-            );
+            query.$.subscribe((documents: SkillCategorySchema[]) => {
+                setDataSource(documents);
+            });
         })();
     }, []);
+
+    useEffect(() => {
+        onSelect ? onSelect(clicked) : undefined;
+    }, [clicked]);
     return (
         <View style={[styles.container]}>
             <List.Section>

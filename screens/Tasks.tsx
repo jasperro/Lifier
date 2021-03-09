@@ -31,7 +31,6 @@ const SortMenu = (): JSX.Element => {
     return (
         <View
             style={{
-                paddingTop: 50,
                 flexDirection: "row",
                 justifyContent: "flex-end",
             }}
@@ -63,6 +62,7 @@ async function createTask(displayName: string) {
 
 export default function Tasks(): JSX.Element {
     const [newtask, setNewTask] = useState("");
+    const [selectedCategories, setSelectedCategories] = useState([]);
     const [list, setList] = useState<Array<TaskSchema>>([]);
     useEffect(() => {
         (async () => {
@@ -70,72 +70,77 @@ export default function Tasks(): JSX.Element {
             const taskCollection = database.tasks;
 
             const query = taskCollection.find();
-            query.$.subscribe((documents: TaskSchema) => {
-                setList(documents);
+            query.$.subscribe((documents: TaskSchema[]) => {
+                setList(
+                    documents.filter((value) =>
+                        selectedCategories.includes(value.category)
+                    )
+                );
             });
         })();
-    }, []);
+    }, [selectedCategories]);
     return (
         <>
             <ColoredSubheading>Uncompleted</ColoredSubheading>
             <SortMenu></SortMenu>
-            <FlatList
-                style={styles.cardlist}
-                data={list}
-                keyExtractor={(item) => item.task_id}
-                renderItem={({ item }) => {
-                    const Icon = function Icon() {
+            <View style={styles.container}>
+                <FlatList
+                    style={styles.cardlist}
+                    data={list}
+                    keyExtractor={(item) => item.task_id}
+                    renderItem={({ item }) => {
+                        const Icon = function Icon() {
+                            return (
+                                <MaterialCommunityIcons
+                                    name="view-dashboard"
+                                    size={48}
+                                    color={item.color}
+                                />
+                            );
+                        };
                         return (
-                            <MaterialCommunityIcons
-                                name="view-dashboard"
-                                size={48}
-                                color={item.color}
-                            />
-                        );
-                    };
-                    return (
-                        <Card style={styles.card} key={item.task_id}>
-                            <Card.Title
-                                title={item.display_name}
-                                left={() => {
-                                    // We hebben een lijst met RxDocument in list
-                                    /*const [colorToSet, setColorToSet] = useState(
-                                    "#ffffff"
-                                );
-                                useEffect(() => {
-                                    async () => {
-                                        setColorToSet(
-                                            await item.category_.color
+                            <Card style={styles.card} key={item.task_id}>
+                                <Card.Title
+                                    title={item.display_name}
+                                    left={() => {
+                                        // We hebben een lijst met RxDocument in list
+                                        /*const [colorToSet, setColorToSet] = useState(
+                                            "#ffffff"
                                         );
-                                    };
-                                });*/
-                                    return <Icon></Icon>;
-                                }}
-                            />
-                            <Button
-                                onPress={() => {
-                                    /* Navigate to task route with params */
-                                    CommonActions.navigate("Task", {
-                                        taskId: item.task_id,
-                                    });
-                                }}
-                            >
-                                Go to task {item.color}
-                            </Button>
-                        </Card>
-                    );
-                }}
-            />
+                                        useEffect(() => {
+                                            async () => {
+                                                setColorToSet(
+                                                    await item.category_.color
+                                                );
+                                            };
+                                        });*/
+                                        return <Icon></Icon>;
+                                    }}
+                                />
+                                <Button
+                                    onPress={() => {
+                                        /* Navigate to task route with params */
+                                        CommonActions.navigate("Task", {
+                                            taskId: item.task_id,
+                                        });
+                                    }}
+                                >
+                                    Go to task {item.color}
+                                </Button>
+                            </Card>
+                        );
+                    }}
+                />
+            </View>
+            <View style={{ flex: 1 }}>
+                <ChipExample
+                    onSelect={(list) => {
+                        setSelectedCategories(list);
+                        console.log(list);
+                    }}
+                ></ChipExample>
+            </View>
 
-            <ChipExample></ChipExample>
-            <TextInput
-                style={styles.bottominput}
-                label="Nieuwe Task Naam"
-                value={newtask}
-                onChangeText={(newtask) => {
-                    setNewTask(newtask);
-                }}
-            />
             <FAB
                 style={styles.fab}
                 icon="plus"
@@ -148,8 +153,7 @@ export default function Tasks(): JSX.Element {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        elevation: 0,
+        flex: 4,
         paddingLeft: 10,
         paddingRight: 10,
     },

@@ -16,6 +16,10 @@ export default {
             type: ["string", "null"],
             ref: "skills",
         },
+        category: {
+            type: ["string", "null"],
+            ref: "skillcategories",
+        },
         completed: {
             type: "boolean",
         },
