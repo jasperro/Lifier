@@ -44,7 +44,7 @@ const Timer = (): JSX.Element => {
 
     return (
         <View>
-            <Text>{format(seconds)}</Text>
+            <Text style={{ fontSize: 74 }}>{format(seconds)}</Text>
             <View>
                 <Button onPress={toggle}>{isActive ? "Pause" : "Start"}</Button>
                 <Button onPress={reset}>Reset</Button>

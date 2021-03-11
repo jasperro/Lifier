@@ -21,6 +21,7 @@ import { SkillCategorySchema } from "model/skillcategory.type";
 import { TaskSchema } from "model/task.type";
 import skillcategorySchema from "root/model/skillcategory.schema";
 import { SkillSchema } from "root/model/skill.type";
+import { RxDatabase } from "rxdb";
 
 const SortMenu = (): JSX.Element => {
     const [visible, setVisible] = useState(false);
@@ -63,6 +64,7 @@ async function createTask(displayName: string) {
 export default function Tasks(): JSX.Element {
     const [newtask, setNewTask] = useState("");
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [fullList, setFullList] = useState<Array<TaskSchema>>([]);
     const [list, setList] = useState<Array<TaskSchema>>([]);
     useEffect(() => {
         (async () => {
@@ -71,14 +73,20 @@ export default function Tasks(): JSX.Element {
 
             const query = taskCollection.find();
             query.$.subscribe((documents: TaskSchema[]) => {
-                setList(
-                    documents.filter((value) =>
-                        selectedCategories.includes(value.category)
-                    )
-                );
+                setFullList(documents);
             });
         })();
-    }, [selectedCategories]);
+    }, []);
+
+    function filterList(categories) {
+        setList(
+            fullList.filter((value) => categories.includes(value.category))
+        );
+    }
+
+    useEffect(() => {
+        filterList(selectedCategories);
+    }, [fullList]);
     return (
         <>
             <ColoredSubheading>Uncompleted</ColoredSubheading>
@@ -134,9 +142,9 @@ export default function Tasks(): JSX.Element {
             </View>
             <View style={{ flex: 1 }}>
                 <ChipExample
-                    onSelect={(list) => {
+                    onSelect={async (list) => {
                         setSelectedCategories(list);
-                        console.log(list);
+                        filterList(list);
                     }}
                 ></ChipExample>
             </View>

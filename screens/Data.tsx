@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
 import { View, ScrollView, ColoredSubheading } from "styled/Themed";
 import { VictoryBar, VictoryChart, Background } from "victory-native";
@@ -6,12 +6,50 @@ import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { useTheme } from "react-native-paper";
 import chartTheme from "root/constants/chartTheme";
 import AddNewEvent from "root/components/AddNewEvent";
+import databasePromise from "model/database";
 
 function Data(): JSX.Element {
     const height = 400;
     const width = useWindowDimensions().width;
+    function getMonday() {
+        const d = new Date();
+        const day = d.getDay(),
+            diff = d.getDate() - day + (day == 0 ? -6 : 1); // Op zondag, maandag van "vorige" week
+        return new Date(d.setDate(diff)).setHours(0, 0, 0, 0);
+    }
+    const mondayUnix = getMonday().valueOf(); // Unix timestamp van de start eerste maandag van de week
+    const nextMondayUnix = mondayUnix + 86400000 * 7; // en timestamp van de volgende maandag
+
+    let baseArray = [
+        { x: "Monday", y: 0 },
+        { x: "Tuesday", y: 0 },
+        { x: "Wednesday", y: 0 },
+        { x: "Thursday", y: 0 },
+        { x: "Friday", y: 0 },
+        { x: "Saturday", y: 0 },
+        { x: "Sunday", y: 0 },
+    ];
+
+    const [barGraphData, setBarGraphData] = useState(baseArray);
 
     const { colors, fonts } = useTheme();
+    const [list, setList] = useState<Array<EventSchema>>([]);
+    useEffect(() => {
+        (async () => {
+            const database = await databasePromise;
+            const eventCollection = database.events;
+
+            const query = eventCollection.find({
+                selector: {
+                    start_time: { $gte: mondayUnix, $lt: nextMondayUnix },
+                },
+            });
+            query.$.subscribe((documents: EventSchema) => {
+                setList(documents);
+            });
+        })();
+    }, []);
+    console.log(list);
     return (
         <ScrollView style={styles.container}>
             <View style={styles.separator} />
@@ -37,13 +75,7 @@ function Data(): JSX.Element {
                         },
                     }}
                     barWidth={40}
-                    data={[
-                        { x: "Monday", y: 1 },
-                        { x: "Tuesday", y: 2 },
-                        { x: "Wednesday", y: 3 },
-                        { x: "Thursday", y: 2 },
-                        { x: "Friday", y: 1 },
-                    ]}
+                    data={barGraphData}
                     width={width}
                 />
 
