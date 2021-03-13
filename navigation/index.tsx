@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
-import NewCategoryModal from "root/components/NewCategoryModal";
-import NewSkillModal from "root/components/NewSkillModal";
+import NewCategoryModal from "root/screens/modals/NewCategoryModal";
+import NewSkillModal from "root/screens/modals/NewSkillModal";
 
 import NotFoundScreen from "../screens/NotFoundScreen";
 import { RootStackParamList } from "../types";

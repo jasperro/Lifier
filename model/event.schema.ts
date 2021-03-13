@@ -1,6 +1,7 @@
 export enum action_type_enum {
     Other = "OTHER",
     Skill = "SKILL",
+    SkillCategory = "SKILLCATEGORY",
     XP = "XP",
     Task = "TASK",
 }

@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-    FAB,
-    Button,
-    Card,
-    useTheme
-} from "react-native-paper";
+import { FAB, Button, Card, IconButton, useTheme } from "react-native-paper";
+import { View as TransparentView } from "react-native";
 import { View } from "styled/Themed";
 import { FlatGrid } from "react-native-super-grid";
 import databasePromise from "model/database";
 import Color from "color";
 import SkillCategorySchema from "root/model/skillcategory.type";
 import { styles } from "./Skills";
-
 
 export function SkillCategoriesScreen({ navigation }): JSX.Element {
     const { colors } = useTheme();
@@ -32,7 +27,9 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                 spacing={10}
                 style={styles.cardlist}
                 data={list}
-                keyExtractor={(item: SkillCategorySchema) => item.skill_category_id}
+                keyExtractor={(item: SkillCategorySchema) =>
+                    item.skill_category_id
+                }
                 renderItem={({ item }) => (
                     <Card
                         onPress={() => {
@@ -55,14 +52,16 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                                 color: !item.color
                                     ? colors.text
                                     : Color(item.color).isDark
-                                        ? colors.textLight
-                                        : colors.textDark,
+                                    ? colors.textLight
+                                    : colors.textDark,
                             }}
-                            title={item.display_name} />
+                            title={item.display_name}
+                        />
                         <Button
                             onPress={async () => {
                                 const database = await databasePromise;
-                                const categoryCollection = database.skillcategories;
+                                const categoryCollection =
+                                    database.skillcategories;
                                 const query = categoryCollection.findOne(
                                     item.skill_category_id
                                 );
@@ -76,12 +75,33 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                         >
                             Rename to random name
                         </Button>
+                        <TransparentView
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "flex-end",
+                            }}
+                        >
+                            <IconButton
+                                icon="delete"
+                                size={24}
+                                color="white"
+                                onPress={() => item.delete()}
+                            />
+                            <IconButton
+                                icon="pencil"
+                                size={24}
+                                color="white"
+                                onPress={() => item.delete()}
+                            />
+                        </TransparentView>
                     </Card>
-                )} />
+                )}
+            />
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => navigation.navigate("NewCategory")} />
+                onPress={() => navigation.navigate("NewCategory")}
+            />
         </View>
     );
 }

@@ -38,6 +38,13 @@ export default async function initializeCollections(
                     });
                 },
             },
+            methods: {
+                delete: async function () {
+                    const eventCollection = database.events;
+                    eventCollection.createNew("SkillCategory", "Deleted");
+                    this.remove();
+                },
+            },
         },
         skills: {
             schema: Skill,
@@ -103,18 +110,25 @@ export default async function initializeCollections(
                           })()
                         : null;
                     const { color, categoryId } = await dbReturns;
-                    await this.insert({
+                    const newDocument = await this.insert({
                         display_name: displayName,
                         skill: skillId,
                         category: categoryId,
                         color: color,
                     });
+
+                    const eventCollection = database.events;
+                    eventCollection.createNew(
+                        "Task",
+                        "Created",
+                        newDocument.task_id
+                    );
                 },
             },
             methods: {
                 finish: async function () {
                     const eventCollection = database.events;
-                    eventCollection.createNew("Task", "Finished");
+                    eventCollection.createNew("Task", "Finished", this.task_id);
                     const settingsCollection = database.settings;
 
                     const query = settingsCollection
@@ -133,7 +147,7 @@ export default async function initializeCollections(
                 },
                 delete: async function () {
                     const eventCollection = database.events;
-                    eventCollection.createNew("Task", "Deleted");
+                    eventCollection.createNew("Task", "Deleted", this.task_id);
                     this.remove();
                 },
                 changeCategory: async function (categoryID: string) {
@@ -155,13 +169,15 @@ export default async function initializeCollections(
             statics: {
                 createNew: async function (
                     actionType: action_type_enum,
-                    action: action_enum
+                    action?: action_enum,
+                    taskId?: string
                 ) {
                     await this.insert({
                         action_type: actionType
                             ? action_type_enum[actionType]
                             : undefined,
                         action: action ? action_enum[action] : undefined,
+                        ...(taskId && { task_id: taskId }),
                     });
                 },
             },

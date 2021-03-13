@@ -11,7 +11,7 @@ export default {
         display_name: {
             type: "string",
         },
-        //Skill task belongs to
+        /** Skill task belongs to */
         skill: {
             type: ["string", "null"],
             ref: "skills",
