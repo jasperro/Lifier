@@ -124,17 +124,27 @@ export default function Tasks(): JSX.Element {
                                         });*/
                                         return <Icon></Icon>;
                                     }}
-                                />
-                                <Button
-                                    onPress={() => {
-                                        /* Navigate to task route with params */
-                                        CommonActions.navigate("Task", {
-                                            taskId: item.task_id,
-                                        });
+                                    right={() => {
+                                        return (
+                                            <>
+                                                <IconButton
+                                                    icon="delete"
+                                                    size={24}
+                                                    onPress={() =>
+                                                        item.delete()
+                                                    }
+                                                />
+                                                <IconButton
+                                                    icon="check"
+                                                    size={24}
+                                                    onPress={() =>
+                                                        item.finish()
+                                                    }
+                                                />
+                                            </>
+                                        );
                                     }}
-                                >
-                                    Go to task {item.color}
-                                </Button>
+                                />
                             </Card>
                         );
                     }}

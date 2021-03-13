@@ -46,7 +46,7 @@ export default function XPBar(props): JSX.Element {
     }, []);
     return (
         <View style={themedstyles.xpbar}>
-            <ProgressBar style={{ height: 10 }} progress={XPAmount / 100} />
+            <ProgressBar style={{ height: 10 }} progress={XPAmount / 1000} />
             <TransparentView
                 style={{
                     flex: 1,
@@ -75,7 +75,7 @@ export default function XPBar(props): JSX.Element {
                         ]}
                     >
                         <Text style={{ fontSize: 20, textAlign: "center" }}>
-                            14
+                            {~~(XPAmount / 1000) + 1}
                         </Text>
                     </View>
                     <Text style={{ fontSize: 16, fontFamily: "InterLight" }}>
@@ -105,7 +105,7 @@ export default function XPBar(props): JSX.Element {
                                 color: "white",
                             }}
                         >
-                            15
+                            {~~(XPAmount / 1000) + 2}
                         </Text>
                     </View>
                     <Text style={{ fontSize: 16 }}>{`${XPAmount} XP`}</Text>

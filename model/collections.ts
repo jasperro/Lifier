@@ -110,6 +110,32 @@ export default async function initializeCollections(
                         color: color,
                     });
                 },
+            },
+            methods: {
+                finish: async function () {
+                    const eventCollection = database.events;
+                    eventCollection.createNew("Task", "Finished");
+                    const settingsCollection = database.settings;
+
+                    const query = settingsCollection
+                        .findOne()
+                        .where("setting_id")
+                        .eq("current_xp");
+
+                    const result = await query.exec();
+
+                    await result.update({
+                        $inc: {
+                            state: 100,
+                        },
+                    });
+                    this.remove();
+                },
+                delete: async function () {
+                    const eventCollection = database.events;
+                    eventCollection.createNew("Task", "Deleted");
+                    this.remove();
+                },
                 changeCategory: async function (categoryID: string) {
                     await this.update({
                         $set: {
@@ -121,12 +147,6 @@ export default async function initializeCollections(
                             ).color,
                         },
                     });
-                },
-            },
-            methods: {
-                finish: async function () {
-                    const eventCollection = database.events;
-                    eventCollection.createNew("Task", "Finished");
                 },
             },
         },
