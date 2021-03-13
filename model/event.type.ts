@@ -10,10 +10,17 @@
  */
 export interface EventSchema {
     event_id: string;
-    action_type: "SKILL" | "XP" | "TASK" | "OTHER";
-    action?: "FINISHED" | "CREATED" | "STARTED" | "DELETED" | "EDITED";
+    action_type: "OTHER" | "SKILL" | "SKILLCATEGORY" | "XP" | "TASK";
+    action?:
+        | "OTHER"
+        | "FINISHED"
+        | "CREATED"
+        | "STARTED"
+        | "DELETED"
+        | "EDITED";
     xp_amount?: number;
     start_time: number;
     duration?: number;
+    task_id?: string | null;
     [k: string]: unknown;
 }

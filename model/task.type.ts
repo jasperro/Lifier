@@ -11,10 +11,12 @@
 export interface TaskSchema {
     task_id?: string;
     display_name: string;
+    skill?: string | null;
     category?: string | null;
     completed?: boolean;
     completion_time?: number;
     deadline_time?: number;
     color?: string | null;
+    xp_worth?: number;
     [k: string]: unknown;
 }
