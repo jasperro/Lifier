@@ -78,10 +78,17 @@ export default function XPBar(props): JSX.Element {
                             {~~(XPAmount / 1000) + 1}
                         </Text>
                     </View>
-                    <Text style={{ fontSize: 16, fontFamily: "InterLight" }}>
+                    {/*<Text style={{ fontSize: 16, fontFamily: "InterLight" }}>
                         Rookie Guitar Player
-                    </Text>
+                    </Text>*/}
                 </TransparentView>
+                <Text
+                    style={{
+                        fontSize: 24,
+                        height: "auto",
+                        alignSelf: "center",
+                    }}
+                >{`${XPAmount} XP`}</Text>
                 <TransparentView
                     style={{
                         flex: 1,
@@ -108,7 +115,6 @@ export default function XPBar(props): JSX.Element {
                             {~~(XPAmount / 1000) + 2}
                         </Text>
                     </View>
-                    <Text style={{ fontSize: 16 }}>{`${XPAmount} XP`}</Text>
                 </TransparentView>
             </TransparentView>
         </View>
