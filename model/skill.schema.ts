@@ -15,6 +15,13 @@ export default {
             type: "string",
             pattern: "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$",
         },
+        tasks: {
+            type: "array",
+            ref: "tasks",
+            items: {
+                type: "string",
+            },
+        },
         // Precalculate xp amount from time by default
         xp_amount: {
             type: "number",

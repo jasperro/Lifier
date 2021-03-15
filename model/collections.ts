@@ -44,6 +44,29 @@ export default async function initializeCollections(
                     eventCollection.createNew("SkillCategory", "Deleted");
                     this.remove();
                 },
+                edit: async function (
+                    displayName: string,
+                    color: string | undefined
+                ) {
+                    this.update({
+                        $set: {
+                            display_name: displayName,
+                            color: color,
+                        },
+                    });
+                    try {
+                        const skills = await this.skills_;
+                        skills.forEach(async (element) => {
+                            const tasks = await element.tasks_;
+                            try {
+                                tasks.forEach(async (element) => {
+                                    element.update({ $set: { color: color } });
+                                });
+                            } catch {}
+                        });
+                    } catch {}
+                    // Bij alle skills in array
+                },
             },
         },
         skills: {
@@ -69,7 +92,7 @@ export default async function initializeCollections(
             },
 
             methods: {
-                changeDisplayName: async function (newName: string) {
+                edit: async function (newName: string) {
                     await this.update({
                         $set: {
                             display_name: newName,
@@ -106,15 +129,25 @@ export default async function initializeCollections(
                                   categoryId: categoryId
                                       ? categoryId
                                       : undefined,
+                                  skill: skill ? skill : undefined,
                               };
                           })()
                         : null;
-                    const { color, categoryId } = await dbReturns;
+                    const { color, categoryId, skill } = await dbReturns;
                     const newDocument = await this.insert({
                         display_name: displayName,
                         skill: skillId,
                         category: categoryId,
                         color: color,
+                    });
+
+                    let existingTasks = await skill.tasks;
+                    existingTasks = existingTasks ? existingTasks : [];
+
+                    await skill.update({
+                        $set: {
+                            tasks: [...existingTasks, newDocument.task_id],
+                        },
                     });
 
                     const eventCollection = database.events;

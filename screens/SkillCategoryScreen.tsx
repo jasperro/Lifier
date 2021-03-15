@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
-import {
-    Text,
-    FAB,
-    Button,
-    Card
-} from "react-native-paper";
+import { Text, FAB, Button, Card, IconButton } from "react-native-paper";
 import { View } from "styled/Themed";
 import { CommonActions } from "@react-navigation/native";
 import databasePromise from "model/database";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
-import { RxCollection, RxDatabase, RxQuery } from "rxdb";
+import { RxCollection, RxDatabase, RxDocument, RxQuery } from "rxdb";
 import { styles } from "./Skills";
-
 
 export function SkillCategoryScreen({ route, navigation }): JSX.Element {
     const { categoryId, displayName } = route.params;
@@ -38,23 +32,45 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
     let database: RxDatabase;
     let query: RxQuery;
     let skillcategoryCollection: RxCollection;
-    useEffect(() => {
-        (async () => {
-            database = await databasePromise;
+    //useEffect(() => {
+    (async () => {
+        database = await databasePromise;
 
-            skillcategoryCollection = database.skillcategories;
-            query = skillcategoryCollection.findOne(categoryId);
+        skillcategoryCollection = database.skillcategories;
+        query = skillcategoryCollection.findOne(categoryId);
 
-            query.$.subscribe(async (documents) => {
+        query.$.subscribe(async (documents) => {
+            try {
                 const newList = await documents.skills_;
                 setList(newList);
-            });
-            query.$.subscribe((data) => setTitle(data.display_name));
-        })();
-    }, []);
+                setTitle(data.display_name);
+            } catch {}
+        });
+    })();
+    //}, []);
     return (
         <View style={styles.container}>
             <Text style={{ fontSize: 60 }}>{title}</Text>
+            <IconButton
+                icon="delete"
+                size={24}
+                color="white"
+                onPress={() => {
+                    navigation.goBack();
+                    query.exec().then((document) => document.delete());
+                }}
+            />
+            <IconButton
+                icon="pencil"
+                size={24}
+                color="white"
+                onPress={() => {
+                    navigation.navigate("EditCategory", {
+                        categoryId: categoryId,
+                        displayName: title,
+                    });
+                }}
+            />
             <Text>{JSON.stringify(list)}</Text>
             <FlatList
                 style={styles.cardlist}
@@ -77,15 +93,19 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
                             Go to skill
                         </Button>
                     </Card>
-                )} />
+                )}
+            />
             <Text>itemId: {JSON.stringify(categoryId)}</Text>
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => navigation.navigate("NewSkill", {
-                    categoryId: categoryId,
-                    categoryName: displayName,
-                })} />
+                onPress={() =>
+                    navigation.navigate("NewSkill", {
+                        categoryId: categoryId,
+                        categoryName: displayName,
+                    })
+                }
+            />
         </View>
     );
 }

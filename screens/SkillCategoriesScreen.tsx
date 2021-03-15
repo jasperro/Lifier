@@ -57,24 +57,7 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                             }}
                             title={item.display_name}
                         />
-                        <Button
-                            onPress={async () => {
-                                const database = await databasePromise;
-                                const categoryCollection =
-                                    database.skillcategories;
-                                const query = categoryCollection.findOne(
-                                    item.skill_category_id
-                                );
-                                const result = await query.exec();
-                                await result.update({
-                                    $set: {
-                                        display_name: Math.random().toString(),
-                                    },
-                                });
-                            }}
-                        >
-                            Rename to random name
-                        </Button>
+
                         <TransparentView
                             style={{
                                 flexDirection: "row",
@@ -91,7 +74,12 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                                 icon="pencil"
                                 size={24}
                                 color="white"
-                                onPress={() => item.delete()}
+                                onPress={() => {
+                                    navigation.navigate("EditCategory", {
+                                        categoryId: item.skill_category_id,
+                                        displayName: item.display_name,
+                                    });
+                                }}
                             />
                         </TransparentView>
                     </Card>

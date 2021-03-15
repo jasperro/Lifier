@@ -3,6 +3,8 @@ export type RootStackParamList = {
     NotFound: undefined;
     NewCategory: undefined;
     NewSkill: undefined;
+    EditCategory: undefined;
+    EditSkill: undefined;
 };
 
 export type BottomTabParamList = {

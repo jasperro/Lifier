@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import {
-    Text,
-    FAB,
-    TextInput,
-    Button
-} from "react-native-paper";
+import { Text, FAB, TextInput, Button, IconButton } from "react-native-paper";
 import { View } from "styled/Themed";
 import { CommonActions } from "@react-navigation/native";
 import databasePromise from "model/database";
@@ -33,17 +28,17 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                     navigation.canGoBack()
                         ? CommonActions.goBack()
                         : CommonActions.reset({
-                            index: 1,
-                            routes: [
-                                {
-                                    name: "SkillCategory",
-                                    params: {
-                                        categoryId: categoryId,
-                                        displayName: categoryName,
-                                    },
-                                },
-                            ],
-                        })
+                              index: 1,
+                              routes: [
+                                  {
+                                      name: "SkillCategory",
+                                      params: {
+                                          categoryId: categoryId,
+                                          displayName: categoryName,
+                                      },
+                                  },
+                              ],
+                          })
                 );
             }),
         });
@@ -64,15 +59,31 @@ export function SkillScreen({ route, navigation }): JSX.Element {
         <View style={styles.container}>
             <ScrollView>
                 <Text style={{ fontSize: 60 }}>{title}</Text>
+                <IconButton
+                    icon="delete"
+                    size={24}
+                    color="white"
+                    onPress={() => {
+                        navigation.goBack();
+                        query.exec().then((document) => document.delete());
+                    }}
+                />
+                <IconButton
+                    icon="pencil"
+                    size={24}
+                    color="white"
+                    onPress={() => {
+                        navigation.navigate("EditSkill", {
+                            skillId: skillId,
+                            categoryName: categoryName,
+                            categoryId: categoryId,
+                            skillName: title,
+                        });
+                    }}
+                />
                 <Text>skillId: {JSON.stringify(skillId)}</Text>
             </ScrollView>
 
-            <TextInput
-                style={styles.bottominput}
-                label="Nieuwe Skill Naam"
-                value={newSkill}
-                onChangeText={(newSkill) => setNewSkill(newSkill)}
-            />
             <TextInput
                 style={styles.bottominput}
                 label="Nieuwe Task Naam"
@@ -90,11 +101,7 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                 style={styles.fab}
                 icon="plus"
                 onPress={() =>
-                    query
-                        .exec()
-                        .then((document) =>
-                            document.changeDisplayName(newSkill)
-                        )
+                    query.exec().then((document) => document.edit(newSkill))
                 }
             />
         </View>

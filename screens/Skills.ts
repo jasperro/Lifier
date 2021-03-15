@@ -33,7 +33,7 @@ export const styles = {
         card: {
             marginBottom: 4,
             marginTop: 4,
-            height: 210,
+            height: 160,
             ...(Platform.OS == "web" && { cursor: "pointer" }),
         },
     }),
