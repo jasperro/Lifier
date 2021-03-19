@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Text } from "react-native-paper";
+import { Button, IconButton, Text } from "react-native-paper";
 import { View } from "react-native";
 
 const Timer = (): JSX.Element => {
@@ -45,9 +45,12 @@ const Timer = (): JSX.Element => {
     return (
         <View>
             <Text style={{ fontSize: 74 }}>{format(seconds)}</Text>
-            <View>
-                <Button onPress={toggle}>{isActive ? "Pause" : "Start"}</Button>
-                <Button onPress={reset}>Reset</Button>
+            <View style={{ flexDirection: "row" }}>
+                <IconButton
+                    onPress={toggle}
+                    icon={isActive ? "pause" : "play"}
+                ></IconButton>
+                <IconButton onPress={reset} icon="refresh"></IconButton>
             </View>
         </View>
     );
