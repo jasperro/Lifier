@@ -1,7 +1,7 @@
 import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { Switch, Text } from "react-native-paper";
+import { Switch, Text, TextInput } from "react-native-paper";
 import { SettingSchema } from "root/model/setting.type";
 import { View } from "styled/Themed";
 import ColorPicker from "root/components/ColorPicker";
@@ -71,9 +71,9 @@ export function SettingsItemString(props: {
     displayname: string;
     settingid: string;
 }): JSX.Element {
-    const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = async () => {
-        setIsEnabled(!isEnabled);
+    const [currentString, setCurrentString] = useState("");
+    const setString = async (value: string) => {
+        setCurrentString(value);
         const database = await databasePromise;
         // Pak de lijst met instellingen uit de database
         const settingsCollection = database.settings;
@@ -81,7 +81,7 @@ export function SettingsItemString(props: {
         // Als de instelling niet bestaat, maak de instelling aan.
         await settingsCollection.atomicUpsert({
             setting_id: props.settingid,
-            state: !isEnabled,
+            state: value,
         });
     };
 
@@ -103,9 +103,8 @@ export function SettingsItemString(props: {
                         state: "",
                     });
                 }
-                document.$.subscribe((changeEvent) => {
-                    setIsEnabled(changeEvent.state);
-                });
+
+                setCurrentString(document.state);
             });
         })();
     }, []);
@@ -115,12 +114,10 @@ export function SettingsItemString(props: {
             <View>
                 <Text>{props.displayname}</Text>
                 <Text>{props.settingid}</Text>
-                <Text>{isEnabled.toString()}</Text>
             </View>
-            <Switch
-                onValueChange={toggleSwitch}
-                value={isEnabled}
-                style={styles.settingswitch}
+            <TextInput
+                onChangeText={async (value) => setString(value)}
+                value={currentString}
             />
         </View>
     );

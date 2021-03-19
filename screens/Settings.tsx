@@ -3,7 +3,11 @@ import { StyleSheet } from "react-native";
 
 import { Text, Button, Colors, useTheme } from "react-native-paper";
 import { ScrollView } from "styled/Themed";
-import { SettingsItemBoolean, SettingsItemColor } from "../components/Settings";
+import {
+    SettingsItemBoolean,
+    SettingsItemColor,
+    SettingsItemString,
+} from "../components/Settings";
 
 import { removeRxDatabase } from "rxdb";
 
@@ -18,6 +22,10 @@ export default function Settings(): JSX.Element {
             <SettingsItemBoolean
                 settingid="db_sync"
                 displayname="Database Synchronisation"
+            />
+            <SettingsItemString
+                settingid="xp_profession"
+                displayname="XP Profession"
             />
             <SettingsItemColor
                 displayname="Accent Color"
