@@ -21,7 +21,7 @@ export default function Settings(): JSX.Element {
             />
             <SettingsItemBoolean
                 settingid="db_sync"
-                displayname="Database Synchronisation"
+                displayname="Database Synchronisation (Restart app to trigger)"
             />
             <SettingsItemString
                 settingid="xp_profession"
