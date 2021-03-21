@@ -39,17 +39,34 @@ function Data(): JSX.Element {
             const database = await databasePromise;
             const eventCollection = database.events;
 
-            const query = eventCollection.find({
-                selector: {
-                    start_time: { $gte: mondayUnix, $lt: nextMondayUnix },
-                },
-            });
+            const query = eventCollection
+                .find({
+                    selector: {
+                        start_time: { $gte: mondayUnix, $lt: nextMondayUnix },
+                    },
+                })
+                .sort({ start_time: "desc" }); // Query voor alle gegevens van de week.
             query.$.subscribe((documents: EventSchema) => {
                 setList(documents);
+                setBarGraphData(
+                    baseArray.map((item, index) => {
+                        return {
+                            x: item.x,
+                            y: documents.filter((item) => {
+                                return (
+                                    item.start_time >=
+                                        mondayUnix + 86400000 * index &&
+                                    item.start_time <
+                                        mondayUnix + 86400000 * (index + 1)
+                                );
+                            }).length,
+                        };
+                    })
+                );
             });
         })();
     }, []);
-    console.log(list);
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.separator} />

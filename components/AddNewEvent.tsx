@@ -15,18 +15,7 @@ export default function AddNewEvent(props): JSX.Element {
     const [tVisible, setTVisible] = React.useState(false);
     const [action, setAction] = useState<action_enum>();
     const [visible, setVisible] = React.useState(false);
-    const [list, setList] = useState<Array<EventSchema>>([]);
-    useEffect(() => {
-        (async () => {
-            const database = await databasePromise;
-            const eventCollection = database.events;
 
-            const query = eventCollection.find().sort({ start_time: "desc" });
-            query.$.subscribe((documents: EventSchema) => {
-                setList(documents);
-            });
-        })();
-    }, []);
     return (
         <>
             <Menu
@@ -77,7 +66,6 @@ export default function AddNewEvent(props): JSX.Element {
             >
                 Voeg event toe
             </Button>
-            {JSON.stringify(list)}
         </>
     );
 }

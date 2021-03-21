@@ -30,7 +30,6 @@ export default function NewSkillModal({
             />
             <Button
                 onPress={() => {
-                    console.log(categoryId);
                     createSkill(categoryId, newSkill);
                     navigation.goBack();
                 }}

@@ -10,7 +10,6 @@ addRxPlugin(SQLiteAdapter);
 addRxPlugin(HTTPAdapter);
 
 async function getRxDB() {
-    console.log(database);
     const rxdb = await createRxDatabase({
         name: "database",
         adapter: "react-native-sqlite", // the name of your adapter
