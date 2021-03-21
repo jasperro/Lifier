@@ -99,6 +99,11 @@ export default async function initializeCollections(
                         },
                     });
                 },
+                delete: async function () {
+                    const eventCollection = database.events;
+                    eventCollection.createNew("Skill", "Deleted");
+                    this.remove();
+                },
             },
         },
 

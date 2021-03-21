@@ -52,7 +52,11 @@ export function SkillScreen({ route, navigation }): JSX.Element {
         skillCollection = database.skills;
 
         query = skillCollection.findOne(skillId);
-        query.$.subscribe((data) => setTitle(data.display_name));
+        query.$.subscribe((data) => {
+            if (data) {
+                setTitle(data.display_name);
+            }
+        });
     })();
 
     return (
