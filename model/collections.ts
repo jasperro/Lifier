@@ -11,6 +11,7 @@ import Setting from "./setting.schema";
 import { RxDatabase } from "rxdb";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
+import { Platform } from "react-native";
 
 function generateKebabId(inString: string) {
     return inString
@@ -253,18 +254,37 @@ export default async function initializeCollections(
     }, false);
 
     ["settings", "skills", "tasks", "skillcategories", "events"].forEach(
-        (item) =>
-            database[item].sync({
-                remote: `http://192.168.1.16:10102/${item}/`, // Remote database. CouchDB op Raspberry Pi
-                waitForLeadership: false,
-                direction: {
-                    pull: true,
-                    push: true,
-                },
-                options: {
-                    live: true,
-                    retry: true,
-                },
-            })
+        async (item) => {
+            if (Platform.OS == "web") {
+                database[item].sync({
+                    remote: `http://192.168.1.16:10102/${item}/`, // Remote database. CouchDB op Raspberry Pi
+                    waitForLeadership: true,
+                    direction: {
+                        pull: true,
+                        push: true,
+                    },
+                    options: {
+                        live: true,
+                        retry: true,
+                    },
+                });
+            } else {
+                // Zorgt ervoor dat synchronisatie ook op mobile werkt (bugfix?)
+                setInterval(async () => {
+                    database[item].sync({
+                        remote: `http://192.168.1.16:10102/${item}/`, // Remote database. CouchDB op Raspberry Pi
+                        waitForLeadership: true,
+                        direction: {
+                            pull: true,
+                            push: true,
+                        },
+                        options: {
+                            live: false,
+                            retry: false,
+                        },
+                    });
+                }, 5000);
+            }
+        }
     );
 }
