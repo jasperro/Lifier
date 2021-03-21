@@ -12,8 +12,9 @@ async function createTask(title: string, skillId: string) {
     const database = await databasePromise;
     const eventsCollection = database.events;
     const taskCollection = database.tasks;
-    const newtask = await taskCollection.createNew(title, skillId);
-    await eventsCollection.createNew("Task", "Created");
+    console.log([title, skillId]);
+    console.log(taskCollection.createNew(title, skillId));
+    eventsCollection.createNew("Task", "Created");
 }
 
 export function SkillScreen({ route, navigation }): JSX.Element {
@@ -95,9 +96,9 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                 onChangeText={(newTask) => setNewTask(newTask)}
             />
             <Button
-                onPress={() =>
-                    query.exec().then(() => createTask(newTask, skillId))
-                }
+                onPress={() => {
+                    createTask(newTask, skillId);
+                }}
             >
                 Maak nieuwe task bij deze skill
             </Button>

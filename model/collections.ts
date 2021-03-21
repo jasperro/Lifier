@@ -111,42 +111,34 @@ export default async function initializeCollections(
                     displayName: string,
                     skillId: string
                 ) {
-                    const dbReturns = skillId
-                        ? (async function () {
-                              const skill:
-                                  | SkillSchema
-                                  | undefined = await database.skills
-                                  .findOne(skillId)
-                                  .exec();
-                              const skillcategory:
-                                  | SkillCategorySchema
-                                  | undefined = await skill.category_id_;
-                              const categoryId:
-                                  | string
-                                  | undefined = await skill.category_id;
-                              return {
-                                  color: skillcategory.color
-                                      ? skillcategory.color
-                                      : "#ff0022",
-                                  categoryId: categoryId
-                                      ? categoryId
-                                      : undefined,
-                                  skill: skill ? skill : undefined,
-                              };
-                          })()
-                        : null;
-                    const { color, categoryId, skill } = await dbReturns;
+                    const categoriesCollection = database.skillcategories;
+                    const skill:
+                        | SkillSchema
+                        | undefined = await database.skills
+                        .findOne(skillId)
+                        .exec();
+                    const categoryId: string | undefined = skill.category_id;
+                    console.log(categoryId);
+                    const query:
+                        | SkillCategorySchema
+                        | undefined = categoriesCollection.findOne(categoryId);
+                    console.log("midden");
+                    const skillcategory = await query.exec(); // HMM? Soms onverklaarbaar langzaam door bug in rxdb?
+                    console.log("eind");
+
                     const newDocument = await this.insert({
                         display_name: displayName,
                         skill: skillId,
                         category: categoryId,
-                        color: color,
+                        color: skillcategory.color
+                            ? skillcategory.color
+                            : "#ff0022",
                     });
 
                     let existingTasks = await skill.tasks;
                     existingTasks = existingTasks ? existingTasks : [];
 
-                    await skill.update({
+                    skill.update({
                         $set: {
                             tasks: [...existingTasks, newDocument.task_id],
                         },

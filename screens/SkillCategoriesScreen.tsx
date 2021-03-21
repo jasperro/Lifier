@@ -11,15 +11,14 @@ import { styles } from "./Skills";
 export function SkillCategoriesScreen({ navigation }): JSX.Element {
     const { colors } = useTheme();
     const [list, setList] = useState([]);
-    useEffect(() => {
-        (async () => {
-            const database = await databasePromise;
-            const skillcategoryCollection = database.skillcategories;
+    (async () => {
+        const database = await databasePromise;
+        const skillcategoryCollection = database.skillcategories;
 
-            const query = skillcategoryCollection.find();
-            query.$.subscribe((documents) => setList(documents));
-        })();
-    }, []);
+        const query = skillcategoryCollection.find();
+        const documents = await query.exec();
+        query.$.subscribe((documents) => setList(documents));
+    })();
     return (
         <View style={styles.container}>
             <FlatGrid
