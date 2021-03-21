@@ -1,27 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, FlatList } from "react-native";
-import databasePromise from "model/database";
-
-import {
-    FAB,
-    Card,
-    useTheme,
-    Menu,
-    Divider,
-    IconButton,
-    TextInput,
-    Button,
-    Text,
-} from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, ScrollView, ColoredSubheading } from "styled/Themed";
-import { CommonActions } from "@react-navigation/native";
-import ChipExample from "root/components/ChipTest";
-import { SkillCategorySchema } from "model/skillcategory.type";
+import databasePromise from "model/database";
 import { TaskSchema } from "model/task.type";
-import skillcategorySchema from "root/model/skillcategory.schema";
-import { SkillSchema } from "root/model/skill.type";
-import { RxDatabase } from "rxdb";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet } from "react-native";
+import { Card, Divider, FAB, IconButton, Menu } from "react-native-paper";
+import ChipExample from "root/components/ChipTest";
+import { ColoredSubheading, View } from "styled/Themed";
 
 const SortMenu = (): JSX.Element => {
     const [visible, setVisible] = useState(false);

@@ -1,28 +1,24 @@
 import "react-native-get-random-values";
 import { decode, encode } from "base-64";
-
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-
-import useCachedResources from "./hooks/useCachedResources";
-import Navigation from "./navigation";
-import databasePromise from "model/database";
-import { enableScreens } from "react-native-screens";
-
 import {
     DarkTheme as NavigationDarkTheme,
     DefaultTheme as NavigationDefaultTheme,
 } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+import databasePromise from "model/database";
+import { SettingSchema } from "model/setting.type";
+import React, { useEffect, useState } from "react";
 import {
     DarkTheme as PaperDarkTheme,
     DefaultTheme as PaperDefaultTheme,
     Provider as PaperProvider,
 } from "react-native-paper";
-import { PreferencesProvider } from "./PreferencesContext";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { enableScreens } from "react-native-screens";
 import { fonts as fontList } from "./fontconfig";
-import { RxCollection, RxDatabase, RxQuery } from "rxdb";
-import { SettingSchema } from "model/setting.type";
+import useCachedResources from "./hooks/useCachedResources";
+import Navigation from "./navigation";
+import { PreferencesProvider } from "./PreferencesContext";
 
 const ExtraTheme = {
     colors: { textLight: "#ffffff", textDark: "#000000" },

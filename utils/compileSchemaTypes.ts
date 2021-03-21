@@ -1,13 +1,13 @@
 // Dit bestand is voor het genereren van types van de schemas
 // Uitvoeren met `ts-node-transpile-only`
 
-import { compile } from "json-schema-to-typescript";
 import * as fs from "fs";
-import SkillCategorySchema from "../model/skillcategory.schema";
-import SkillSchema from "../model/skill.schema";
-import TaskSchema from "../model/task.schema";
+import { compile } from "json-schema-to-typescript";
 import EventSchema from "../model/event.schema";
 import SettingSchema from "../model/setting.schema";
+import SkillSchema from "../model/skill.schema";
+import SkillCategorySchema from "../model/skillcategory.schema";
+import TaskSchema from "../model/task.schema";
 
 const cwd = process.cwd();
 

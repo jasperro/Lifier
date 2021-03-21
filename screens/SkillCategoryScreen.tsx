@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { FlatList } from "react-native";
-import { Text, FAB, Button, Card, IconButton } from "react-native-paper";
-import { View } from "styled/Themed";
 import { CommonActions } from "@react-navigation/native";
 import databasePromise from "model/database";
+import React, { useEffect, useState } from "react";
+import { FlatList } from "react-native";
+import { Button, Card, FAB, IconButton, Text } from "react-native-paper";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
-import { RxCollection, RxDatabase, RxDocument, RxQuery } from "rxdb";
+import { RxCollection, RxDatabase, RxQuery } from "rxdb";
+import { View } from "styled/Themed";
 import { styles } from "./Skills";
 
 export function SkillCategoryScreen({ route, navigation }): JSX.Element {
@@ -39,9 +39,9 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
         skillcategoryCollection = database.skillcategories;
         query = skillcategoryCollection.findOne(categoryId);
 
-        query.$.subscribe(async (documents) => {
+        query.$.subscribe(async (data) => {
             try {
-                const newList = await documents.skills_;
+                const newList = await data.skills_;
                 setList(newList);
                 setTitle(data.display_name);
             } catch {}

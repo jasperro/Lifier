@@ -1,12 +1,12 @@
+import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
-import { View, ScrollView, ColoredSubheading } from "styled/Themed";
-import { VictoryBar, VictoryChart, Background } from "victory-native";
-import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { useTheme } from "react-native-paper";
-import chartTheme from "root/constants/chartTheme";
+import { Defs, LinearGradient, Stop } from "react-native-svg";
 import AddNewEvent from "root/components/AddNewEvent";
-import databasePromise from "model/database";
+import chartTheme from "root/constants/chartTheme";
+import { ColoredSubheading, ScrollView, View } from "styled/Themed";
+import { Background, VictoryBar, VictoryChart } from "victory-native";
 
 function Data(): JSX.Element {
     const height = 400;
@@ -20,7 +20,7 @@ function Data(): JSX.Element {
     const mondayUnix = getMonday().valueOf(); // Unix timestamp van de start eerste maandag van de week
     const nextMondayUnix = mondayUnix + 86400000 * 7; // en timestamp van de volgende maandag
 
-    let baseArray = [
+    const baseArray = [
         { x: "Monday", y: 0 },
         { x: "Tuesday", y: 0 },
         { x: "Wednesday", y: 0 },

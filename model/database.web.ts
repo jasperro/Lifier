@@ -1,8 +1,7 @@
-import { createRxDatabase, addRxPlugin, removeRxDatabase } from "rxdb";
-import initializeCollections from "./collections";
-import IndexedDBAdapter from "pouchdb-adapter-idb";
 import HTTPAdapter from "pouchdb-adapter-http";
-import { throwError } from "rxjs"; // Vervangen door pouchdb-adapter-indexeddb als pouchdb/pouchdb#8209 gefixt wordt
+import IndexedDBAdapter from "pouchdb-adapter-idb";
+import { addRxPlugin, createRxDatabase, removeRxDatabase } from "rxdb";
+import initializeCollections from "./collections";
 //import HTTPAdapter from "pouchdb-adapter-http";
 
 //addRxPlugin(HTTPAdapter); // replication

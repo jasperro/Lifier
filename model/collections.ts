@@ -1,17 +1,14 @@
-import { SkillCategorySchema } from "./skillcategory.type";
-import { SkillSchema } from "./skill.type";
-import { TaskSchema } from "./task.type";
-import { EventSchema } from "./event.type";
-import { SettingSchema } from "./setting.type";
-import SkillCategory from "./skillcategory.schema";
-import Skill from "./skill.schema";
-import Task from "./task.schema";
-import Event, { action_enum, action_type_enum } from "./event.schema";
-import Setting from "./setting.schema";
-import { RxDatabase } from "rxdb";
-import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 import { Platform } from "react-native";
+import { RxDatabase } from "rxdb";
+import { v4 as uuidv4 } from "uuid";
+import Event, { action_enum, action_type_enum } from "./event.schema";
+import Setting from "./setting.schema";
+import Skill from "./skill.schema";
+import { SkillSchema } from "./skill.type";
+import SkillCategory from "./skillcategory.schema";
+import { SkillCategorySchema } from "./skillcategory.type";
+import Task from "./task.schema";
 
 function generateKebabId(inString: string) {
     return inString

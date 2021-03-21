@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
-import { Chip, List, useTheme } from "react-native-paper";
-import PreferencesContext from "root/PreferencesContext";
 import databasePromise from "model/database";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Chip, List, useTheme } from "react-native-paper";
 import { SkillCategorySchema } from "root/model/skillcategory.type";
+import PreferencesContext from "root/PreferencesContext";
 
 function ChipExample({ onSelect }: { onSelect: (list) => void }): JSX.Element {
     const { isThemeDark } = React.useContext(PreferencesContext);

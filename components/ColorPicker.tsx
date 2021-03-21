@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 import Color from "color";
-import { FlatGrid } from "react-native-super-grid";
+import React, { useState } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Colors } from "react-native-paper";
-import PreferencesContext from "root/PreferencesContext";
+import { FlatGrid } from "react-native-super-grid";
 
 interface ColorPickerPropsType {
     onSelectColor: (color: string) => unknown;

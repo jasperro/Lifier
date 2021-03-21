@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Button, IconButton, Text } from "react-native-paper";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import { IconButton, Text } from "react-native-paper";
 
 const Timer = (): JSX.Element => {
     const [seconds, setSeconds] = useState(0);

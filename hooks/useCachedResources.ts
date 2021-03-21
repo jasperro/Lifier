@@ -1,12 +1,11 @@
-import { Ionicons } from "@expo/vector-icons";
-import * as Font from "expo-font";
 import {
     Inter_100Thin,
     Inter_300Light,
     Inter_400Regular,
     Inter_500Medium,
 } from "@expo-google-fonts/inter";
-
+import { Ionicons } from "@expo/vector-icons";
+import * as Font from "expo-font";
 import * as React from "react";
 
 export default function useCachedResources() {

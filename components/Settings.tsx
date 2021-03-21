@@ -2,11 +2,10 @@ import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Switch, Text, TextInput } from "react-native-paper";
-import { SettingSchema } from "root/model/setting.type";
-import { View } from "styled/Themed";
 import ColorPicker from "root/components/ColorPicker";
-import { RxCollection, RxDatabase, RxQuery } from "rxdb";
+import { SettingSchema } from "root/model/setting.type";
 import PreferencesContext from "root/PreferencesContext";
+import { View } from "styled/Themed";
 
 export function SettingsItemBoolean(props: {
     displayname: string;

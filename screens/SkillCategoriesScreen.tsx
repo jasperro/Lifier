@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { FAB, Button, Card, IconButton, useTheme } from "react-native-paper";
-import { View as TransparentView } from "react-native";
-import { View } from "styled/Themed";
-import { FlatGrid } from "react-native-super-grid";
-import databasePromise from "model/database";
 import Color from "color";
+import databasePromise from "model/database";
+import React, { useEffect, useState } from "react";
+import { View as TransparentView } from "react-native";
+import { Card, FAB, IconButton, useTheme } from "react-native-paper";
+import { FlatGrid } from "react-native-super-grid";
 import SkillCategorySchema from "root/model/skillcategory.type";
+import { View } from "styled/Themed";
 import { styles } from "./Skills";
 
 export function SkillCategoriesScreen({ navigation }): JSX.Element {

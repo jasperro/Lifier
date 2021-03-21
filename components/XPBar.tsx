@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { ProgressBar, useTheme, Text } from "react-native-paper";
-import { View as TransparentView, StyleSheet } from "react-native";
-import { View } from "./Style/Themed";
 import databasePromise from "model/database";
-import { SettingSchema } from "root/model/setting.type";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View as TransparentView } from "react-native";
+import { ProgressBar, Text, useTheme } from "react-native-paper";
+import { View } from "./Style/Themed";
 
 export default function XPBar(props): JSX.Element {
     const { colors } = useTheme();

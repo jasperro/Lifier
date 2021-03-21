@@ -1,14 +1,14 @@
+import Color from "color";
 import React from "react";
 import {
-    StyleSheet,
-    View as OriginalView,
     ScrollView as OriginalScrollView,
     StyleProp,
-    ViewStyle,
+    StyleSheet,
     TextStyle,
+    View as OriginalView,
+    ViewStyle,
 } from "react-native";
-import { useTheme, Subheading } from "react-native-paper";
-import Color from "color";
+import { Subheading, useTheme } from "react-native-paper";
 
 type ViewProps = React.ComponentPropsWithRef<typeof View> & {
     children: React.ReactNode;

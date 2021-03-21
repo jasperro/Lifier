@@ -1,12 +1,11 @@
-import * as React from "react";
-import { StyleSheet, View as TransparentView } from "react-native";
-
-import { FAB, Card, useTheme } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, ColoredSubheading } from "styled/Themed";
 import database from "model/database";
+import * as React from "react";
+import { StyleSheet } from "react-native";
+import { Card, FAB, useTheme } from "react-native-paper";
 import Timer from "root/components/Timer";
 import XPBar from "root/components/XPBar";
+import { ColoredSubheading, View } from "styled/Themed";
 
 function ActivityCard(props): JSX.Element {
     const { colors } = useTheme();

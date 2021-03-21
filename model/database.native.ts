@@ -1,7 +1,7 @@
-import { addRxPlugin, createRxDatabase, removeRxDatabase } from "rxdb";
 import * as SQLite from "expo-sqlite";
-import SQLiteAdapterFactory from "pouchdb-adapter-react-native-sqlite";
 import HTTPAdapter from "pouchdb-adapter-http";
+import SQLiteAdapterFactory from "pouchdb-adapter-react-native-sqlite";
+import { addRxPlugin, createRxDatabase, removeRxDatabase } from "rxdb";
 import initializeCollections from "./collections";
 
 const SQLiteAdapter = SQLiteAdapterFactory(SQLite);

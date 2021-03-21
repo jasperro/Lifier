@@ -1,15 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-
-import { Text, Button, Colors, useTheme } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
+import { removeRxDatabase } from "rxdb";
 import { ScrollView } from "styled/Themed";
 import {
     SettingsItemBoolean,
     SettingsItemColor,
     SettingsItemString,
 } from "../components/Settings";
-
-import { removeRxDatabase } from "rxdb";
 
 export default function Settings(): JSX.Element {
     return (

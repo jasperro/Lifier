@@ -1,9 +1,8 @@
+import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { Button, Menu } from "react-native-paper";
-import { TextInput } from "react-native-paper";
-import databasePromise from "model/database";
-import { EventSchema } from "root/model/event.type";
 import { action_enum, action_type_enum } from "root/model/event.schema";
+import { EventSchema } from "root/model/event.type";
 
 async function createEvent(actionType: action_type_enum, action: action_enum) {
     const database = await databasePromise;
