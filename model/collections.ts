@@ -252,4 +252,25 @@ export default async function initializeCollections(
             plainData.start_time = currentTime;
         }
     }, false);
+
+    [
+        database.settings,
+        database.skills,
+        database.tasks,
+        database.skillcategories,
+        database.events,
+    ].forEach((item) =>
+        item.sync({
+            remote: "http://192.168.1.16:10102/db/", // Remote database. CouchDB op Raspberry Pi
+            waitForLeadership: true,
+            direction: {
+                pull: true,
+                push: true,
+            },
+            options: {
+                live: true,
+                retry: true,
+            },
+        })
+    );
 }

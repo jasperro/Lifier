@@ -1,11 +1,13 @@
 import { createRxDatabase, addRxPlugin, removeRxDatabase } from "rxdb";
 import initializeCollections from "./collections";
 import IndexedDBAdapter from "pouchdb-adapter-idb";
+import HTTPAdapter from "pouchdb-adapter-http";
 import { throwError } from "rxjs"; // Vervangen door pouchdb-adapter-indexeddb als pouchdb/pouchdb#8209 gefixt wordt
 //import HTTPAdapter from "pouchdb-adapter-http";
 
 //addRxPlugin(HTTPAdapter); // replication
 addRxPlugin(IndexedDBAdapter);
+addRxPlugin(HTTPAdapter);
 
 async function getRxDB() {
     const rxdb = await createRxDatabase({
