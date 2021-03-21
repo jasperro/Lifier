@@ -9,7 +9,6 @@ import Task from "./task.schema";
 import Event, { action_enum, action_type_enum } from "./event.schema";
 import Setting from "./setting.schema";
 import { RxDatabase } from "rxdb";
-import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 
@@ -253,24 +252,19 @@ export default async function initializeCollections(
         }
     }, false);
 
-    [
-        database.settings,
-        database.skills,
-        database.tasks,
-        database.skillcategories,
-        database.events,
-    ].forEach((item) =>
-        item.sync({
-            remote: "http://192.168.1.16:10102/db/", // Remote database. CouchDB op Raspberry Pi
-            waitForLeadership: true,
-            direction: {
-                pull: true,
-                push: true,
-            },
-            options: {
-                live: true,
-                retry: true,
-            },
-        })
+    ["settings", "skills", "tasks", "skillcategories", "events"].forEach(
+        (item) =>
+            database[item].sync({
+                remote: `http://192.168.1.16:10102/${item}/`, // Remote database. CouchDB op Raspberry Pi
+                waitForLeadership: false,
+                direction: {
+                    pull: true,
+                    push: true,
+                },
+                options: {
+                    live: true,
+                    retry: true,
+                },
+            })
     );
 }

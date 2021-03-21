@@ -1,3 +1,4 @@
+import "react-native-get-random-values";
 import { decode, encode } from "base-64";
 
 import { StatusBar } from "expo-status-bar";
