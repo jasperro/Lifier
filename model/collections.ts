@@ -118,13 +118,10 @@ export default async function initializeCollections(
                         .findOne(skillId)
                         .exec();
                     const categoryId: string | undefined = skill.category_id;
-                    console.log(categoryId);
                     const query:
                         | SkillCategorySchema
                         | undefined = categoriesCollection.findOne(categoryId);
-                    console.log("midden");
                     const skillcategory = await query.exec(); // HMM? Soms onverklaarbaar langzaam door bug in rxdb?
-                    console.log("eind");
 
                     const newDocument = await this.insert({
                         display_name: displayName,

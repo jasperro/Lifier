@@ -12,8 +12,7 @@ async function createTask(title: string, skillId: string) {
     const database = await databasePromise;
     const eventsCollection = database.events;
     const taskCollection = database.tasks;
-    console.log([title, skillId]);
-    console.log(taskCollection.createNew(title, skillId));
+    taskCollection.createNew(title, skillId);
     eventsCollection.createNew("Task", "Created");
 }
 
@@ -48,17 +47,19 @@ export function SkillScreen({ route, navigation }): JSX.Element {
     let database: RxDatabase;
     let skillCollection: RxCollection;
     let query: RxQuery;
-    (async () => {
-        database = await databasePromise;
-        skillCollection = database.skills;
+    useEffect(() => {
+        (async () => {
+            database = await databasePromise;
+            skillCollection = database.skills;
 
-        query = skillCollection.findOne(skillId);
-        query.$.subscribe((data) => {
-            if (data) {
-                setTitle(data.display_name);
-            }
-        });
-    })();
+            query = skillCollection.findOne(skillId);
+            query.$.subscribe((data) => {
+                if (data) {
+                    setTitle(data.display_name);
+                }
+            });
+        })();
+    }, []);
 
     return (
         <View style={styles.container}>
