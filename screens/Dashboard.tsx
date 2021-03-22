@@ -44,22 +44,6 @@ export default function Dashboard(): JSX.Element {
             <ColoredSubheading>Time</ColoredSubheading>
             <Timer />
             <XPBar />
-            <FAB
-                style={styles.fab}
-                icon="plus"
-                label="Timer"
-                onPress={async () => {
-                    database.then(async (database) => {
-                        const skillsCollection = database.skills;
-
-                        await skillsCollection.bulkInsert(
-                            Array(1000).fill({
-                                display_name: "Dit is een skill",
-                            })
-                        );
-                    });
-                }}
-            />
         </View>
     );
 }
@@ -69,12 +53,6 @@ const styles = StyleSheet.create({
         elevation: 0,
         paddingLeft: 16,
         paddingRight: 16,
-    },
-    fab: {
-        position: "absolute",
-        margin: 16,
-        right: 0,
-        bottom: 90,
     },
 });
 
