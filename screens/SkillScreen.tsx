@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
-import { Text, FAB, TextInput, Button, IconButton } from "react-native-paper";
-import { View } from "styled/Themed";
 import { CommonActions } from "@react-navigation/native";
 import databasePromise from "model/database";
+import React, { useEffect, useState } from "react";
+import { ScrollView } from "react-native";
+import { Button, FAB, IconButton, Text, TextInput } from "react-native-paper";
+import TaskList from "root/components/TaskList";
+import { TaskSchema } from "root/model/task.type";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 import { RxCollection, RxDatabase, RxQuery } from "rxdb";
+import { View } from "styled/Themed";
 import { styles } from "./Skills";
 
 async function createTask(title: string, skillId: string) {
@@ -20,6 +22,7 @@ export function SkillScreen({ route, navigation }): JSX.Element {
     const { skillId, displayName, categoryId, categoryName } = route.params;
     const [title, setTitle] = useState(displayName);
     const [newSkill, setNewSkill] = useState("");
+    const [taskList, setTaskList] = useState<Array<TaskSchema>>([]);
     const [newTask, setNewTask] = useState("");
     useEffect(() => {
         navigation.setOptions({
@@ -53,9 +56,10 @@ export function SkillScreen({ route, navigation }): JSX.Element {
             skillCollection = database.skills;
 
             query = skillCollection.findOne(skillId);
-            query.$.subscribe((data) => {
+            query.$.subscribe(async (data) => {
                 if (data) {
                     setTitle(data.display_name);
+                    setTaskList(await data.tasks_);
                 }
             });
         })();
@@ -87,7 +91,7 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                         });
                     }}
                 />
-                <Text>skillId: {JSON.stringify(skillId)}</Text>
+                <TaskList list={taskList} />
             </ScrollView>
 
             <TextInput

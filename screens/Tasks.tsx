@@ -1,10 +1,10 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import databasePromise from "model/database";
 import { TaskSchema } from "model/task.type";
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
-import { Card, Divider, FAB, IconButton, Menu } from "react-native-paper";
+import { StyleSheet } from "react-native";
+import { Divider, FAB, IconButton, Menu } from "react-native-paper";
 import ChipExample from "root/components/ChipTest";
+import TaskList from "root/components/TaskList";
 import { ColoredSubheading, View } from "styled/Themed";
 
 const SortMenu = (): JSX.Element => {
@@ -76,63 +76,7 @@ export default function Tasks(): JSX.Element {
             <ColoredSubheading>Uncompleted</ColoredSubheading>
             <SortMenu></SortMenu>
             <View style={styles.container}>
-                <FlatList
-                    style={styles.cardlist}
-                    data={list}
-                    keyExtractor={(item) => item.task_id}
-                    renderItem={({ item }) => {
-                        const Icon = function Icon() {
-                            return (
-                                <MaterialCommunityIcons
-                                    name="view-dashboard"
-                                    size={48}
-                                    color={item.color}
-                                />
-                            );
-                        };
-                        return (
-                            <Card style={styles.card} key={item.task_id}>
-                                <Card.Title
-                                    title={item.display_name}
-                                    left={() => {
-                                        // We hebben een lijst met RxDocument in list
-                                        /*const [colorToSet, setColorToSet] = useState(
-                                            "#ffffff"
-                                        );
-                                        useEffect(() => {
-                                            async () => {
-                                                setColorToSet(
-                                                    await item.category_.color
-                                                );
-                                            };
-                                        });*/
-                                        return <Icon></Icon>;
-                                    }}
-                                    right={() => {
-                                        return (
-                                            <>
-                                                <IconButton
-                                                    icon="delete"
-                                                    size={24}
-                                                    onPress={() =>
-                                                        item.delete()
-                                                    }
-                                                />
-                                                <IconButton
-                                                    icon="check"
-                                                    size={24}
-                                                    onPress={() =>
-                                                        item.finish()
-                                                    }
-                                                />
-                                            </>
-                                        );
-                                    }}
-                                />
-                            </Card>
-                        );
-                    }}
-                />
+                <TaskList list={list} />
             </View>
             <View style={{ flex: 1 }}>
                 <ChipExample
@@ -164,9 +108,6 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 0,
         bottom: 0,
-    },
-    card: {
-        marginVertical: 4,
     },
 });
 
