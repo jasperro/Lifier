@@ -5,6 +5,7 @@ import { StyleSheet } from "react-native";
 import { Divider, FAB, IconButton, Menu } from "react-native-paper";
 import ChipExample from "root/components/ChipTest";
 import TaskList from "root/components/TaskList";
+import XPBar from "root/components/XPBar";
 import { ColoredSubheading, View } from "styled/Themed";
 
 const SortMenu = (): JSX.Element => {
@@ -84,9 +85,10 @@ export default function Tasks(): JSX.Element {
                         setSelectedCategories(list);
                         filterList(list);
                     }}
-                ></ChipExample>
+                />
             </View>
 
+            <XPBar />
             <FAB
                 style={styles.fab}
                 icon="plus"
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         margin: 16,
         right: 0,
-        bottom: 0,
+        bottom: 90,
     },
 });
 

@@ -43,86 +43,90 @@ export default function XPBar(props): JSX.Element {
             });*/
         })();
     }, []);
-    return (
-        <View style={themedstyles.xpbar}>
-            <ProgressBar
-                style={{ height: 10 }}
-                progress={XPAmount / 1000 - ((XPAmount / 1000) >> 0)}
-            />
-            <TransparentView
-                style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    minHeight: 70,
-                    alignItems: "stretch",
-                    paddingLeft: 20,
-                    paddingRight: 20,
-                }}
-            >
+    const returned = React.useMemo(() => {
+        return (
+            <View style={themedstyles.xpbar}>
+                <ProgressBar
+                    style={{ height: 10 }}
+                    progress={XPAmount / 1000 - ((XPAmount / 1000) >> 0)}
+                />
                 <TransparentView
                     style={{
                         flex: 1,
                         flexDirection: "row",
-                        alignItems: "center",
+                        justifyContent: "space-between",
+                        minHeight: 70,
+                        alignItems: "stretch",
+                        paddingLeft: 20,
+                        paddingRight: 20,
                     }}
                 >
-                    <View
-                        style={[
-                            styles.xpdot,
-                            {
-                                backgroundColor: colors.background,
-                                marginRight: 10,
-                            },
-                        ]}
+                    <TransparentView
+                        style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                        }}
                     >
-                        <Text style={{ fontSize: 20, textAlign: "center" }}>
-                            {~~(XPAmount / 1000) + 1}
-                        </Text>
-                    </View>
-                    {/*<Text style={{ fontSize: 16, fontFamily: "InterLight" }}>
+                        <View
+                            style={[
+                                styles.xpdot,
+                                {
+                                    backgroundColor: colors.background,
+                                    marginRight: 10,
+                                },
+                            ]}
+                        >
+                            <Text style={{ fontSize: 20, textAlign: "center" }}>
+                                {~~(XPAmount / 1000) + 1}
+                            </Text>
+                        </View>
+                        {/*<Text style={{ fontSize: 16, fontFamily: "InterLight" }}>
                         Rookie Guitar Player
                     </Text>*/}
-                </TransparentView>
-                <Text
-                    style={{
-                        fontSize: 24,
-                        height: "auto",
-                        alignSelf: "center",
-                    }}
-                >{`${XPAmount}/${
-                    ((XPAmount / 1000) >> 0) * 1000 + 1000
-                } XP`}</Text>
-                <TransparentView
-                    style={{
-                        flex: 1,
-                        flexDirection: "row-reverse",
-                        alignItems: "center",
-                    }}
-                >
-                    <View
-                        style={[
-                            styles.xpdot,
-                            {
-                                backgroundColor: colors.primary,
-                                marginLeft: 10,
-                            },
-                        ]}
+                    </TransparentView>
+                    <Text
+                        style={{
+                            fontSize: 24,
+                            height: "auto",
+                            alignSelf: "center",
+                        }}
+                    >{`${XPAmount}/${
+                        ((XPAmount / 1000) >> 0) * 1000 + 1000
+                    } XP`}</Text>
+                    <TransparentView
+                        style={{
+                            flex: 1,
+                            flexDirection: "row-reverse",
+                            alignItems: "center",
+                        }}
                     >
-                        <Text
-                            style={{
-                                fontSize: 20,
-                                textAlign: "center",
-                                color: "white",
-                            }}
+                        <View
+                            style={[
+                                styles.xpdot,
+                                {
+                                    backgroundColor: colors.primary,
+                                    marginLeft: 10,
+                                },
+                            ]}
                         >
-                            {~~(XPAmount / 1000) + 2}
-                        </Text>
-                    </View>
+                            <Text
+                                style={{
+                                    fontSize: 20,
+                                    textAlign: "center",
+                                    color: "white",
+                                }}
+                            >
+                                {~~(XPAmount / 1000) + 2}
+                            </Text>
+                        </View>
+                    </TransparentView>
                 </TransparentView>
-            </TransparentView>
-        </View>
-    );
+            </View>
+        );
+    }, [XPAmount, colors]);
+
+    return returned;
 }
 const styles = StyleSheet.create({
     xpdot: {
