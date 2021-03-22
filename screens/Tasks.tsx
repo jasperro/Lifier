@@ -79,16 +79,12 @@ export default function Tasks(): JSX.Element {
             <View style={styles.container}>
                 <TaskList list={list} />
             </View>
-            <View style={{ height: "auto", paddingBottom: 90 }}>
-                <ChipExample
-                    onSelect={async (list) => {
-                        setSelectedCategories(list);
-                        filterList(list);
-                    }}
-                />
-            </View>
-
-            <XPBar />
+            <ChipExample
+                onSelect={async (list) => {
+                    setSelectedCategories(list);
+                    filterList(list);
+                }}
+            />
         </View>
     );
 }

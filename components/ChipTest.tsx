@@ -28,7 +28,7 @@ function ChipExample({ onSelect }: { onSelect: (list) => void }): JSX.Element {
         onSelect ? onSelect(clicked) : undefined;
     }, [clicked]);
     return (
-        <View style={[styles.container]}>
+        <View style={styles.container}>
             <List.Section>
                 <List.Subheader>Category</List.Subheader>
                 <ScrollView horizontal={true} style={styles.row}>

@@ -100,19 +100,10 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                 value={newTask}
                 onChangeText={(newTask) => setNewTask(newTask)}
             />
-            <Button
-                onPress={() => {
-                    createTask(newTask, skillId);
-                }}
-            >
-                Maak nieuwe task bij deze skill
-            </Button>
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() =>
-                    query.exec().then((document) => document.edit(newSkill))
-                }
+                onPress={() => createTask(newTask, skillId)}
             />
         </View>
     );
