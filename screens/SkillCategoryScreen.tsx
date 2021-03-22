@@ -32,22 +32,22 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
     let database: RxDatabase;
     let query: RxQuery;
     let skillcategoryCollection: RxCollection;
-    //useEffect(() => {
-    (async () => {
-        database = await databasePromise;
+    useEffect(() => {
+        (async () => {
+            database = await databasePromise;
 
-        skillcategoryCollection = database.skillcategories;
-        query = skillcategoryCollection.findOne(categoryId);
+            skillcategoryCollection = database.skillcategories;
+            query = skillcategoryCollection.findOne(categoryId);
 
-        query.$.subscribe(async (data) => {
-            try {
-                const newList = await data.skills_;
-                setList(newList);
-                setTitle(data.display_name);
-            } catch {}
-        });
-    })();
-    //}, []);
+            query.$.subscribe(async (data) => {
+                try {
+                    const newList = await data.skills_;
+                    setList(newList);
+                    setTitle(data.display_name);
+                } catch {}
+            });
+        })();
+    }, []);
     return (
         <View style={styles.container}>
             <Text style={{ fontSize: 60 }}>{title}</Text>
