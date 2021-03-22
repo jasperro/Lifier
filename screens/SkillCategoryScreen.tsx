@@ -3,6 +3,7 @@ import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import { Button, Card, FAB, IconButton, Text } from "react-native-paper";
+import { SkillCategorySchema } from "root/model/skillcategory.type";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
 import { RxCollection, RxDatabase, RxQuery } from "rxdb";
 import { View } from "styled/Themed";
@@ -32,19 +33,33 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
     let database: RxDatabase;
     let query: RxQuery;
     let skillcategoryCollection: RxCollection;
+
+    async function setData(data: SkillCategorySchema) {
+        try {
+            const newList = await data.skills_;
+            setList(newList);
+            setTitle(data.display_name);
+        } catch {}
+    }
+
     useEffect(() => {
         (async () => {
             database = await databasePromise;
 
             skillcategoryCollection = database.skillcategories;
+            const skillCollection = database.skills;
             query = skillcategoryCollection.findOne(categoryId);
+            const query2 = skillCollection.find();
 
+            // Data als naam van skill is veranderd
+            query2.$.subscribe(async () => {
+                const data = await query.exec();
+                setData(data);
+            });
+
+            // Data als categorie is veranderd
             query.$.subscribe(async (data) => {
-                try {
-                    const newList = await data.skills_;
-                    setList(newList);
-                    setTitle(data.display_name);
-                } catch {}
+                setData(data);
             });
         })();
     }, []);
