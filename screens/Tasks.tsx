@@ -73,13 +73,13 @@ export default function Tasks(): JSX.Element {
         filterList(selectedCategories);
     }, [fullList]);
     return (
-        <>
+        <View style={{ height: "100%" }}>
             <ColoredSubheading>Uncompleted</ColoredSubheading>
             <SortMenu></SortMenu>
             <View style={styles.container}>
                 <TaskList list={list} />
             </View>
-            <View style={{ flex: 1 }}>
+            <View style={{ height: "auto", paddingBottom: 90 }}>
                 <ChipExample
                     onSelect={async (list) => {
                         setSelectedCategories(list);
@@ -89,13 +89,7 @@ export default function Tasks(): JSX.Element {
             </View>
 
             <XPBar />
-            <FAB
-                style={styles.fab}
-                icon="plus"
-                label="Task"
-                onPress={async () => createTask(newtask)}
-            />
-        </>
+        </View>
     );
 }
 

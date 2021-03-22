@@ -1,6 +1,6 @@
 import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Chip, List, useTheme } from "react-native-paper";
 import { SkillCategorySchema } from "root/model/skillcategory.type";
 import PreferencesContext from "root/PreferencesContext";
@@ -31,7 +31,7 @@ function ChipExample({ onSelect }: { onSelect: (list) => void }): JSX.Element {
         <View style={[styles.container]}>
             <List.Section>
                 <List.Subheader>Category</List.Subheader>
-                <View style={styles.row}>
+                <ScrollView horizontal={true} style={styles.row}>
                     {dataSource.map((value, key) => {
                         return (
                             <Chip
@@ -79,7 +79,7 @@ function ChipExample({ onSelect }: { onSelect: (list) => void }): JSX.Element {
                             </Chip>
                         );
                     })}
-                </View>
+                </ScrollView>
             </List.Section>
         </View>
     );
