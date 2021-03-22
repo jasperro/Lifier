@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Button } from "react-native-paper";
-import { TextInput } from "react-native-paper";
 import databasePromise from "model/database";
-import validator from "is-my-json-valid";
 import { SkillCategorySchema } from "model/skillcategory.type";
+import React, { useState } from "react";
+import { Dimensions, ScrollView } from "react-native";
+import { Button, TextInput } from "react-native-paper";
 import ColorPicker from "root/components/ColorPicker";
 
 //const validate = validator(CategorySchema);
@@ -31,7 +30,12 @@ export default function NewCategoryModal({ navigation }): JSX.Element {
     const [newcategory, setNewCategory] = useState("");
     const [newcolor, setNewColor] = useState("");
     return (
-        <>
+        <ScrollView
+            style={{
+                height: "100%",
+                maxHeight: Dimensions.get("window").height,
+            }}
+        >
             <TextInput
                 label="Nieuwe Categorie Naam"
                 value={newcategory}
@@ -51,6 +55,6 @@ export default function NewCategoryModal({ navigation }): JSX.Element {
             >
                 Maak categorie
             </Button>
-        </>
+        </ScrollView>
     );
 }
