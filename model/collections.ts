@@ -244,7 +244,13 @@ export default async function initializeCollections(
         }
     }, false);
 
-    database.settings.findOne("db_sync").$.subscribe((changeEvent) => {
+    database.settings.findOne("db_sync").$.subscribe(async (changeEvent) => {
+        if (changeEvent == null) {
+            changeEvent = await database.settings.atomicUpsert({
+                setting_id: "db_sync",
+                state: false,
+            });
+        }
         if (changeEvent.state == true) {
             [
                 "settings",
