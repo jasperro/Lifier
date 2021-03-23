@@ -5,7 +5,11 @@ import { Chip, List, useTheme } from "react-native-paper";
 import { SkillCategorySchema } from "root/model/skillcategory.type";
 import PreferencesContext from "root/PreferencesContext";
 
-function ChipExample({ onSelect }: { onSelect: (list) => void }): JSX.Element {
+function CategoryChips({
+    onSelect,
+}: {
+    onSelect: (list) => void;
+}): JSX.Element {
     const { isThemeDark } = React.useContext(PreferencesContext);
     const { colors } = useTheme();
 
@@ -85,7 +89,7 @@ function ChipExample({ onSelect }: { onSelect: (list) => void }): JSX.Element {
     );
 }
 
-ChipExample.title = "Chip";
+CategoryChips.title = "Chip";
 
 const styles = StyleSheet.create({
     container: {
@@ -101,4 +105,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ChipExample;
+export default CategoryChips;

@@ -3,7 +3,7 @@ import { TaskSchema } from "model/task.type";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Divider, FAB, IconButton, Menu } from "react-native-paper";
-import ChipExample from "root/components/ChipTest";
+import CategoryChips from "root/components/CategoryChips";
 import TaskList from "root/components/TaskList";
 import XPBar from "root/components/XPBar";
 import { ColoredSubheading, View } from "styled/Themed";
@@ -79,7 +79,7 @@ export default function Tasks(): JSX.Element {
             <View style={styles.container}>
                 <TaskList list={list} />
             </View>
-            <ChipExample
+            <CategoryChips
                 onSelect={async (list) => {
                     setSelectedCategories(list);
                     filterList(list);
