@@ -20,6 +20,9 @@ import useCachedResources from "./hooks/useCachedResources";
 import Navigation from "./navigation";
 import { PreferencesProvider } from "./PreferencesContext";
 
+//Nooit NodeJS modules gebruiken
+process.browser = true;
+
 const ExtraTheme = {
     colors: { textLight: "#ffffff", textDark: "#000000" },
 };
@@ -45,6 +48,7 @@ const CombinedDarkTheme = {
     fonts: fontList,
 };
 
+// Polyfill voor React Native
 if (!global.btoa) {
     global.btoa = encode;
 }
@@ -53,8 +57,6 @@ if (!global.atob) {
     global.atob = decode;
 }
 
-// Avoid using node dependent modules
-process.browser = true;
 enableScreens();
 
 export default function App(): JSX.Element {

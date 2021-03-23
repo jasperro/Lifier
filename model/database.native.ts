@@ -30,5 +30,6 @@ async function getRxDB() {
 // Haal de value uit de functie
 
 const database = getRxDB();
+
 // Exporteer return value
 export default database;
