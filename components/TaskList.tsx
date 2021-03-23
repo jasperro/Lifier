@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { Card, IconButton } from "react-native-paper";
@@ -16,8 +16,8 @@ export default function TaskList({
             renderItem={({ item }) => {
                 const Icon = function Icon() {
                     return (
-                        <MaterialCommunityIcons
-                            name="view-dashboard"
+                        <MaterialIcons
+                            name="assignment"
                             size={48}
                             color={item.color}
                         />
