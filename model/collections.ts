@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Platform } from "react-native";
-import { RxDatabase } from "rxdb";
+import { RxDatabase, RxDocument } from "rxdb";
 import { v4 as uuidv4 } from "uuid";
 import Event, { action_enum, action_type_enum } from "./event.schema";
 import Setting from "./setting.schema";
@@ -9,6 +9,7 @@ import { SkillSchema } from "./skill.type";
 import SkillCategory from "./skillcategory.schema";
 import { SkillCategorySchema } from "./skillcategory.type";
 import Task from "./task.schema";
+import { TaskSchema } from "./task.type";
 
 function generateKebabId(inString: string) {
     return inString
@@ -111,29 +112,28 @@ export default async function initializeCollections(
                     displayName: string,
                     skillId: string
                 ) {
-                    const categoriesCollection = database.skillcategories;
-                    const skill:
-                        | SkillSchema
-                        | undefined = await database.skills
+                    const skill: RxDocument<SkillSchema> = await database.skills
                         .findOne(skillId)
                         .exec();
+                    if (!skill) {
+                        throw "Skill does not exist";
+                    }
                     const categoryId: string | undefined = skill.category_id;
-                    const query:
-                        | SkillCategorySchema
-                        | undefined = categoriesCollection.findOne(categoryId);
-                    const skillcategory = await query.exec(); // HMM? Soms onverklaarbaar langzaam door bug in rxdb?
+                    if (!categoryId) {
+                        throw "Skill does not belong to a category";
+                    }
+                    const skillcategory: RxDocument<SkillCategorySchema> = await database.skillcategories
+                        .findOne(categoryId)
+                        .exec();
 
                     const newDocument = await this.insert({
                         display_name: displayName,
                         skill: skillId,
                         category: categoryId,
-                        color: skillcategory.color
-                            ? skillcategory.color
-                            : "#ff0022",
+                        color: skillcategory ? skillcategory.color : "#ff0022",
                     });
 
-                    let existingTasks = await skill.tasks;
-                    existingTasks = existingTasks ? existingTasks : [];
+                    const existingTasks = skill.tasks ? skill.tasks : [];
 
                     skill.update({
                         $set: {
@@ -192,8 +192,8 @@ export default async function initializeCollections(
             schema: Event,
             statics: {
                 createNew: async function (
-                    actionType: action_type_enum,
-                    action?: action_enum,
+                    actionType: keyof typeof action_type_enum,
+                    action?: keyof typeof action_enum,
                     taskId?: string
                 ) {
                     await this.insert({

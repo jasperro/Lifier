@@ -1,19 +1,23 @@
 import databasePromise from "model/database";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Menu } from "react-native-paper";
 import { action_enum, action_type_enum } from "root/model/event.schema";
-import { EventSchema } from "root/model/event.type";
 
-async function createEvent(actionType: action_type_enum, action: action_enum) {
+async function createEvent(
+    actionType: keyof typeof action_type_enum,
+    action: keyof typeof action_enum
+) {
     const database = await databasePromise;
     const eventsCollection = database.events;
     await eventsCollection.createNew(actionType, action);
 }
 
-export default function AddNewEvent(props): JSX.Element {
-    const [actionType, setActionType] = useState<action_type_enum>();
+export default function DebugEventAdder(): JSX.Element {
+    const [actionType, setActionType] = useState<keyof typeof action_type_enum>(
+        "Other"
+    );
     const [tVisible, setTVisible] = React.useState(false);
-    const [action, setAction] = useState<action_enum>();
+    const [action, setAction] = useState<keyof typeof action_enum>("Other");
     const [visible, setVisible] = React.useState(false);
 
     return (

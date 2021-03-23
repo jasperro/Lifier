@@ -2,7 +2,7 @@ import { CommonActions } from "@react-navigation/native";
 import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import { Button, FAB, IconButton, Text, TextInput } from "react-native-paper";
+import { FAB, IconButton, Text, TextInput } from "react-native-paper";
 import TaskList from "root/components/TaskList";
 import { TaskSchema } from "root/model/task.type";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
@@ -21,7 +21,6 @@ async function createTask(title: string, skillId: string) {
 export function SkillScreen({ route, navigation }): JSX.Element {
     const { skillId, displayName, categoryId, categoryName } = route.params;
     const [title, setTitle] = useState(displayName);
-    const [newSkill, setNewSkill] = useState("");
     const [taskList, setTaskList] = useState<Array<TaskSchema>>([]);
     const [newTask, setNewTask] = useState("");
     useEffect(() => {

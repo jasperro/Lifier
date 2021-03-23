@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
 import { useTheme } from "react-native-paper";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
-import AddNewEvent from "root/components/AddNewEvent";
+import DebugEventAdder from "root/components/DebugEventAdder";
 import XPBar from "root/components/XPBar";
 import chartTheme from "root/constants/chartTheme";
+import { EventSchema } from "root/model/event.type";
+import { RxDocument } from "rxdb";
 import { ColoredSubheading, ScrollView, View } from "styled/Themed";
 import { Background, VictoryBar, VictoryChart } from "victory-native";
 
@@ -34,7 +36,7 @@ function Data(): JSX.Element {
     const [barGraphData, setBarGraphData] = useState(baseArray);
 
     const { colors, fonts } = useTheme();
-    const [list, setList] = useState<Array<EventSchema>>([]);
+    const [list, setList] = useState<Array<RxDocument<EventSchema>>>([]);
     useEffect(() => {
         (async () => {
             const database = await databasePromise;
@@ -47,7 +49,7 @@ function Data(): JSX.Element {
                     },
                 })
                 .sort({ start_time: "desc" }); // Query voor alle gegevens van de week.
-            query.$.subscribe((documents: EventSchema) => {
+            query.$.subscribe((documents: RxDocument<EventSchema>[]) => {
                 setList(documents);
                 setBarGraphData(
                     baseArray.map((item, index) => {
@@ -72,7 +74,7 @@ function Data(): JSX.Element {
         <>
             <ScrollView style={styles.container}>
                 <View style={styles.separator} />
-                <AddNewEvent />
+                {/*<DebugEventAdder />*/}
 
                 <ColoredSubheading>Recent Activity</ColoredSubheading>
                 <VictoryChart

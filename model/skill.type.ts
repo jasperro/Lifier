@@ -16,5 +16,6 @@ export interface SkillSchema {
     expected_completion_time?: number;
     index?: number;
     category_id?: string;
+    tasks?: string[];
     [k: string]: unknown;
 }
