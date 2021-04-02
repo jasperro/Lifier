@@ -37,5 +37,5 @@ export default {
             default: 100,
         },
     },
-    required: ["display_name"],
+    required: ["display_name", "task_id"],
 };

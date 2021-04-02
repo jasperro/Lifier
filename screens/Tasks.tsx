@@ -75,7 +75,7 @@ export default function Tasks(): JSX.Element {
     return (
         <View style={{ height: "100%" }}>
             <ColoredSubheading>Uncompleted</ColoredSubheading>
-            <SortMenu></SortMenu>
+            {/*<SortMenu></SortMenu>*/}
             <View style={styles.container}>
                 <TaskList list={list} />
             </View>

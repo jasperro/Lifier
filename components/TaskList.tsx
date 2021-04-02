@@ -3,7 +3,21 @@ import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Card, IconButton, Text, TextInput } from "react-native-paper";
 import { TaskSchema } from "root/model/task.type";
-import { RxDocument } from "rxdb";
+import { RxCollection, RxDocument } from "rxdb";
+import databasePromise from "model/database";
+
+async function editTask(taskId: string, displayName: string) {
+    if (displayName.length > 0) {
+        const database = await databasePromise;
+        const tasksCollection: RxCollection<RxDocument<TaskSchema>> =
+            database.tasks;
+        const query = tasksCollection.findOne(taskId);
+        const document = await query.exec();
+        if (document != null) {
+            document.edit(displayName);
+        }
+    }
+}
 
 export default function TaskList({
     list,
@@ -57,6 +71,9 @@ function TaskCard({ item }: { item: RxDocument<TaskSchema> }) {
                                     value={newName}
                                     onChangeText={(text) => setNewName(text)}
                                     onBlur={() => setEditMode(false)}
+                                    onSubmitEditing={() =>
+                                        editTask(item.task_id, newName)
+                                    }
                                     autoFocus={true}
                                 ></TextInput>
                             ) : (

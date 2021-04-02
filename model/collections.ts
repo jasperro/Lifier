@@ -169,6 +169,13 @@ export default async function initializeCollections(
                     });
                     this.remove();
                 },
+                edit: async function (newName: string) {
+                    await this.update({
+                        $set: {
+                            display_name: newName,
+                        },
+                    });
+                },
                 delete: async function () {
                     const eventCollection = database.events;
                     eventCollection.createNew("Task", "Deleted", this.task_id);
