@@ -53,13 +53,22 @@ export function SkillScreen({ route, navigation }): JSX.Element {
         (async () => {
             database = await databasePromise;
             skillCollection = database.skills;
+            const taskCollection = database.tasks;
 
+            // Data als skilllijst is veranderd
             query = skillCollection.findOne(skillId);
             query.$.subscribe(async (data) => {
                 if (data) {
                     setTitle(data.display_name);
                     setTaskList(await data.tasks_);
                 }
+            });
+
+            const query2 = taskCollection.find();
+
+            // Data als tasklijst is veranderd
+            query2.$.subscribe(async () => {
+                setTaskList(await (await query.exec()).tasks_);
             });
         })();
     }, []);
