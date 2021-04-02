@@ -27,20 +27,18 @@ export function SkillScreen({ route, navigation }): JSX.Element {
         navigation.setOptions({
             ...DefaultStackOptions([categoryName, title], () => {
                 navigation.dispatch(
-                    navigation.canGoBack()
-                        ? CommonActions.goBack()
-                        : CommonActions.reset({
-                              index: 1,
-                              routes: [
-                                  {
-                                      name: "SkillCategory",
-                                      params: {
-                                          categoryId: categoryId,
-                                          displayName: categoryName,
-                                      },
-                                  },
-                              ],
-                          })
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [
+                            {
+                                name: "SkillCategory",
+                                params: {
+                                    categoryId: categoryId,
+                                    displayName: categoryName,
+                                },
+                            },
+                        ],
+                    })
                 );
             }),
         });
