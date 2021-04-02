@@ -10,12 +10,14 @@ import {
 } from "react-native";
 import { Subheading, useTheme } from "react-native-paper";
 
-type ViewProps = React.ComponentPropsWithRef<typeof View> & {
+type ViewProps = React.ComponentPropsWithRef<typeof OriginalView> & {
     children: React.ReactNode;
     style?: StyleProp<ViewStyle>;
 };
 
-type ScrollViewProps = React.ComponentPropsWithRef<typeof ScrollView> & {
+type ScrollViewProps = React.ComponentPropsWithRef<
+    typeof OriginalScrollView
+> & {
     children: React.ReactNode;
     style?: StyleProp<ViewStyle>;
 };
@@ -25,7 +27,7 @@ type SubheadingProps = React.ComponentPropsWithRef<typeof Subheading> & {
     children: React.ReactNode;
 };
 
-const ThemedView: React.FC = ({ style, ...rest }: ViewProps) => {
+const ThemedView = ({ style, ...rest }: ViewProps): JSX.Element => {
     const { colors } = useTheme();
     return (
         <OriginalView
@@ -40,7 +42,9 @@ const ThemedView: React.FC = ({ style, ...rest }: ViewProps) => {
     );
 };
 
-export const ColoredSubheading: React.FC = ({ ...rest }: SubheadingProps) => {
+export const ColoredSubheading = ({
+    ...rest
+}: SubheadingProps): JSX.Element => {
     const { colors } = useTheme();
     const styles = StyleSheet.create({
         title: {
@@ -53,7 +57,7 @@ export const ColoredSubheading: React.FC = ({ ...rest }: SubheadingProps) => {
     return <Subheading {...rest} style={styles.title} />;
 };
 
-const ThemedScrollView: React.FC = ({ style, ...rest }: ScrollViewProps) => {
+const ThemedScrollView = ({ style, ...rest }: ScrollViewProps): JSX.Element => {
     const { colors } = useTheme();
     return (
         <OriginalScrollView

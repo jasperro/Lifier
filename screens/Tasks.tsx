@@ -2,13 +2,12 @@ import databasePromise from "model/database";
 import { TaskSchema } from "model/task.type";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { Divider, FAB, IconButton, Menu } from "react-native-paper";
 import CategoryChips from "root/components/CategoryChips";
 import TaskList from "root/components/TaskList";
-import XPBar from "root/components/XPBar";
+import { RxDocument } from "rxdb";
 import { ColoredSubheading, View } from "styled/Themed";
 
-const SortMenu = (): JSX.Element => {
+/*const SortMenu = (): JSX.Element => {
     const [visible, setVisible] = useState(false);
 
     const openMenu = () => setVisible(true);
@@ -38,34 +37,40 @@ const SortMenu = (): JSX.Element => {
             </Menu>
         </View>
     );
-};
+};*/
 
-async function createTask(displayName: string) {
+/*async function createTask(displayName: string) {
     const database = await databasePromise;
     const taskCollection = database.tasks;
     await taskCollection.createNew(displayName);
-}
+}*/
 
 export default function Tasks(): JSX.Element {
-    const [newtask, setNewTask] = useState("");
+    //const [newtask, setNewTask] = useState("");
     const [selectedCategories, setSelectedCategories] = useState([]);
-    const [fullList, setFullList] = useState<Array<TaskSchema>>([]);
-    const [list, setList] = useState<Array<TaskSchema>>([]);
+    const [fullList, setFullList] = useState<Array<RxDocument<TaskSchema>>>([]);
+    const [list, setList] = useState<Array<RxDocument<TaskSchema>>>([]);
     useEffect(() => {
         (async () => {
             const database = await databasePromise;
             const taskCollection = database.tasks;
 
             const query = taskCollection.find();
-            query.$.subscribe((documents: TaskSchema[]) => {
+            query.$.subscribe((documents: RxDocument<TaskSchema>[]) => {
                 setFullList(documents);
             });
         })();
     }, []);
 
-    function filterList(categories) {
+    function filterList(categories: string[]) {
         setList(
-            fullList.filter((value) => categories.includes(value.category))
+            fullList.filter((value) => {
+                if (value.category) {
+                    return categories.includes(value.category);
+                } else {
+                    return false;
+                }
+            })
         );
     }
 

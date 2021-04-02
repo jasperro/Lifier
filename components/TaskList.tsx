@@ -18,14 +18,15 @@ async function editTask(taskId: string, displayName: string) {
         }
     }
 }
-
-export default function TaskList({
-    list,
-}: {
+interface TaskList
+    extends Partial<React.ComponentPropsWithRef<typeof FlatList>> {
     list: Array<RxDocument<TaskSchema>>;
-}): JSX.Element {
+}
+
+export default function TaskList({ list, ...rest }: TaskList): JSX.Element {
     return (
         <FlatList
+            {...rest}
             data={list}
             keyExtractor={(item) => item.task_id}
             renderItem={({ item }) => <TaskCard item={item}></TaskCard>}

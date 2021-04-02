@@ -6,8 +6,8 @@ import { FAB, IconButton, Text, TextInput } from "react-native-paper";
 import TaskList from "root/components/TaskList";
 import { TaskSchema } from "root/model/task.type";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
-import { RxCollection, RxDatabase, RxQuery } from "rxdb";
-import { View } from "styled/Themed";
+import { RxCollection, RxDatabase, RxDocument, RxQuery } from "rxdb";
+import { ColoredSubheading, View } from "styled/Themed";
 import { styles } from "./Skills";
 
 async function createTask(title: string, skillId: string) {
@@ -21,7 +21,7 @@ async function createTask(title: string, skillId: string) {
 export function SkillScreen({ route, navigation }): JSX.Element {
     const { skillId, displayName, categoryId, categoryName } = route.params;
     const [title, setTitle] = useState(displayName);
-    const [taskList, setTaskList] = useState<Array<TaskSchema>>([]);
+    const [taskList, setTaskList] = useState<Array<RxDocument<TaskSchema>>>([]);
     const [newTask, setNewTask] = useState("");
     useEffect(() => {
         navigation.setOptions({
@@ -73,33 +73,36 @@ export function SkillScreen({ route, navigation }): JSX.Element {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
-                <Text style={{ fontSize: 60 }}>{title}</Text>
-                <IconButton
-                    icon="delete"
-                    size={24}
-                    color="white"
-                    onPress={() => {
-                        navigation.goBack();
-                        query.exec().then((document) => document.delete());
-                    }}
-                />
-                <IconButton
-                    icon="pencil"
-                    size={24}
-                    color="white"
-                    onPress={() => {
-                        navigation.navigate("EditSkill", {
-                            skillId: skillId,
-                            categoryName: categoryName,
-                            categoryId: categoryId,
-                            skillName: title,
-                        });
-                    }}
-                />
-                <TaskList list={taskList} />
-            </ScrollView>
-
+            <Text style={{ fontSize: 60 }}>{title}</Text>
+            <IconButton
+                icon="delete"
+                size={24}
+                color="white"
+                onPress={() => {
+                    navigation.goBack();
+                    query.exec().then((document) => document.delete());
+                }}
+            />
+            <IconButton
+                icon="pencil"
+                size={24}
+                color="white"
+                onPress={() => {
+                    navigation.navigate("EditSkill", {
+                        skillId: skillId,
+                        categoryName: categoryName,
+                        categoryId: categoryId,
+                        skillName: title,
+                    });
+                }}
+            />
+            <TaskList
+                list={taskList}
+                style={{ width: "100%" }}
+                ListHeaderComponent={
+                    <ColoredSubheading>Tasks</ColoredSubheading>
+                }
+            />
             <TextInput
                 style={styles.bottominput}
                 label="Nieuwe Task Naam"

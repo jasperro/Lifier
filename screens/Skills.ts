@@ -23,10 +23,7 @@ export const styles = {
             bottom: 0,
         },
         bottominput: {
-            position: "absolute",
             margin: 16,
-            right: "auto",
-            left: "auto",
             bottom: 0,
             width: "70%",
         },
