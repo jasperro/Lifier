@@ -1,13 +1,11 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import database from "model/database";
 import * as React from "react";
-import { StyleSheet } from "react-native";
-import { Card, FAB, useTheme } from "react-native-paper";
+import { ScrollView, StyleSheet } from "react-native";
+import ActivityChart from "root/components/ActivityChart";
 import Timer from "root/components/Timer";
 import XPBar from "root/components/XPBar";
-import { ColoredSubheading, View } from "styled/Themed";
+import { ColoredSubheading } from "styled/Themed";
 
-function ActivityCard(props): JSX.Element {
+/*function ActivityCard(props): JSX.Element {
     const { colors } = useTheme();
     return (
         <Card style={{ marginBottom: 4, marginTop: 4 }}>
@@ -25,26 +23,20 @@ function ActivityCard(props): JSX.Element {
             />
         </Card>
     );
-}
+}*/
 
 export default function Dashboard(): JSX.Element {
     return (
-        <View style={styles.container}>
-            <ColoredSubheading>Recent Activity</ColoredSubheading>
-            <ActivityCard
-                title="Power Chords"
-                subtitle="4 uur restrerend"
-                icon="guitar-acoustic"
-            ></ActivityCard>
-            <ActivityCard
-                title="Javascript"
-                subtitle="2 Uur restrerend"
-                icon="xml"
-            />
-            <ColoredSubheading>Time</ColoredSubheading>
-            <Timer />
+        <>
+            <ScrollView style={styles.container}>
+                <ColoredSubheading>Recent Activity</ColoredSubheading>
+                <ActivityChart />
+                <ColoredSubheading>Time</ColoredSubheading>
+                <Timer />
+            </ScrollView>
+
             <XPBar />
-        </View>
+        </>
     );
 }
 const styles = StyleSheet.create({

@@ -11,7 +11,6 @@ import { fonts } from "root/fontconfig";
 
 import Tasks from "../screens/Tasks";
 import Settings from "../screens/Settings";
-import Data from "../screens/Data";
 import Dashboard from "../screens/Dashboard";
 import { SkillCategoryScreen } from "../screens/SkillCategoryScreen";
 import { SkillCategoriesScreen } from "../screens/SkillCategoriesScreen";
@@ -52,15 +51,6 @@ export default function BottomTabNavigator() {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <TabBarIcon name="file-tree" color={color} />
-                    ),
-                }}
-            />
-            <BottomTab.Screen
-                name="Data"
-                component={DataNavigator}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <TabBarIcon name="finance" color={color} />
                     ),
                 }}
             />
@@ -163,37 +153,6 @@ function SettingsNavigator() {
                 options={{ headerTitle: "Settings", ...DefaultStackOptions() }}
             />
         </SettingsStack.Navigator>
-    );
-}
-
-const DataStack = createStackNavigator();
-
-function DataNavigator() {
-    return (
-        <DataStack.Navigator>
-            <DataStack.Screen
-                name="Stats"
-                component={Data}
-                options={{
-                    headerTitle: "Stats",
-                    headerStyle: {
-                        backgroundColor: "#f4511e",
-                    },
-                    ...DefaultStackOptions(),
-                }}
-            />
-            <DataStack.Screen
-                name="Points"
-                component={Data}
-                options={{
-                    headerTitle: "Points",
-                    headerStyle: {
-                        backgroundColor: "#ff4455",
-                    },
-                    ...DefaultStackOptions(),
-                }}
-            />
-        </DataStack.Navigator>
     );
 }
 

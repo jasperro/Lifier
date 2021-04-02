@@ -1,17 +1,14 @@
 import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native";
 import { useTheme } from "react-native-paper";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
-import DebugEventAdder from "root/components/DebugEventAdder";
-import XPBar from "root/components/XPBar";
 import chartTheme from "root/constants/chartTheme";
 import { EventSchema } from "root/model/event.type";
 import { RxDocument } from "rxdb";
-import { ColoredSubheading, ScrollView, View } from "styled/Themed";
 import { Background, VictoryBar, VictoryChart } from "victory-native";
 
-function Data(): JSX.Element {
+export default function ActivityChart(): JSX.Element {
     const height = 400;
     const width = useWindowDimensions().width;
     function getMonday() {
@@ -69,77 +66,51 @@ function Data(): JSX.Element {
             });
         })();
     }, []);
-
     return (
-        <>
-            <ScrollView style={styles.container}>
-                <View style={styles.separator} />
-                {/*<DebugEventAdder />*/}
+        <VictoryChart
+            height={400}
+            width={width}
+            padding={{ right: 0, left: 40, bottom: 50, top: 50 }}
+            theme={chartTheme(colors, fonts)}
+            style={{
+                background: { fill: colors.surface },
+            }}
+            backgroundComponent={<Background />}
+            domainPadding={60}
+        >
+            <VictoryBar
+                cornerRadius={20}
+                style={{
+                    data: {
+                        fill: "url(#fillShadowRGradient)",
+                    },
+                }}
+                barWidth={40}
+                data={barGraphData}
+                width={width}
+            />
 
-                <ColoredSubheading>Recent Activity</ColoredSubheading>
-                <VictoryChart
-                    height={400}
-                    width={width}
-                    padding={{ right: 0, left: 40, top: 50, bottom: 50 }}
-                    theme={chartTheme(colors, fonts)}
-                    style={{
-                        background: { fill: colors.surface },
-                    }}
-                    backgroundComponent={<Background />}
-                    domainPadding={60}
+            <Defs>
+                <LinearGradient
+                    id="fillShadowRGradient"
+                    gradientUnits="userSpaceOnUse"
+                    y2={height}
+                    x1={0}
+                    y1={0}
+                    x2={0}
                 >
-                    <VictoryBar
-                        cornerRadius={20}
-                        style={{
-                            data: {
-                                fill: "url(#fillShadowRGradient)",
-                            },
-                        }}
-                        barWidth={40}
-                        data={barGraphData}
-                        width={width}
-                    />
-
-                    <Defs>
-                        <LinearGradient
-                            id="fillShadowRGradient"
-                            gradientUnits="userSpaceOnUse"
-                            y2={height}
-                            x1={0}
-                            y1={0}
-                            x2={0}
-                        >
-                            <Stop
-                                offset={0}
-                                stopColor={colors.accent}
-                                stopOpacity={0.8}
-                            ></Stop>
-                            <Stop
-                                offset={1}
-                                stopColor={colors.accent}
-                                stopOpacity={0.4}
-                            ></Stop>
-                        </LinearGradient>
-                    </Defs>
-                </VictoryChart>
-            </ScrollView>
-
-            <XPBar />
-        </>
+                    <Stop
+                        offset={0}
+                        stopColor={colors.accent}
+                        stopOpacity={0.8}
+                    ></Stop>
+                    <Stop
+                        offset={1}
+                        stopColor={colors.accent}
+                        stopOpacity={0.4}
+                    ></Stop>
+                </LinearGradient>
+            </Defs>
+        </VictoryChart>
     );
 }
-
-export default Data;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingLeft: 10,
-        paddingRight: 10,
-    },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: "80%",
-    },
-});
