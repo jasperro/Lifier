@@ -79,7 +79,7 @@ export default function Tasks(): JSX.Element {
     }, [fullList]);
     return (
         <View style={{ height: "100%" }}>
-            <ColoredSubheading>Uncompleted</ColoredSubheading>
+            <ColoredSubheading>All Tasks</ColoredSubheading>
             {/*<SortMenu></SortMenu>*/}
             <View style={styles.container}>
                 <TaskList list={list} />

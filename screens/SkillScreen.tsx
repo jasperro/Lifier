@@ -73,29 +73,37 @@ export function SkillScreen({ route, navigation }): JSX.Element {
 
     return (
         <View style={styles.container}>
-            <Text style={{ fontSize: 60 }}>{title}</Text>
-            <IconButton
-                icon="delete"
-                size={24}
-                color="white"
-                onPress={() => {
-                    navigation.goBack();
-                    query.exec().then((document) => document.delete());
+            <View
+                style={{
+                    flexDirection: "row",
+                    width: "auto",
+                    alignItems: "center",
                 }}
-            />
-            <IconButton
-                icon="pencil"
-                size={24}
-                color="white"
-                onPress={() => {
-                    navigation.navigate("EditSkill", {
-                        skillId: skillId,
-                        categoryName: categoryName,
-                        categoryId: categoryId,
-                        skillName: title,
-                    });
-                }}
-            />
+            >
+                <Text style={{ fontSize: 60 }}>{title}</Text>
+                <IconButton
+                    icon="delete"
+                    size={24}
+                    color="white"
+                    onPress={() => {
+                        navigation.goBack();
+                        query.exec().then((document) => document.delete());
+                    }}
+                />
+                <IconButton
+                    icon="pencil"
+                    size={24}
+                    color="white"
+                    onPress={() => {
+                        navigation.navigate("EditSkill", {
+                            skillId: skillId,
+                            categoryName: categoryName,
+                            categoryId: categoryId,
+                            skillName: title,
+                        });
+                    }}
+                />
+            </View>
             <TaskList
                 list={taskList}
                 style={{ width: "100%" }}

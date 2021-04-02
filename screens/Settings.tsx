@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { removeRxDatabase } from "rxdb";
-import { ScrollView } from "styled/Themed";
+import { ColoredSubheading, ScrollView } from "styled/Themed";
 import {
     SettingsItemBoolean,
     SettingsItemColor,
@@ -12,7 +12,7 @@ import {
 export default function Settings(): JSX.Element {
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.title}>Settings</Text>
+            <ColoredSubheading>Application Settings</ColoredSubheading>
             <SettingsItemBoolean
                 settingid="dark_mode"
                 displayname="Dark Mode"
@@ -30,6 +30,7 @@ export default function Settings(): JSX.Element {
                 settingid="accent_color"
             />
             {/*<SettingsItemString settingid="color" displayname="Display Color" />*/}
+            <ColoredSubheading>DANGER! DEBUG ZONE!</ColoredSubheading>
             <Button onPress={() => removeRxDatabase("database", "idb")}>
                 Delete web database
             </Button>
@@ -40,6 +41,9 @@ export default function Settings(): JSX.Element {
             >
                 Delete mobile database
             </Button>
+            <Text style={{ paddingTop: 50, paddingBottom: 50 }}>
+                © 2021-2021 Jasperro, Sweatplant, treborben and Zacherias
+            </Text>
         </ScrollView>
     );
 }
@@ -48,14 +52,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: "80%",
     },
 });

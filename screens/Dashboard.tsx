@@ -31,7 +31,7 @@ export default function Dashboard(): JSX.Element {
             <ScrollView style={styles.container}>
                 <ColoredSubheading>Recent Activity</ColoredSubheading>
                 <ActivityChart />
-                <ColoredSubheading>Time</ColoredSubheading>
+                <ColoredSubheading>Stopwatch</ColoredSubheading>
                 <Timer />
             </ScrollView>
 
