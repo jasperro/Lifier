@@ -1,7 +1,8 @@
 import * as Linking from "expo-linking";
+import { homepage as baseUrl } from "../package.json";
 
 export default {
-    prefixes: [Linking.makeUrl("/")],
+    prefixes: [Linking.makeUrl(baseUrl)],
     config: {
         screens: {
             Root: {
