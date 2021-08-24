@@ -20,13 +20,11 @@ export default function EditSkillModal({
     route: Route;
     navigation: NavigationType;
 }): JSX.Element {
-    const [newSkill, setNewSkill] = useState("");
-    const { categoryName, categoryId, skillId, skillName } = route.params;
+    const { skillId, skillName } = route.params;
+    const [newSkill, setNewSkill] = useState(skillName);
     return (
         <>
-            <Text>
-                Je bewerkt {} {categoryName}
-            </Text>
+            <Text>Je bewerkt {skillName}</Text>
             <TextInput
                 label="Nieuwe Skill Naam"
                 value={newSkill}

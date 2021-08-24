@@ -1,3 +1,6 @@
+import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
+import { EventSchema } from "./event.type";
+
 export enum action_type_enum {
     Other = "OTHER",
     Skill = "SKILL",
@@ -15,14 +18,42 @@ export enum action_enum {
     Edited = "EDITED",
 }
 
-export default {
+export type EventDocument = RxDocument<EventSchema>;
+
+export type EventCollectionMethods = {
+    createNew: (this: EventCollection,
+                    actionType: keyof typeof action_type_enum,
+                    action?: keyof typeof action_enum,
+                    taskId?: string
+                ) => void
+}
+
+export const eventCollectionMethods: EventCollectionMethods = {
+                createNew: async function (
+                    actionType,
+                    action,
+                    taskId,
+                ) {
+                    await this.insert({
+                        action_type: actionType
+                            ? action_type_enum[actionType]
+                            : undefined,
+                        action: action ? action_enum[action] : undefined,
+                        ...(taskId && { id: taskId }),
+                    });
+                },
+            }
+
+export type EventCollection = RxCollection<EventDocument, EventCollectionMethods>;
+
+const eventSchema: RxJsonSchema<EventDocument> = {
     version: 0,
     title: "event schema",
     description: "describes a event in time, with a duration and action",
     type: "object",
-    primaryKey: "event_id",
+    primaryKey: "id",
     properties: {
-        event_id: {
+        id: {
             type: "string", // uuidv4
         },
         action_type: {
@@ -56,9 +87,11 @@ export default {
         },
         task_id: {
             ref: "tasks", // Tot welke task behoort het event
-            type: ["string", "null"], // task_id
+            type: ["string", "null"], // id
         },
     },
-    required: ["event_id", "action_type", "start_time"],
+    required: ["id", "action_type", "start_time"],
     indexes: ["action_type", "start_time"],
 };
+
+export default eventSchema;

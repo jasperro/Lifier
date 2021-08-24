@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Modal, View, Pressable } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { removeRxDatabase } from "rxdb";
 import { ColoredSubheading, ScrollView } from "styled/Themed";

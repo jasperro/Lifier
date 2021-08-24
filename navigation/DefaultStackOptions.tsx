@@ -16,10 +16,6 @@ export default (
                     ? options.title
                     : route.name;
 
-            backaction = navigation.canGoBack()
-                ? navigation.goBack
-                : backaction;
-
             const backbutton = backaction ? (
                 <Appbar.BackAction onPress={backaction} />
             ) : null;

@@ -1,14 +1,14 @@
 import databasePromise from "model/database";
-import { SkillCategorySchema } from "model/skillcategory.type";
+import { CategorySchema } from "model/category.type";
 import React, { useState } from "react";
 import { Dimensions, ScrollView } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import ColorPicker from "root/components/ColorPicker";
 
 async function editSkillCategory(
-    categoryId: SkillCategorySchema["skill_category_id"],
-    displayName: SkillCategorySchema["display_name"],
-    color: SkillCategorySchema["color"]
+    categoryId: CategorySchema["id"],
+    displayName: CategorySchema["display_name"],
+    color: CategorySchema["color"]
 ) {
     const database = await databasePromise;
     const categoriesCollection = database.skillcategories;
@@ -18,7 +18,7 @@ async function editSkillCategory(
 }
 
 export default function EditCategoryModal({ navigation, route }): JSX.Element {
-    const { displayName, categoryId } = route.params;
+    const { categoryId, displayName } = route.params;
     const [newcategory, setNewCategory] = useState(displayName);
     const [newcolor, setNewColor] = useState("");
     return (

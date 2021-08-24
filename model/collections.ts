@@ -1,220 +1,63 @@
 import _ from "lodash";
 import { Platform } from "react-native";
-import { RxDatabase, RxDocument } from "rxdb";
+import { RxDatabase } from "rxdb";
 import { v4 as uuidv4 } from "uuid";
-import Event, { action_enum, action_type_enum } from "./event.schema";
-import Setting from "./setting.schema";
-import Skill from "./skill.schema";
-import { SkillSchema } from "./skill.type";
-import SkillCategory from "./skillcategory.schema";
-import { SkillCategorySchema } from "./skillcategory.type";
-import Task from "./task.schema";
-import { TaskSchema } from "./task.type";
+import eventSchema, {
+    EventCollection,
+    eventCollectionMethods,
+} from "./event.schema";
+import settingSchema, { SettingCollection } from "./setting.schema";
+import skillSchema, {
+    SkillCollection,
+    skillCollectionMethods,
+    skillDocMethods,
+} from "./skill.schema";
+import categorySchema, {
+    CategoryCollection,
+    categoryCollectionMethods,
+    categoryDocMethods,
+} from "./category.schema";
+import taskSchema, {
+    TaskCollection,
+    taskCollectionMethods,
+    taskDocMethods,
+} from "./task.schema";
 
-function generateKebabId(inString: string) {
-    return inString
-        .replace(/\W+/g, " ")
-        .split(/ |\B(?=[A-Z])/)
-        .map((word) => word.toLowerCase())
-        .join("-");
-}
+export type DatabaseCollections = {
+    skillcategories: CategoryCollection;
+    skills: SkillCollection;
+    tasks: TaskCollection;
+    events: EventCollection;
+    settings: SettingCollection;
+};
+
+export type MyDatabase = RxDatabase<DatabaseCollections>;
 
 export default async function initializeCollections(
-    database: RxDatabase
+    database: MyDatabase
 ): Promise<any> {
     await database.addCollections({
         skillcategories: {
-            schema: SkillCategory,
-            statics: {
-                createNew: async function (
-                    displayName: string,
-                    color: string | undefined
-                ) {
-                    await this.insert({
-                        display_name: displayName,
-                        color: color ? color : undefined,
-                    });
-                },
-            },
-            methods: {
-                delete: async function () {
-                    const eventCollection = database.events;
-                    eventCollection.createNew("SkillCategory", "Deleted");
-                    this.remove();
-                },
-                edit: async function (
-                    displayName: string,
-                    color: string | undefined
-                ) {
-                    this.update({
-                        $set: {
-                            display_name: displayName,
-                            color: color,
-                        },
-                    });
-                    try {
-                        const skills = await this.skills_;
-                        skills.forEach(async (element) => {
-                            const tasks = await element.tasks_;
-                            try {
-                                tasks.forEach(async (element) => {
-                                    element.update({ $set: { color: color } });
-                                });
-                            } catch {}
-                        });
-                    } catch {}
-                    // Bij alle skills in array
-                },
-            },
+            schema: categorySchema,
+            statics: categoryCollectionMethods,
+            methods: categoryDocMethods,
         },
         skills: {
-            schema: Skill,
-            statics: {
-                createNew: async function (categoryId, displayName) {
-                    const skill = await this.insert({
-                        display_name: displayName,
-                        ...(categoryId && { category_id: categoryId }),
-                    });
-
-                    const query = database.skillcategories.findOne(categoryId);
-                    const result = await query.exec();
-                    let existingSkills = await result.skills;
-                    existingSkills = existingSkills ? existingSkills : [];
-
-                    await database.skillcategories.upsert(
-                        _.merge({}, result.toJSON(), {
-                            skills: [...existingSkills, skill.skill_id],
-                        })
-                    );
-                },
-            },
-
-            methods: {
-                edit: async function (newName: string) {
-                    await this.update({
-                        $set: {
-                            display_name: newName,
-                        },
-                    });
-                },
-                delete: async function () {
-                    const eventCollection = database.events;
-                    eventCollection.createNew("Skill", "Deleted");
-                    this.remove();
-                },
-            },
+            schema: skillSchema,
+            statics: skillCollectionMethods,
+            methods: skillDocMethods,
         },
-
         tasks: {
-            schema: Task,
-            statics: {
-                createNew: async function (
-                    displayName: string,
-                    skillId: string
-                ) {
-                    const skill: RxDocument<SkillSchema> = await database.skills
-                        .findOne(skillId)
-                        .exec();
-                    if (!skill) {
-                        throw "Skill does not exist";
-                    }
-                    const categoryId: string | undefined = skill.category_id;
-                    if (!categoryId) {
-                        throw "Skill does not belong to a category";
-                    }
-                    const skillcategory: RxDocument<SkillCategorySchema> = await database.skillcategories
-                        .findOne(categoryId)
-                        .exec();
-
-                    const newDocument = await this.insert({
-                        display_name: displayName,
-                        skill: skillId,
-                        category: categoryId,
-                        color: skillcategory ? skillcategory.color : "#ff0022",
-                    });
-
-                    const existingTasks = skill.tasks ? skill.tasks : [];
-
-                    skill.update({
-                        $set: {
-                            tasks: [...existingTasks, newDocument.task_id],
-                        },
-                    });
-
-                    const eventCollection = database.events;
-                    eventCollection.createNew(
-                        "Task",
-                        "Created",
-                        newDocument.task_id
-                    );
-                },
-            },
-            methods: {
-                finish: async function () {
-                    const eventCollection = database.events;
-                    eventCollection.createNew("Task", "Finished", this.task_id);
-                    const settingsCollection = database.settings;
-
-                    const query = settingsCollection
-                        .findOne()
-                        .where("setting_id")
-                        .eq("current_xp");
-
-                    const result = await query.exec();
-
-                    await result.update({
-                        $inc: {
-                            state: 100,
-                        },
-                    });
-                    this.remove();
-                },
-                edit: async function (newName: string) {
-                    await this.update({
-                        $set: {
-                            display_name: newName,
-                        },
-                    });
-                },
-                delete: async function () {
-                    const eventCollection = database.events;
-                    eventCollection.createNew("Task", "Deleted", this.task_id);
-                    this.remove();
-                },
-                changeCategory: async function (categoryID: string) {
-                    await this.update({
-                        $set: {
-                            category: categoryID,
-                            color: (
-                                await database.skillcategories
-                                    .findOne(categoryID)
-                                    .exec()
-                            ).color,
-                        },
-                    });
-                },
-            },
+            schema: taskSchema,
+            statics: taskCollectionMethods,
+            methods: taskDocMethods,
         },
         events: {
-            schema: Event,
-            statics: {
-                createNew: async function (
-                    actionType: keyof typeof action_type_enum,
-                    action?: keyof typeof action_enum,
-                    taskId?: string
-                ) {
-                    await this.insert({
-                        action_type: actionType
-                            ? action_type_enum[actionType]
-                            : undefined,
-                        action: action ? action_enum[action] : undefined,
-                        ...(taskId && { task_id: taskId }),
-                    });
-                },
-            },
+            schema: eventSchema,
+            statics: eventCollectionMethods,
         },
         settings: {
-            schema: Setting,
+            schema: settingSchema,
         },
     });
 
@@ -222,30 +65,30 @@ export default async function initializeCollections(
         //Categorie-ID een verkorte versie van de uuid, omdat er verwacht wordt
         //dat er weinig categorieën gemaakt gaan worden. TODO: Retry bij falen?
 
-        plainData.skill_category_id = btoa(uuidv4()).replace(/(.{8})..+/, "$1");
+        plainData.id = btoa(uuidv4()).replace(/(.{8})..+/, "$1");
         //Genereer categorie met opeenvolgende getallen, werkt niet met sync
 
         /*const query = categoriesCollection
             .findOne()
-            .sort({ skill_category_id: "desc" });
+            .sort({ id: "desc" });
         const result = await query.exec();
-        plainData.skill_category_id =
-            result && result.skill_category_id
-                ? (parseInt(result.skill_category_id) + 1).toString()
+        plainData.id =
+            result && result.id
+                ? (parseInt(result.id) + 1).toString()
                 : "0";*/
     }, false);
 
     database.skills.preInsert(function (plainData) {
-        plainData.skill_id = btoa(uuidv4());
+        plainData.id = btoa(uuidv4());
     }, false);
 
     database.tasks.preInsert(function (plainData) {
-        plainData.task_id = uuidv4();
+        plainData.id = uuidv4();
     }, false);
 
     database.events.preInsert(function (plainData) {
         const currentTime = Date.now();
-        plainData.event_id = uuidv4();
+        plainData.id = uuidv4();
         if (!plainData.start_time) {
             plainData.start_time = currentTime;
         }
@@ -254,7 +97,7 @@ export default async function initializeCollections(
     database.settings.findOne("db_sync").$.subscribe(async (changeEvent) => {
         if (changeEvent == null) {
             changeEvent = await database.settings.atomicUpsert({
-                setting_id: "db_sync",
+                id: "db_sync",
                 state: false,
             });
         }

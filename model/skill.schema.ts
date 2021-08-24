@@ -1,11 +1,71 @@
-export default {
+import _ from "lodash";
+import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
+import { SkillSchema } from "./skill.type";
+
+export type SkillDocMethods = {
+    edit: (this: SkillDocument, newName: string) => void;
+    delete: (this: SkillDocument) => void;
+};
+
+export const skillDocMethods: SkillDocMethods = {
+    edit: async function (newName) {
+        await this.update({
+            $set: {
+                display_name: newName,
+            },
+        });
+    },
+    delete: async function () {
+        const eventCollection = database.events;
+        eventCollection.createNew("Skill", "Deleted");
+        this.remove();
+    },
+};
+
+export type SkillDocument = RxDocument<SkillSchema, SkillDocMethods>;
+
+export type SkillCollectionMethods = {
+    createNew: (
+        this: SkillCollection,
+        categoryId: string,
+        displayName: string
+    ) => void;
+};
+
+export const skillCollectionMethods: SkillCollectionMethods = {
+    createNew: async function (categoryId, displayName) {
+        const skill = await this.insert({
+            display_name: displayName,
+            ...(categoryId && { id: categoryId }),
+        });
+
+        const query = database.skillcategories.findOne(categoryId);
+        const result = await query.exec();
+        let existingSkills = await result.skills;
+        existingSkills = existingSkills ? existingSkills : [];
+
+        await database.skillcategories.upsert(
+            _.merge({}, result.toJSON(), {
+                skills: [...existingSkills, skill.id],
+            })
+        );
+    },
+};
+
+export type SkillCollection = RxCollection<
+    SkillDocument,
+    SkillDocMethods,
+    SkillCollectionMethods
+>;
+
+const skillSchema: RxJsonSchema<SkillDocument> = {
     version: 0,
     title: "skill schema",
     description: "describes a skill",
     type: "object",
-    primaryKey: "skill_id",
+    primaryKey: "id",
     properties: {
-        skill_id: {
+        id: {
             type: "string",
         },
         display_name: {
@@ -35,8 +95,10 @@ export default {
         },
         category_id: {
             ref: "skillcategories", // in welke categorie bevindt de skill zich?
-            type: "string", // skillcategory_id
+            type: "string", // id
         },
     },
     required: ["display_name", "xp_amount"],
 };
+
+export default skillSchema;

@@ -2,7 +2,7 @@ import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Chip, List, useTheme } from "react-native-paper";
-import { SkillCategorySchema } from "root/model/skillcategory.type";
+import { CategorySchema } from "root/model/category.type";
 import PreferencesContext from "root/PreferencesContext";
 
 function CategoryChips({
@@ -13,7 +13,7 @@ function CategoryChips({
     const { isThemeDark } = React.useContext(PreferencesContext);
     const { colors } = useTheme();
 
-    const [dataSource, setDataSource] = useState<SkillCategorySchema[]>([]);
+    const [dataSource, setDataSource] = useState<CategorySchema[]>([]);
 
     const [clicked, setClicked] = useState<string[]>([]);
     useEffect(() => {
@@ -22,7 +22,7 @@ function CategoryChips({
             const skillcategoryCollection = database.skillcategories;
 
             const query = skillcategoryCollection.find();
-            query.$.subscribe((documents: SkillCategorySchema[]) => {
+            query.$.subscribe((documents: CategorySchema[]) => {
                 setDataSource(documents);
             });
         })();
@@ -44,32 +44,23 @@ function CategoryChips({
                                 textStyle={{
                                     color:
                                         !isThemeDark &&
-                                        !clicked.includes(
-                                            value.skill_category_id
-                                        )
+                                        !clicked.includes(value.id)
                                             ? "black"
                                             : "white",
                                     fontSize: 15,
                                 }}
                                 style={{
-                                    backgroundColor: clicked.includes(
-                                        value.skill_category_id
-                                    )
+                                    backgroundColor: clicked.includes(value.id)
                                         ? value.color
                                         : colors.surface,
                                     margin: 5,
                                     flexWrap: "wrap",
                                 }}
                                 onPress={() => {
-                                    const index = clicked.indexOf(
-                                        value.skill_category_id
-                                    );
+                                    const index = clicked.indexOf(value.id);
                                     if (index <= -1) {
                                         // Voeg item toe aan geselecteerde elementen
-                                        setClicked([
-                                            ...clicked,
-                                            value.skill_category_id,
-                                        ]);
+                                        setClicked([...clicked, value.id]);
                                     } else {
                                         // Haal item uit de geselecteerde elementen
                                         setClicked([

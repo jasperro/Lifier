@@ -20,7 +20,7 @@ export function SettingsItemBoolean(props: {
 
         // Als de instelling niet bestaat, maak de instelling aan.
         await settingsCollection.atomicUpsert({
-            setting_id: props.settingid,
+            id: props.settingid,
             state: !isEnabled,
         });
     };
@@ -34,12 +34,12 @@ export function SettingsItemBoolean(props: {
             // Zet switch naar state uit database
             const query = settingsCollection
                 .findOne()
-                .where("setting_id")
+                .where("id")
                 .eq(props.settingid);
             query.exec().then(async (document: SettingSchema) => {
                 if (document == null) {
                     document = await settingsCollection.atomicUpsert({
-                        setting_id: props.settingid,
+                        id: props.settingid,
                         state: false,
                     });
                 }
@@ -79,7 +79,7 @@ export function SettingsItemString(props: {
 
         // Als de instelling niet bestaat, maak de instelling aan.
         await settingsCollection.atomicUpsert({
-            setting_id: props.settingid,
+            id: props.settingid,
             state: value,
         });
     };
@@ -93,12 +93,12 @@ export function SettingsItemString(props: {
             // Zet string naar state uit database
             const query = settingsCollection
                 .findOne()
-                .where("setting_id")
+                .where("id")
                 .eq(props.settingid);
             query.exec().then(async (document: SettingSchema) => {
                 if (document == null) {
                     document = await settingsCollection.atomicUpsert({
-                        setting_id: props.settingid,
+                        id: props.settingid,
                         state: "",
                     });
                 }
@@ -140,7 +140,7 @@ export function SettingsItemColor(props: {
         // Stel query op
         const query = settingsCollection
             .findOne()
-            .where("setting_id")
+            .where("id")
             .eq(props.settingid);
         return {
             query: query,
@@ -153,7 +153,7 @@ export function SettingsItemColor(props: {
         const { query, settingsCollection } = await asyncData;
         query.exec().then(async (document: SettingSchema) => {
             await settingsCollection.atomicUpsert({
-                setting_id: props.settingid,
+                id: props.settingid,
                 state: color,
             });
         });

@@ -8,8 +8,8 @@
 /**
  * describes a skill category that references skills
  */
-export interface SkillCategorySchema {
-    skill_category_id?: string;
+export interface CategorySchema {
+    id?: string;
     display_name: string;
     skills?: string[];
     color?: string;

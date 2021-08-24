@@ -19,13 +19,13 @@ async function createTask(title: string, skillId: string) {
 }
 
 export function SkillScreen({ route, navigation }): JSX.Element {
-    const { skillId, displayName, categoryId, categoryName } = route.params;
-    const [title, setTitle] = useState(displayName);
+    const { skillId, categoryId } = route.params;
+    const [title, setTitle] = useState("");
     const [taskList, setTaskList] = useState<Array<RxDocument<TaskSchema>>>([]);
     const [newTask, setNewTask] = useState("");
     useEffect(() => {
         navigation.setOptions({
-            ...DefaultStackOptions([categoryName, title], () => {
+            ...DefaultStackOptions([title], () => {
                 navigation.dispatch(
                     CommonActions.reset({
                         index: 1,
@@ -34,7 +34,6 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                                 name: "SkillCategory",
                                 params: {
                                     categoryId: categoryId,
-                                    displayName: categoryName,
                                 },
                             },
                         ],
@@ -97,7 +96,6 @@ export function SkillScreen({ route, navigation }): JSX.Element {
                     onPress={() => {
                         navigation.navigate("EditSkill", {
                             skillId: skillId,
-                            categoryName: categoryName,
                             categoryId: categoryId,
                             skillName: title,
                         });

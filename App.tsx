@@ -76,12 +76,12 @@ export default function App(): JSX.Element {
             const darkPromise = async () => {
                 const query = settingsCollection
                     .findOne()
-                    .where("setting_id")
+                    .where("id")
                     .eq("dark_mode");
                 let document = await query.exec();
                 if (document == null) {
                     document = await settingsCollection.atomicUpsert({
-                        setting_id: "dark_mode",
+                        id: "dark_mode",
                         state: false,
                     });
                 }
@@ -97,12 +97,12 @@ export default function App(): JSX.Element {
             const accentPromise = async () => {
                 const query = settingsCollection
                     .findOne()
-                    .where("setting_id")
+                    .where("id")
                     .eq("accent_color");
                 let document = await query.exec();
                 if (document == null) {
                     document = await settingsCollection.atomicUpsert({
-                        setting_id: "accent_color",
+                        id: "accent_color",
                         state: "#0077ce",
                     });
                 }

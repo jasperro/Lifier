@@ -9,7 +9,7 @@
  * describes a task
  */
 export interface TaskSchema {
-    task_id: string;
+    id: string;
     display_name: string;
     skill?: string | null;
     category?: string | null;

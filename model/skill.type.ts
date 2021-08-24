@@ -9,7 +9,7 @@
  * describes a skill
  */
 export interface SkillSchema {
-    skill_id?: string;
+    id: string;
     display_name: string;
     color?: string;
     xp_amount: number;

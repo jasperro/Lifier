@@ -28,7 +28,7 @@ export default function TaskList({ list, ...rest }: TaskList): JSX.Element {
         <FlatList
             {...rest}
             data={list}
-            keyExtractor={(item) => item.task_id}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => <TaskCard item={item}></TaskCard>}
         />
     );
@@ -43,7 +43,7 @@ function TaskCard({ item }: { item: RxDocument<TaskSchema> }) {
     const [newName, setNewName] = useState("");
 
     return (
-        <Card style={styles.card} key={item.task_id}>
+        <Card style={styles.card} key={item.id}>
             <Card.Title
                 leftStyle={{
                     flexDirection: "row",
@@ -73,7 +73,7 @@ function TaskCard({ item }: { item: RxDocument<TaskSchema> }) {
                                     onChangeText={(text) => setNewName(text)}
                                     onBlur={() => setEditMode(false)}
                                     onSubmitEditing={() =>
-                                        editTask(item.task_id, newName)
+                                        editTask(item.id, newName)
                                     }
                                     autoFocus={true}
                                 ></TextInput>

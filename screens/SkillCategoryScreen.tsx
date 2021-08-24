@@ -3,16 +3,21 @@ import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import { Button, Card, FAB, IconButton, Text } from "react-native-paper";
-import { SkillCategorySchema } from "root/model/skillcategory.type";
+import {
+    CategoryCollection,
+    CategoryDocument,
+} from "root/model/category.schema";
+import { MyDatabase } from "root/model/collections";
+import { SkillDocument } from "root/model/skill.schema";
 import DefaultStackOptions from "root/navigation/DefaultStackOptions";
-import { RxCollection, RxDatabase, RxQuery } from "rxdb";
+import { RxQuery } from "rxdb";
 import { View } from "styled/Themed";
 import { styles } from "./Skills";
 
 export function SkillCategoryScreen({ route, navigation }): JSX.Element {
-    const { categoryId, displayName } = route.params;
-    const [list, setList] = useState([]);
-    const [title, setTitle] = useState(displayName);
+    const { categoryId } = route.params;
+    const [list, setList] = useState<SkillDocument[]>([]);
+    const [title, setTitle] = useState("");
 
     useEffect(() => {
         navigation.setOptions({
@@ -30,11 +35,11 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
             }),
         });
     }, [title]);
-    let database: RxDatabase;
+    let database: MyDatabase;
     let query: RxQuery;
-    let skillcategoryCollection: RxCollection;
+    let skillcategoryCollection: CategoryCollection;
 
-    async function setData(data: SkillCategorySchema) {
+    async function setData(data: CategoryDocument) {
         try {
             const newList = await data.skills_;
             setList(newList);
@@ -97,9 +102,9 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
             <FlatList
                 style={styles.cardlist}
                 data={list}
-                keyExtractor={(item) => item.skill_id}
+                keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <Card style={styles.card} key={item.skill_id}>
+                    <Card style={styles.card} key={item.id}>
                         <Card.Title title={item.display_name} />
                         <Button
                             onPress={() => {
@@ -107,7 +112,7 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
                                 navigation.navigate("Skill", {
                                     categoryId: categoryId,
                                     categoryName: title,
-                                    skillId: item.skill_id,
+                                    skillId: item.id,
                                     displayName: item.display_name,
                                 });
                             }}
@@ -124,7 +129,7 @@ export function SkillCategoryScreen({ route, navigation }): JSX.Element {
                 onPress={() =>
                     navigation.navigate("NewSkill", {
                         categoryId: categoryId,
-                        categoryName: displayName,
+                        categoryName: title,
                     })
                 }
             />

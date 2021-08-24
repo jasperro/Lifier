@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { View as TransparentView } from "react-native";
 import { Card, FAB, IconButton, useTheme } from "react-native-paper";
 import { FlatGrid } from "react-native-super-grid";
-import SkillCategorySchema from "root/model/skillcategory.type";
+import { CategoryDocument } from "root/model/category.schema";
 import { View } from "styled/Themed";
 import { styles } from "./Skills";
 
@@ -17,7 +17,6 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
             const skillcategoryCollection = database.skillcategories;
 
             const query = skillcategoryCollection.find();
-            const documents = await query.exec();
             query.$.subscribe((documents) => setList(documents));
         })();
     }, []);
@@ -28,19 +27,16 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                 spacing={10}
                 style={styles.cardlist}
                 data={list}
-                keyExtractor={(item: SkillCategorySchema) =>
-                    item.skill_category_id
-                }
+                keyExtractor={(item: CategoryDocument) => item.id}
                 renderItem={({ item }) => (
                     <Card
                         onPress={() => {
                             /* Navigate to skill route with params */
                             navigation.navigate("SkillCategory", {
-                                categoryId: item.skill_category_id,
-                                displayName: item.display_name,
+                                categoryId: item.id,
                             });
                         }}
-                        key={item.skill_category_id}
+                        key={item.id}
                         style={[
                             styles["card"],
                             { backgroundColor: item.color },
@@ -77,7 +73,7 @@ export function SkillCategoriesScreen({ navigation }): JSX.Element {
                                 color="white"
                                 onPress={() => {
                                     navigation.navigate("EditCategory", {
-                                        categoryId: item.skill_category_id,
+                                        categoryId: item.id,
                                         displayName: item.display_name,
                                     });
                                 }}

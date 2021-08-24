@@ -9,7 +9,7 @@
  * describes a setting
  */
 export interface SettingSchema {
-    setting_id: string;
+    id: string;
     state?: boolean | number | string | null;
     [k: string]: unknown;
 }

@@ -1,5 +1,5 @@
 import databasePromise from "model/database";
-import { SkillCategorySchema } from "model/skillcategory.type";
+import { CategorySchema } from "model/category.type";
 import React, { useState } from "react";
 import { Dimensions, ScrollView } from "react-native";
 import { Button, TextInput } from "react-native-paper";
@@ -10,7 +10,7 @@ import ColorPicker from "root/components/ColorPicker";
 /*console.log(
     "should be valid",
     validate({
-        skill_category_id: "328847392",
+        id: "328847392",
         display_name: "banaan",
     }),
     validate.errors
@@ -18,8 +18,8 @@ import ColorPicker from "root/components/ColorPicker";
 console.log("should not be valid", validate({}));*/
 
 async function createSkillCategory(
-    displayName: SkillCategorySchema["display_name"],
-    color: SkillCategorySchema["color"]
+    displayName: CategorySchema["display_name"],
+    color: CategorySchema["color"]
 ) {
     const database = await databasePromise;
     const categoriesCollection = database.skillcategories;

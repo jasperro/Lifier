@@ -1,11 +1,112 @@
-export default {
+import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
+import { CategoryDocument } from "./category.schema";
+import { CategorySchema } from "./category.type";
+import { TaskSchema } from "./task.type";
+import databasePromise from "model/database";
+
+export type TaskDocMethods = {
+    finish: (this: TaskDocument) => void;
+    edit: (this: TaskDocument, newName: string) => void;
+    delete: (this: TaskDocument) => void;
+    changeCategory: (this: TaskDocument, categoryID: string) => void;
+};
+
+export const taskDocMethods: TaskDocMethods = {
+    finish: async function () {
+        const eventCollection = database.events;
+        eventCollection.createNew("Task", "Finished", this.id);
+        const settingsCollection = database.settings;
+
+        const query = settingsCollection.findOne().where("id").eq("current_xp");
+
+        const result = await query.exec();
+
+        await result.update({
+            $inc: {
+                state: 100,
+            },
+        });
+        this.remove();
+    },
+    edit: async function (newName) {
+        await this.update({
+            $set: {
+                display_name: newName,
+            },
+        });
+    },
+    delete: async function () {
+        const eventCollection = database.events;
+        eventCollection.createNew("Task", "Deleted", this.id);
+        this.remove();
+    },
+    changeCategory: async function (categoryID) {
+        await this.update({
+            $set: {
+                category: categoryID,
+                color: (
+                    await database.skillcategories.findOne(categoryID).exec()
+                ).color,
+            },
+        });
+    },
+};
+
+export type TaskDocument = RxDocument<TaskSchema, TaskDocMethods>;
+
+export type TaskCollectionMethods = {
+    createNew: (
+        this: TaskCollection,
+        displayName: string,
+        skillId: string
+    ) => void;
+};
+
+export const taskCollectionMethods: TaskCollectionMethods = {
+    createNew: async function (displayName, skillId) {
+        const database = await databasePromise;
+        const skill = await database.skills.findOne(skillId).exec();
+        if (!skill) {
+            throw "Skill does not exist";
+        }
+        const categoryId: string | undefined = skill.id;
+        if (!categoryId) {
+            throw "Skill does not belong to a category";
+        }
+        const skillcategory = await database.skillcategories
+            .findOne(categoryId)
+            .exec();
+
+        const newDocument: TaskDocument = await this.insert({
+            display_name: displayName,
+            skill: skillId,
+            category: categoryId,
+            color: skillcategory ? skillcategory.color : "#ff0022",
+        });
+
+        const existingTasks = skill.tasks ? skill.tasks : [];
+
+        skill.update({
+            $set: {
+                tasks: [...existingTasks, newDocument.id],
+            },
+        });
+
+        const eventCollection = database.events;
+        eventCollection.createNew("Task", "Created", newDocument.id);
+    },
+};
+
+export type TaskCollection = RxCollection<TaskDocument, TaskCollectionMethods>;
+
+const taskSchema: RxJsonSchema<TaskDocument> = {
     version: 0,
     title: "task schema",
     description: "describes a task",
     type: "object",
-    primaryKey: "task_id",
+    primaryKey: "id",
     properties: {
-        task_id: {
+        id: {
             type: "string",
         },
         display_name: {
@@ -37,5 +138,7 @@ export default {
             default: 100,
         },
     },
-    required: ["display_name", "task_id"],
+    required: ["display_name", "id"],
 };
+
+export default taskSchema;

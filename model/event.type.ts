@@ -9,7 +9,7 @@
  * describes a event in time, with a duration and action
  */
 export interface EventSchema {
-    event_id: string;
+    id: string;
     action_type: "OTHER" | "SKILL" | "SKILLCATEGORY" | "XP" | "TASK";
     action?:
         | "OTHER"

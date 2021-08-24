@@ -23,13 +23,13 @@ export default function XPBar(props): JSX.Element {
 
             const query = settingsCollection
                 .findOne()
-                .where("setting_id")
+                .where("id")
                 .eq("current_xp");
 
             let result = await query.exec();
             if (result == null) {
                 result = await settingsCollection.atomicUpsert({
-                    setting_id: "current_xp",
+                    id: "current_xp",
                     state: 0,
                 });
             }

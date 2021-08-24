@@ -6,13 +6,13 @@ import { compile } from "json-schema-to-typescript";
 import EventSchema from "../model/event.schema";
 import SettingSchema from "../model/setting.schema";
 import SkillSchema from "../model/skill.schema";
-import SkillCategorySchema from "../model/skillcategory.schema";
+import SkillCategorySchema from "../model/category.schema";
 import TaskSchema from "../model/task.schema";
 
 const cwd = process.cwd();
 
 compile(SkillCategorySchema, "SkillCategorySchema").then((ts) =>
-    fs.writeFileSync(`${cwd}/model/skillcategory.type.ts`, ts)
+    fs.writeFileSync(`${cwd}/model/category.type.ts`, ts)
 );
 compile(SkillSchema, "SkillSchema").then((ts) =>
     fs.writeFileSync(`${cwd}/model/skill.type.ts`, ts)

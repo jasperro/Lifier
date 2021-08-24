@@ -1,24 +1,25 @@
 import * as SQLite from "expo-sqlite";
 import HTTPAdapter from "pouchdb-adapter-http";
 import SQLiteAdapterFactory from "pouchdb-adapter-react-native-sqlite";
-import { addRxPlugin, createRxDatabase, removeRxDatabase } from "rxdb";
-import initializeCollections from "./collections";
+import { createRxDatabase, removeRxDatabase } from "rxdb";
+import { addPouchPlugin, getRxStoragePouch } from "rxdb/plugins/pouchdb";
+import initializeCollections, { MyDatabase } from "./collections";
 
 const SQLiteAdapter = SQLiteAdapterFactory(SQLite);
 
-addRxPlugin(SQLiteAdapter);
-addRxPlugin(HTTPAdapter);
+addPouchPlugin(SQLiteAdapter);
+addPouchPlugin(HTTPAdapter);
 
 async function getRxDB() {
-    const rxdb = await createRxDatabase({
+    const rxdb: MyDatabase = await createRxDatabase({
         name: "database",
-        adapter: "react-native-sqlite", // the name of your adapter
+        storage: getRxStoragePouch("react-native-sqlite"), // the name of your adapter
         multiInstance: false,
         ignoreDuplicate: true,
     });
 
     await initializeCollections(rxdb).catch((error) => {
-        removeRxDatabase("database", "react-native-sqlite");
+        removeRxDatabase("database", getRxStoragePouch("react-native-sqlite"));
         throw new Error(
             "Collections konden niet geïnitialiseerd worden, database wordt gewist"
         );
