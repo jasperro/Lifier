@@ -3,10 +3,10 @@ export default {
     title: "skill category schema",
     description: "describes a skill category that references skills",
     type: "object",
+    primaryKey: "skill_category_id",
     properties: {
         skill_category_id: {
             type: "string",
-            primary: true,
         },
         display_name: {
             type: "string",

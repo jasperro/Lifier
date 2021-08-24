@@ -1,7 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-//import { createMaterialBottomTabNavigator as createBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import * as React from "react";
@@ -21,12 +20,7 @@ import DefaultStackOptions from "./DefaultStackOptions";
 const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
     return (
-        <BottomTab.Navigator
-            initialRouteName="Dashboard"
-            tabBarOptions={{
-                animationEnabled: true,
-            }}
-        >
+        <BottomTab.Navigator initialRouteName="Dashboard">
             <BottomTab.Screen
                 name="Tasks"
                 component={TasksNavigator}

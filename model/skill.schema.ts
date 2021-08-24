@@ -3,10 +3,10 @@ export default {
     title: "skill schema",
     description: "describes a skill",
     type: "object",
+    primaryKey: "skill_id",
     properties: {
         skill_id: {
             type: "string",
-            primary: true,
         },
         display_name: {
             type: "string",

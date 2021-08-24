@@ -3,10 +3,10 @@ export default {
     title: "task schema",
     description: "describes a task",
     type: "object",
+    primaryKey: "task_id",
     properties: {
         task_id: {
             type: "string",
-            primary: true,
         },
         display_name: {
             type: "string",

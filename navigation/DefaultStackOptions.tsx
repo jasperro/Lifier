@@ -8,16 +8,17 @@ export default (
     backaction: Function | undefined = undefined
 ): StackNavigationOptions => {
     return {
-        header: function Header({ scene, previous, navigation }) {
-            const { options } = scene.descriptor;
+        header: function Header({ route, options, navigation }) {
             const title =
                 options.headerTitle !== undefined
                     ? options.headerTitle
                     : options.title !== undefined
                     ? options.title
-                    : scene.route.name;
+                    : route.name;
 
-            backaction = previous ? navigation.goBack : backaction;
+            backaction = navigation.canGoBack()
+                ? navigation.goBack
+                : backaction;
 
             const backbutton = backaction ? (
                 <Appbar.BackAction onPress={backaction} />

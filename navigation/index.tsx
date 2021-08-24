@@ -23,7 +23,9 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator
+            screenOptions={{ headerShown: false, headerMode: "screen" }}
+        >
             <Stack.Screen name="Root" component={BottomTabNavigator} />
             {/*TODO: kijken of het wel nuttig is om het via reactnavigation te doen, in plaats van react native modals.*/}
             <Stack.Screen name="NewCategory" component={NewCategoryModal} />

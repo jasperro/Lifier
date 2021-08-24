@@ -5,10 +5,10 @@ export default {
     title: "setting schema",
     description: "describes a setting",
     type: "object",
+    primaryKey: "setting_id",
     properties: {
         setting_id: {
             type: "string",
-            primary: true,
         },
         state: {
             type: ["boolean", "number", "string", "null"],

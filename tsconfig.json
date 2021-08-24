@@ -2,18 +2,28 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "strict": true,
-	 "baseUrl": ".",
+    "baseUrl": ".",
     "paths": {
-      "root/*": ["*"],
-      "styled/*": ["components/Style/*"],
-      "model/*": ["model/*"]
+      "root/*": [
+        "*"
+      ],
+      "styled/*": [
+        "components/Style/*"
+      ],
+      "model/*": [
+        "model/*"
+      ]
     }
-  }
+  },
+  "extends": "expo/tsconfig.base"
 }

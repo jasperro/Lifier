@@ -20,10 +20,10 @@ export default {
     title: "event schema",
     description: "describes a event in time, with a duration and action",
     type: "object",
+    primaryKey: "event_id",
     properties: {
         event_id: {
             type: "string", // uuidv4
-            primary: true,
         },
         action_type: {
             type: "string",
