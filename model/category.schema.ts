@@ -1,5 +1,7 @@
 import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
 import { CategorySchema } from "./category.type";
+import databasePromise from "./database";
+import { SkillDocument } from "./skill.schema";
 
 export type CategoryDocMethods = {
     edit: (
@@ -12,6 +14,7 @@ export type CategoryDocMethods = {
 
 export const categoryDocMethods: CategoryDocMethods = {
     delete: async function () {
+        const database = await databasePromise;
         const eventCollection = database.events;
         eventCollection.createNew("SkillCategory", "Deleted");
         this.remove();
@@ -25,14 +28,18 @@ export const categoryDocMethods: CategoryDocMethods = {
         });
         try {
             const skills = await this.skills_;
-            skills.forEach(async (element) => {
-                const tasks = await element.tasks_;
-                try {
-                    tasks.forEach(async (element) => {
-                        element.update({ $set: { color: color } });
-                    });
-                } catch {}
-            });
+            if (skills) {
+                skills.forEach(async (element) => {
+                    const tasks = await element.tasks_;
+                    if (tasks) {
+                        try {
+                            tasks.forEach(async (element) => {
+                                element.update({ $set: { color: color } });
+                            });
+                        } catch {}
+                    }
+                });
+            }
         } catch {}
         // Bij alle skills in array
     },

@@ -28,6 +28,6 @@ async function getRxDB() {
 }
 
 // Haal de value uit de functie
-const database = getRxDB();
+const databasePromise = getRxDB();
 // Exporteer return value
-export default database;
+export default databasePromise;

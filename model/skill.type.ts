@@ -5,6 +5,8 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
+import { TaskDocument } from "./task.schema";
+
 /**
  * describes a skill
  */
@@ -17,5 +19,5 @@ export interface SkillSchema {
     index?: number;
     category_id?: string;
     tasks?: string[];
-    [k: string]: unknown;
+    tasks_?: Promise<TaskDocument[]>;
 }

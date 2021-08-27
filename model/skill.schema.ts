@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
+import databasePromise from "./database";
 import { SkillSchema } from "./skill.type";
 
 export type SkillDocMethods = {
@@ -16,6 +17,7 @@ export const skillDocMethods: SkillDocMethods = {
         });
     },
     delete: async function () {
+        const database = await databasePromise;
         const eventCollection = database.events;
         eventCollection.createNew("Skill", "Deleted");
         this.remove();
@@ -39,6 +41,7 @@ export const skillCollectionMethods: SkillCollectionMethods = {
             ...(categoryId && { id: categoryId }),
         });
 
+        const database = await databasePromise;
         const query = database.skillcategories.findOne(categoryId);
         const result = await query.exec();
         let existingSkills = await result.skills;

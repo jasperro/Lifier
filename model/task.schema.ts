@@ -3,6 +3,7 @@ import { CategoryDocument } from "./category.schema";
 import { CategorySchema } from "./category.type";
 import { TaskSchema } from "./task.type";
 import databasePromise from "model/database";
+import { getSetting, SettingId } from "./setting.schema";
 
 export type TaskDocMethods = {
     finish: (this: TaskDocument) => void;
@@ -13,13 +14,11 @@ export type TaskDocMethods = {
 
 export const taskDocMethods: TaskDocMethods = {
     finish: async function () {
+        const database = await databasePromise;
         const eventCollection = database.events;
         eventCollection.createNew("Task", "Finished", this.id);
-        const settingsCollection = database.settings;
 
-        const query = settingsCollection.findOne().where("id").eq("current_xp");
-
-        const result = await query.exec();
+        const result = await getSetting(SettingId.CurrentXP);
 
         await result.update({
             $inc: {

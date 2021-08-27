@@ -19,6 +19,7 @@ import { fonts as fontList } from "./fontconfig";
 import useCachedResources from "./hooks/useCachedResources";
 import Navigation from "./navigation";
 import { PreferencesProvider } from "./PreferencesContext";
+import { getSetting, SettingId } from "./model/setting.schema";
 
 //Nooit NodeJS modules gebruiken
 process.browser = true;
@@ -68,24 +69,9 @@ export default function App(): JSX.Element {
 
     useEffect(() => {
         (async () => {
-            const database = await databasePromise;
-            // Pak de lijst met instellingen uit de database
-            const settingsCollection = database.settings;
-
-            // Zet switch naar state uit database
             const darkPromise = async () => {
-                const query = settingsCollection
-                    .findOne()
-                    .where("id")
-                    .eq("dark_mode");
-                let document = await query.exec();
-                if (document == null) {
-                    document = await settingsCollection.atomicUpsert({
-                        id: "dark_mode",
-                        state: false,
-                    });
-                }
-                document.$.subscribe((changeEvent: SettingSchema) => {
+                const result = await getSetting(SettingId.DarkMode);
+                result.$.subscribe((changeEvent: SettingSchema) => {
                     setIsThemeDark(
                         typeof changeEvent.state == "boolean"
                             ? changeEvent.state
@@ -95,18 +81,8 @@ export default function App(): JSX.Element {
             };
 
             const accentPromise = async () => {
-                const query = settingsCollection
-                    .findOne()
-                    .where("id")
-                    .eq("accent_color");
-                let document = await query.exec();
-                if (document == null) {
-                    document = await settingsCollection.atomicUpsert({
-                        id: "accent_color",
-                        state: "#0077ce",
-                    });
-                }
-                document.$.subscribe((changeEvent: SettingSchema) => {
+                const result = await getSetting(SettingId.AccentColor);
+                result.$.subscribe((changeEvent: SettingSchema) => {
                     setAccentColor(
                         typeof changeEvent.state == "string"
                             ? changeEvent.state
@@ -152,7 +128,7 @@ export default function App(): JSX.Element {
     );
 
     if (!isLoadingComplete || !isDBLoadingComplete) {
-        return null;
+        return <></>;
     }
     return (
         <PreferencesProvider value={preferences}>

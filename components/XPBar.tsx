@@ -2,9 +2,10 @@ import databasePromise from "model/database";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View as TransparentView } from "react-native";
 import { ProgressBar, Text, useTheme } from "react-native-paper";
+import { getSetting, SettingId } from "root/model/setting.schema";
 import { View } from "./Style/Themed";
 
-export default function XPBar(props): JSX.Element {
+export default function XPBar(): JSX.Element {
     const { colors } = useTheme();
     const [XPAmount, setXPAmount] = useState(0);
     const themedstyles = StyleSheet.create({
@@ -18,29 +19,10 @@ export default function XPBar(props): JSX.Element {
     });
     useEffect(() => {
         (async () => {
-            const database = await databasePromise;
-            const settingsCollection = database.settings;
-
-            const query = settingsCollection
-                .findOne()
-                .where("id")
-                .eq("current_xp");
-
-            let result = await query.exec();
-            if (result == null) {
-                result = await settingsCollection.atomicUpsert({
-                    id: "current_xp",
-                    state: 0,
-                });
-            }
+            const result = await getSetting(SettingId.CurrentXP);
             result.$.subscribe((changeEvent) => {
                 setXPAmount(changeEvent.state);
             });
-            /*await result.update({
-                $inc: {
-                    state: 55,
-                },
-            });*/
         })();
     }, []);
     const returned = React.useMemo(() => {

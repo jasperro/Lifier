@@ -5,6 +5,8 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
+import { SkillDocument } from "./skill.schema";
+
 /**
  * describes a skill category that references skills
  */
@@ -14,5 +16,5 @@ export interface CategorySchema {
     skills?: string[];
     color?: string;
     index?: number;
-    [k: string]: unknown;
+    skills_?: Promise<SkillDocument[]>;
 }

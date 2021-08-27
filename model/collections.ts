@@ -6,7 +6,11 @@ import eventSchema, {
     EventCollection,
     eventCollectionMethods,
 } from "./event.schema";
-import settingSchema, { SettingCollection } from "./setting.schema";
+import settingSchema, {
+    getSetting,
+    SettingCollection,
+    SettingId,
+} from "./setting.schema";
 import skillSchema, {
     SkillCollection,
     skillCollectionMethods,
@@ -94,38 +98,15 @@ export default async function initializeCollections(
         }
     }, false);
 
-    database.settings.findOne("db_sync").$.subscribe(async (changeEvent) => {
-        if (changeEvent == null) {
-            changeEvent = await database.settings.atomicUpsert({
-                id: "db_sync",
-                state: false,
-            });
-        }
+    const result = await getSetting(SettingId.DbSync);
+
+    result.$.subscribe(async (changeEvent) => {
         if (changeEvent.state == true) {
-            [
-                "settings",
-                "skills",
-                "tasks",
-                "skillcategories",
-                "events",
-            ].forEach(async (item) => {
-                if (Platform.OS == "web") {
-                    database[item].sync({
-                        remote: `http://192.168.1.16:10102/${item}/`, // Remote database. CouchDB op Raspberry Pi
-                        waitForLeadership: true,
-                        direction: {
-                            pull: true,
-                            push: true,
-                        },
-                        options: {
-                            live: true,
-                            retry: true,
-                        },
-                    });
-                } else {
-                    // Zorgt ervoor dat synchronisatie ook op mobile werkt (bugfix?)
-                    setInterval(async () => {
-                        database[item].sync({
+            const collections = Object.entries(database.collections)[0];
+            collections.forEach(async (item) => {
+                if (typeof item != "string") {
+                    if (Platform.OS == "web") {
+                        item.syncCouchDB({
                             remote: `http://192.168.1.16:10102/${item}/`, // Remote database. CouchDB op Raspberry Pi
                             waitForLeadership: true,
                             direction: {
@@ -133,11 +114,27 @@ export default async function initializeCollections(
                                 push: true,
                             },
                             options: {
-                                live: false,
-                                retry: false,
+                                live: true,
+                                retry: true,
                             },
                         });
-                    }, 5000);
+                    } else {
+                        // Zorgt ervoor dat synchronisatie ook op mobile werkt (bugfix?)
+                        setInterval(async () => {
+                            item.syncCouchDB({
+                                remote: `http://192.168.1.16:10102/${item}/`, // Remote database. CouchDB op Raspberry Pi
+                                waitForLeadership: true,
+                                direction: {
+                                    pull: true,
+                                    push: true,
+                                },
+                                options: {
+                                    live: false,
+                                    retry: false,
+                                },
+                            });
+                        }, 5000);
+                    }
                 }
             });
         }
